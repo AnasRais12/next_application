@@ -1,41 +1,27 @@
 'use client';
 import React from 'react';
 import { useState } from 'react';
-import { ImCross } from 'react-icons/im';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup'
 import Swal from 'sweetalert2';
-import { useForm } from 'react-hook-form';
-import { FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-
-const Verifyschema = yup.object().shape({
-  verify: yup.string().min(6, '6 Characters are required').max(6, 'Maximum 6 Character Allowed').required()
-})
 function page() {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: yupResolver(Verifyschema)
-  })
-  const userInfo = JSON.parse(localStorage.getItem('User'));
-  const UserToken = localStorage.getItem('User-Token');
-
-  const moveToforgetAccount = () => {
-    router.push('/register');
-  };
-  const handleVerifySumbit = (data) => {
-    if (data.verify == userInfo?.verificationCode) {
+  const [verifyCode, setverifyCode] = useState('');
+  const UserCode = localStorage.getItem('Send-Code');
+  const handleVerifySumbit = (e) => {
+    e.preventDefault();
+    if (!verifyCode) {
+      Swal.fire({
+        icon: 'error',
+        text: 'Empty Fields',
+      });
+    }
+    if (verifyCode == UserCode) {
       Swal.fire({
         icon: 'success',
         text: 'Verification Successful!',
       });
-      userInfo.isVerified = true;
-      localStorage.setItem('User', JSON.stringify(userInfo));
-      if (UserToken) {
-        router.push('/dashboard');
-      } else {
-        router.push('/login');
-      }
+      localStorage.removeItem('Send-Code');
+      router.push('/changePassword');
     } else {
       Swal.fire({
         icon: 'error',
@@ -55,27 +41,23 @@ function page() {
             <h2 className="text-[24px] sm:text-[30px] xl:text-[36px] font-normal">
               Verification
             </h2>
-            <button
-              className="text-black text-[24px] sm:text-[24px] xl:text-[35px] font-normal"
-              onClick={moveToforgetAccount}
-            >
-              <ImCross className="hidden sm:block" />
-              <FaArrowLeftLong className="block sm:hidden" />
-            </button>
           </div>
           <p className="text-gray-600 mt-4 sm:mt-8 text-[16px] lg:text-[18px]  xl:text-[20px]">
             Please Enter Your Verification Code
           </p>
         </div>
-        <form onSubmit={handleSubmit(handleVerifySumbit)} className="sm:mt-8 mt-4 px-1">
+        <form onSubmit={handleVerifySumbit} className="sm:mt-8 mt-4 px-1">
           <div className="px-6 sm:px-10 flex flex-col gap-10">
             <input
-              {...register('verify')}
               type="password"
-              placeholder="Enter Your Verification Code"
+              name="password"
+              required
+              min={6}
+              max={6}
+              onChange={(e) => setverifyCode(e.target.value)}
+              placeholder="Enter Your Password"
               className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
-            <p>{errors?.verify?.message}</p>
           </div>
           <div className="w-full flex justify-center  mt-8    items-center py-2 border-t-2">
             <div className="flex flex-col gap-3 w-[90%]">

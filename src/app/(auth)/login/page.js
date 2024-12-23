@@ -1,66 +1,88 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { UseAuth } from "@/context/userProvider/userProvider";
-import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
-import CustomSpinner from "@/components/Spinner";
-
+import * as yup from 'yup'
+import { useForm } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
+import { yupResolver } from '@hookform/resolvers/yup'
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 function Login() {
-const createToken= uuidv4()
-const router = useRouter()
-const { User } = UseAuth()
-const Validation = JSON.parse(User)
-
-const generateToken = () => {
-localStorage.setItem('User-Token', createToken)
-}
-
-  const [input, setinputs] = useState({
-    username: '',
-    password: '',
+  const LoginSchema = yup.object().shape({
+    username: yup.string().matches(/^[A-Za-z]{3,20}$/, 'Username must contain only letters (3-20 characters) without spaces or numbers').required('Username is Required'),
+    password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is Required')
   })
-  const handleInput = (e) => {
-    const { name, value } = e.target
-    setinputs((prev) => ({
-      ...prev, [name]: value
-    }))
-  }
+
+  const {register,handleSubmit,formState:{errors},reset} = useForm({
+    resolver:yupResolver(LoginSchema)
+  })
+  const [storedUser, setstoredUser] = useState(null);
+  const createToken = uuidv4();
+  const router = useRouter();
+  useEffect(() => {
+    const User = localStorage.getItem('User');
+    if (User) {
+      setstoredUser(JSON.parse(User));
+    }
+  }, []);
+
+  const generateToken = () => {
+    localStorage.setItem('User-Token', createToken);
+  };
   const moveToRegister = (e) => {
-    router.push('/register')
-    
-  }
-  const moveToForgetAccount  = (e) => {
-    router.push('/forget_account')
-  }
-
-const handleLoginSumbit = (e) => {
-e.preventDefault()
-if (input.username === '' || input.password === '') {
-Swal.fire({
-icon: "error",
-text: " Fields must be required",
-      });
-    }
-   else if (input.username === Validation?.username && input.password === Validation?.password) {
-
+    router.push('/register');
+  };
+  const moveToForgetAccount = (e) => {
+    router.push('/forget_account');
+  };
+  const handleLoginSumbit = async (data) => {
+    if (!storedUser) {
       Swal.fire({
-        icon: "success",
-        text: `User Login Sucessfully`,
-
+        icon: 'error',
+        text: ' No user found, please register first!',
       });
-      generateToken()
-      router.push('/dashboard')
-
     }
-    else {
+    const response = await signIn('credentials',{
+      redirect: false,  
+      username,
+      password
+    })
+    if(response?.error){
       Swal.fire({
-        icon: "error",
-        text: "Wrong Credentials",
+        icon: 'error',
+        text: response.error,
       });
-
+      reset()
     }
-  }
+      else{
+        Swal.fire({
+          icon: 'success',
+          text: `User Login Sucessfully`,
+        });
+        generateToken();
+        router.push('/dashboard');
+        reset()
+      }
+
+    // else if (
+    //   data.username !== storedUser?.username ||
+    //   data.password !== storedUser?.password
+    // ) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     text: 'Wrong Credentials',
+    //   });
+    //   reset()
+    // } else {
+    //   Swal.fire({
+    //     icon: 'success',
+    //     text: `User Login Sucessfully`,
+    //   });
+    //   generateToken();
+    //   router.push('/dashboard');
+    //   reset()
+    // }
+  };
 
   return (
     <>
@@ -74,54 +96,56 @@ text: " Fields must be required",
               <h2 className="text-[24px] sm:text-[30px] xl:text-[36px] font-normal">
                 Login
               </h2>
-             
             </div>
             <p className="text-gray-600 mt-4 sm:mt-8 text-[16px] lg:text-[18px]  xl:text-[20px]">
               We will send you a code by SMS
             </p>
           </div>
-          <form onSubmit={handleLoginSumbit} className="sm:mt-8 mt-4 px-1">
+          <form onSubmit={handleSubmit(handleLoginSumbit)} className="sm:mt-8 mt-4 px-1">
             <div className="px-6 sm:px-10 flex flex-col gap-10">
               <input
+              {...register('username')}
                 type="text"
-                name="username"
-                value={input.username}
-
                 placeholder="Enter Your Username"
-                onChange={handleInput}
                 className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
+              <p>{errors?.username?.message}</p>
               <input
+              {...register('password')}
                 type="password"
-                name="password"
-                value={input.password}
                 placeholder="Enter Your Password"
-                onChange={handleInput}
                 className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
+              <p>{errors?.password?.message}</p>
             </div>
             <div className="w-full flex justify-center  mt-8    items-center py-2 border-t-2">
               <div className="flex flex-col gap-3 w-[90%]">
                 <button
                   type="submit"
                   className="w-full px-3 py-2 rounded-[8px] text-[20px] bg-green-900 text-white my-[10px]"
-                >         Login
-                  {/* {loading == true ? <CSpinner color={"black"} /> : "Continue"} */}
+                >
+                  {' '}
+                  Login
                 </button>
-
               </div>
             </div>
           </form>
           <div className="w-full justify-center flex">
-          <div className="flex w-[80%] justify-between  items-center">
-            <button onClick={moveToRegister}
-              className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
-            >         Did'nt Have an Account
-            </button>
-            <button onClick={moveToForgetAccount}
-              className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
-            >        Forgetten Account?
-            </button>
+            <div className="flex w-[80%] justify-between  items-center">
+              <button
+                onClick={moveToRegister}
+                className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
+              >
+                {' '}
+                Did'nt Have an Account
+              </button>
+              <button
+                onClick={moveToForgetAccount}
+                className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
+              >
+                {' '}
+                Forgetten Account?
+              </button>
             </div>
           </div>
         </div>
@@ -131,4 +155,3 @@ text: " Fields must be required",
 }
 
 export default Login;
-

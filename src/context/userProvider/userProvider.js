@@ -1,38 +1,30 @@
 'use client';
-import React, { useContext,  createContext, useState, useEffect, } from 'react'
-const userContext = createContext()
-export const UseAuth = () => useContext(userContext)
+import React, { useContext, createContext, useState, useEffect } from 'react';
+const userContext = createContext();
+export const UseAuth = () => useContext(userContext);
 function UserProvider({ children }) {
- 
   const [UserToken, setUserToken] = useState(null);
   const [User, setUser] = useState(null);
-useEffect(() => {
-  if(typeof window !== 'undefined'){
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
     const token = localStorage.getItem('User-Token');
-     const user = localStorage.getItem('User');
-     setUserToken(token);
-     setUser(user)
-  }
-}, [])
-const LogoutUser = () => {
-  localStorage.removeItem('User-Token');
-  setUserToken(null); 
-  setUser(null); 
-};
+    const user = localStorage.getItem('User');
 
+    setTimeout(() => {
+      setUserToken(token);
+      setUser(user ? JSON.parse(user) : null);
+      setLoading(false);
+    }, 1000);
+  }, []);
 
-  
-
-
- 
   return (
     <>
-      <userContext.Provider value={{ UserToken,LogoutUser,User}}>
+      <userContext.Provider value={{ UserToken, User, setUser, setUserToken }}>
         {children}
       </userContext.Provider>
     </>
-
-  )
+  );
 }
 
-export default UserProvider
+export default UserProvider;
