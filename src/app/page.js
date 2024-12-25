@@ -1,11 +1,8 @@
 'use client';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
 import CustomSpinner from '@/components/Spinner';
-import { useSession } from 'next-auth/react';
-import LoginButton from '@/components/nextAuth/LoginButton';
-import LogoutButton from '@/components/nextAuth/LogoutButton';
+
 
 function page() {
   const router = useRouter()

@@ -9,8 +9,8 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 function Login() {
   const LoginSchema = yup.object().shape({
-    username: yup.string().matches(/^[A-Za-z]{3,20}$/, 'Username must contain only letters (3-20 characters) without spaces or numbers').required('Username is Required'),
-    password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is Required')
+    username: yup.string().min(6,'6 Characters minimum ').required('Username is Required'),
+    password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is Required')
   })
 
   const {register,handleSubmit,formState:{errors},reset} = useForm({
@@ -36,33 +36,45 @@ function Login() {
     router.push('/forget_account');
   };
   const handleLoginSumbit = async (data) => {
-    if (!storedUser) {
-      Swal.fire({
-        icon: 'error',
-        text: ' No user found, please register first!',
-      });
-    }
-    const response = await signIn('credentials',{
-      redirect: false,  
-      username,
-      password
-    })
-    if(response?.error){
-      Swal.fire({
-        icon: 'error',
-        text: response.error,
-      });
-      reset()
-    }
-      else{
-        Swal.fire({
-          icon: 'success',
-          text: `User Login Sucessfully`,
-        });
-        generateToken();
-        router.push('/dashboard');
-        reset()
-      }
+    const { username, password } = data;
+    // if (!storedUser) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     text: ' No user found, please register first!',
+    //   });
+    // }
+   try {
+     const response = await signIn('credentials',{
+       redirect: false,  
+       username,
+       password
+     })
+     console.log("SignIn Response:", response);
+     if(response?.error){
+       Swal.fire({
+         icon: 'error',
+         text: response.error,
+       });
+       
+       reset()
+     }
+       else{
+         Swal.fire({
+           icon: 'success',
+           text: `User Login Sucessfully`,
+         });
+         generateToken();
+         router.push('/dashboard');
+         reset()
+       }
+   } catch (error) {
+     Swal.fire({
+       icon: 'error',
+       text: 'Wrong Credentials',
+     });
+     reset()
+    
+   }
 
     // else if (
     //   data.username !== storedUser?.username ||

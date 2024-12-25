@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { UseAuth } from '@/context/userProvider/userProvider';
 import { useRouter } from 'next/navigation';
 import * as yup from 'yup'
@@ -13,6 +14,15 @@ const UsernameSchema = yup.object().shape({
 })
 function page() {
   const router = useRouter();
+  const {data:session,status} = useSession()
+  if (status === "loading") console.log('Loading')
+  if (status === "unauthenticated") console.log('Unauthenticated')
+  console.log(session?.user,'Session++++++++++++++++++++++++++++++++')
+  console.log(status,'Status++++++++++++++++++++++++++++++++')
+
+
+ 
+
   const {register,reset,handleSubmit,formState:{errors}} = useForm({resolver:yupResolver(UsernameSchema)})
   const [loading, setloading] = useState(false);
   const [OPenDiv, setOpenDiv] = useState(false);
@@ -20,29 +30,29 @@ function page() {
   const [changeNameModal, setChangeNameModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
-  const User = JSON.parse(localStorage.getItem('User'));
-  const UserToken = localStorage.getItem('User-Token');
-  useEffect(() => {
-    if (!UserToken) {
-      setTimeout(() => {
-        Swal.fire({
-          icon: 'warning',
-          text: 'Please Register || Login Your Account First',
-        });
-        router.push('/login');
-      }, 3000);
-    } else if (!User?.isVerified) {
-      setTimeout(() => {
-        Swal.fire({
-          icon: 'warning',
-          text: 'Please verify your email first!',
-        });
-        router.push('/verify_code');
-      }, 3000);
-    } else if (User) {
-      setUserInfo(User);
-    }
-  }, []);
+  // const User = JSON.parse(localStorage.getItem('User'));
+  // const UserToken = localStorage.getItem('User-Token');
+  // useEffect(() => {
+  //   if (!UserToken) {
+  //     setTimeout(() => {
+  //       Swal.fire({
+  //         icon: 'warning',
+  //         text: 'Please Register || Login Your Account First',
+  //       });
+  //       router.push('/login');
+  //     }, 3000);
+  //   } else if (!User?.isVerified) {
+  //     setTimeout(() => {
+  //       Swal.fire({
+  //         icon: 'warning',
+  //         text: 'Please verify your email first!',
+  //       });
+  //       router.push('/verify_code');
+  //     }, 3000);
+  //   } else if (User) {
+  //     setUserInfo(User);
+  //   }
+  // }, []);
   const LogoutUser = () => {
     localStorage.removeItem('User-Token');
     router.push('/login');
