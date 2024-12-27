@@ -1,77 +1,85 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-// import Credentials from "next-auth/providers/credentials";/
+
 const handle = NextAuth({
-    providers: [
-        GithubProvider({
-            clientId: process.env.GITHUB_CLIENT,
-            clientSecret: process.env.GITHUB_SECRET,
-        }),
-        CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-                username: { label: 'Username', type: 'text' },
-                password: { label: 'Password', type: 'password' }
-            },
-            async authorize(credentials) {
-                try {
-                    const response = await axios.post('https://fakestoreapi.com/auth/login', {
-                        username: credentials.username,
-                        password: credentials.password
-                    },
-                        {
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                    const data = response.data
-                    const token = data.token
-                    const decoded = jwtDecode(token)
-                    console.log(decoded, '________________________________________-DECODED');
-                    console.log(data, '_______________________--Dataaaaaaaaaaaaa')
-                    console.log(token, '_______________________--token')
-
-                    if (data.token) {
-                        return { id: decoded?.sub, name: decoded?.user, password: credentials.password, token: data.token }
-                    }
-                    else {
-                        throw new Error("Invalid credentials");
-                    }
-                } catch (error) {
-                    console.error("API Error:", error.response?.data || error.message);
-                }
-            }
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+         await axios.post("https://fakestoreapi.com/auth/login",   
+         {
+          username: credentials.username,
+          password: credentials.password
+        }).then((response) => {
+          const data = response.data;
+          if (data && data.token) {
+            return {
+              name: credentials.username,
+              password: credentials.password,
+              token: data.token
+            };
+          }
         })
+        .catch((error) => {
+          console.log(error, 'Error++++++++++++++++++++++++++++')
+          throw new Error("Invalid credentials");
+        });
+      }
+    })
+  ],
+  callbacks: {
 
-    ],
-    callbacks: {
-
-        async jwt(user, token) {
-            if (user) {
-                user.token = token.token
-                user.id = token.id
-                user.name = token.name
-                user.password = token.password
-            }
-            return token
-        },
-        async session(session, token) {
-            if (session) {
-                session.token = token.token
-                session.id = token.id
-                session.name = token.name
-                session.password = token.password
-            }
-            return session
-        }
-
+    async jwt({ user, token }) {
+      if (user) {
+        token.name = user.name
+        token.password = user.password
+        token.token = user.token
+      }
+      return token
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    async session({ token, session }) {
+      session.user = {
+        name: token.name,
+        password: token.password,
+        token: token.token
 
+      }
+      return session;
+    },
+    // async session({ session, token }) {
+    //   session.user = {
+    //     id: token.id,
+    //     name: token.name,
+    //     token: token.token
+    //   };
+    //   return session;
+    // }
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+});
+
+export { handle as GET , handle as POST };
+
+
+fetch('https://fakestoreapi.com/auth/login"',{
+  method:'post',
+  
+  // headers:{
+    
+
+  // },
+  body:JSON.stringify({
+
+  })
+  
 })
-
-
-export { handle as GET, handle as POST }

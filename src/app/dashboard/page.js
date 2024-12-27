@@ -14,11 +14,15 @@ const UsernameSchema = yup.object().shape({
 })
 function page() {
   const router = useRouter();
-  const {data:session,status} = useSession()
-  if (status === "loading") console.log('Loading')
-  if (status === "unauthenticated") console.log('Unauthenticated')
-  console.log(session?.user,'Session++++++++++++++++++++++++++++++++')
-  console.log(status,'Status++++++++++++++++++++++++++++++++')
+  const {data:session,} = useSession()
+  // if (status === "loading") console.log('Loading')
+  useEffect(() => {
+    console.log(session,'Session++++++++++++++++++++++++++++++++')
+  }, [session])
+  
+  // if (status === "unauthenticated") console.log('Unauthenticated')
+  // console.log(session?.user,'Session++++++++++++++++++++++++++++++++')
+  // console.log(status,'Status++++++++++++++++++++++++++++++++')
 
 
  
@@ -171,8 +175,11 @@ function page() {
             </div>
           </div>
 
-          <div className="w-[30%] flex justify-center py-20 border-2 border-black items-center shadow-xl rounded-[20px]">
-            <h1>Hello {userInfo?.username} </h1>
+          <div className="w-[30%] flex flex-col gap-5 justify-center py-20 border-2 border-black items-center shadow-xl rounded-[20px]">
+            <h1>Hello {session?.user.name} </h1>
+            <h1>Hello {session?.user.password} </h1>
+            <h1>Hello {session?.user.token} </h1>
+
           </div>
         </div>
       )}
