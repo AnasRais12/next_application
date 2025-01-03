@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { UseAuth } from '@/context/userProvider/userProvider';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import * as yup from 'yup'
+import CSpinner from '@/components/CSpinner';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Swal from 'sweetalert2';
@@ -14,20 +16,30 @@ const UsernameSchema = yup.object().shape({
 })
 function page() {
   const router = useRouter();
-  const {data:session,} = useSession()
+  const [Loading, setLoading] = useState(false);
+  const { data: session, status } = useSession()
+  console.log(session, "Session Is Here ")
+  const readableExpireDate = session?.expires.toLocaleString("en-GB", {
+    weekday: "long", // Weekday name (e.g., "Thursday")
+    day: "2-digit",  // Day of the month with leading zero
+    month: "short",  // Abbreviated month name (e.g., "Jan")
+    year: "numeric"  // Year in full (e.g., "2025")
+  });// This will display the time in the Asia/Karachi time zone
+  
+  console.log(readableExpireDate, " Date");
+
   // if (status === "loading") console.log('Loading')
   useEffect(() => {
-    console.log(session,'Session++++++++++++++++++++++++++++++++')
   }, [session])
-  
+
   // if (status === "unauthenticated") console.log('Unauthenticated')
   // console.log(session?.user,'Session++++++++++++++++++++++++++++++++')
   // console.log(status,'Status++++++++++++++++++++++++++++++++')
 
 
- 
 
-  const {register,reset,handleSubmit,formState:{errors}} = useForm({resolver:yupResolver(UsernameSchema)})
+
+  const { register, reset, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(UsernameSchema) })
   const [loading, setloading] = useState(false);
   const [OPenDiv, setOpenDiv] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -57,9 +69,21 @@ function page() {
   //     setUserInfo(User);
   //   }
   // }, []);
-  const LogoutUser = () => {
-    localStorage.removeItem('User-Token');
-    router.push('/login');
+  const LogoutUser = async () => {
+    setLoading(true)
+    try {
+      await signOut({ callbackUrl: 'http://localhost:3000/login' })
+
+
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: error
+      });
+    }
+    finally{
+      setloading(false)
+    }
   };
   const DeletetUser = () => {
     localStorage.removeItem('User');
@@ -112,9 +136,10 @@ function page() {
                     <div className="w-[50%] flex flex-col gap-2 py-2">
                       <button
                         onClick={LogoutUser}
+                        disabled={loading}
                         className=" rounded-[20px] py-2 hover:bg-green-300 hover:text-white"
                       >
-                        Logout
+                        {loading? <CSpinner/> : 'Logout'}
                       </button>
                       <button
                         onClick={DeletetUser}
@@ -149,10 +174,10 @@ function page() {
                                   X
                                 </button>
                                 <input
-                                {...register('username')}
+                                  {...register('username')}
                                   className="w-full px-10 py-4 border-2 rounded-[10px] "
                                   placeholder="Change Username"
-                                
+
                                 />
                                 <p>{errors?.username?.message}</p>
                                 <button
@@ -176,9 +201,11 @@ function page() {
           </div>
 
           <div className="w-[30%] flex flex-col gap-5 justify-center py-20 border-2 border-black items-center shadow-xl rounded-[20px]">
-            <h1>Hello {session?.user.name} </h1>
-            <h1>Hello {session?.user.password} </h1>
-            <h1>Hello {session?.user.token} </h1>
+            <h1> {session?.user.name} </h1>
+            <h1> {session?.user.email} </h1>
+            <h1> {session?.user.password} </h1>
+            <h1> {session?.user.token} </h1>
+
 
           </div>
         </div>

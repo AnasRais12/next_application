@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
 
 const handle = NextAuth({
@@ -9,77 +10,76 @@ const handle = NextAuth({
       clientId: process.env.GITHUB_CLIENT,
       clientSecret: process.env.GITHUB_SECRET,
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT,
+      clientSecret: process.env.GOOGLE_SECRET,
+      authorization: {
+        params: {
+          scope: "openid profile email https://www.googleapis.com/auth/user.phonenumbers.read",
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-         await axios.post("https://fakestoreapi.com/auth/login",   
-         {
-          username: credentials.username,
-          password: credentials.password
-        }).then((response) => {
-          const data = response.data;
-          if (data && data.token) {
+        try {
+          const response = await axios.post("https://fakestoreapi.com/auth/login", {
+            username: credentials.username,
+            password: credentials.password,
+          });
+          if (response.data.token) {
             return {
               name: credentials.username,
               password: credentials.password,
-              token: data.token
+              token: response.data.token,
             };
+          } else {
+            throw new Error("Invalid credentials");
           }
-        })
-        .catch((error) => {
-          console.log(error, 'Error++++++++++++++++++++++++++++')
+        } catch (error) {
+          console.error("Error during authentication:", error);
           throw new Error("Invalid credentials");
-        });
-      }
-    })
+        }
+      },
+    }),
   ],
-  callbacks: {
 
-    async jwt({ user, token }) {
-      if (user) {
-        token.name = user.name
-        token.password = user.password
-        token.token = user.token
+  callbacks: {
+    async jwt({ user, token, account, }) {
+
+      if (account?.refresh_token) {
+        token.refresh_token = account.refresh_token;
       }
-      return token
+      if (user) {
+        token.name = user.name;
+        token.email = user.email;
+        token.token = user.token;
+        token.phoneNumber = user.phoneNumber;
+      }
+      console.log("JWT Callback:", token);
+      return token;
     },
+
     async session({ token, session }) {
       session.user = {
         name: token.name,
-        password: token.password,
-        token: token.token
+        email: token.email,
+        token: token.token,
+        phoneNumber: token.phoneNumber,
 
-      }
+
+      };
       return session;
     },
-    // async session({ session, token }) {
-    //   session.user = {
-    //     id: token.id,
-    //     name: token.name,
-    //     token: token.token
-    //   };
-    //   return session;
-    // }
   },
+
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handle as GET , handle as POST };
-
-
-fetch('https://fakestoreapi.com/auth/login"',{
-  method:'post',
-  
-  // headers:{
-    
-
-  // },
-  body:JSON.stringify({
-
-  })
-  
-})
+export { handle as GET, handle as POST };
