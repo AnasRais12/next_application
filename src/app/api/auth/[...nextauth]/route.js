@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { GeneratedAccesToken } from "@/utils/GeneratedAccesToken";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
 
@@ -52,9 +53,10 @@ const handle = NextAuth({
 
   callbacks: {
     async jwt({ user, token, account, }) {
-
-      if (account?.refresh_token) {
-        token.refresh_token = account.refresh_token;
+      if (account) {
+        token.accesToken = account.access_token
+        token.refreshToken = account.refresh_token;
+        token.accessTokenExpires = Date.now() + (account.expires_at || 0) * 1000
       }
       if (user) {
         token.name = user.name;
@@ -62,8 +64,21 @@ const handle = NextAuth({
         token.token = user.token;
         token.phoneNumber = user.phoneNumber;
       }
-      console.log("JWT Callback:", token);
-      return token;
+    return token
+
+        
+      // const refreshedToken = await GeneratedAccesToken(token.refresh_token)
+      // console.log('Token HAS Expiryyyyyyyyyyyyyyyyyyyyyyyyyyy')
+      // console.log('Token HAS Expiryyyyyyyyyyyyyyyyyyyyyyyyyyy')
+      // console.log('Token HAS Expiryyyyyyyyyyyyyyyyyyyyyyyyyyy')
+      // console.log('Token HAS Expiryyyyyyyyyyyyyyyyyyyyyyyyyyy')
+      // return {
+      //   ...token,
+      //   accesToken: refreshedToken.accessToken,
+      //   accessTokenExpires: refreshedToken.accesTokenExpires,
+      //   refreshToken: refreshedToken.refreshToken
+      // }
+
     },
 
     async session({ token, session }) {

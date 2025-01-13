@@ -1,12 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import withAuth from '@/utils/withAuth';
 import { UseAuth } from '@/context/userProvider/userProvider';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import * as yup from 'yup'
 import CSpinner from '@/components/CSpinner';
 import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, IncremntByAmount, IncreasedAmountWithName } from '../store/features/counter/CounterSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Swal from 'sweetalert2';
 import ChangePasswordModal from '@/components/ChangePasswordModal';
@@ -17,58 +20,18 @@ const UsernameSchema = yup.object().shape({
 function page() {
   const router = useRouter();
   const [Loading, setLoading] = useState(false);
+  const count = useSelector((state) => state.counter.value)
+  const dispatch = useDispatch()
   const { data: session, status } = useSession()
-  console.log(session, "Session Is Here ")
-  const readableExpireDate = session?.expires.toLocaleString("en-GB", {
-    weekday: "long", // Weekday name (e.g., "Thursday")
-    day: "2-digit",  // Day of the month with leading zero
-    month: "short",  // Abbreviated month name (e.g., "Jan")
-    year: "numeric"  // Year in full (e.g., "2025")
-  });// This will display the time in the Asia/Karachi time zone
-  
-  console.log(readableExpireDate, " Date");
-
-  // if (status === "loading") console.log('Loading')
-  useEffect(() => {
-  }, [session])
-
-  // if (status === "unauthenticated") console.log('Unauthenticated')
-  // console.log(session?.user,'Session++++++++++++++++++++++++++++++++')
-  // console.log(status,'Status++++++++++++++++++++++++++++++++')
-
-
-
-
   const { register, reset, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(UsernameSchema) })
   const [loading, setloading] = useState(false);
   const [OPenDiv, setOpenDiv] = useState(false);
+  const [pagesOpen, setPagesOpen] = useState(false);
+
   const [userInfo, setUserInfo] = useState(null);
   const [changeNameModal, setChangeNameModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
-  // const User = JSON.parse(localStorage.getItem('User'));
-  // const UserToken = localStorage.getItem('User-Token');
-  // useEffect(() => {
-  //   if (!UserToken) {
-  //     setTimeout(() => {
-  //       Swal.fire({
-  //         icon: 'warning',
-  //         text: 'Please Register || Login Your Account First',
-  //       });
-  //       router.push('/login');
-  //     }, 3000);
-  //   } else if (!User?.isVerified) {
-  //     setTimeout(() => {
-  //       Swal.fire({
-  //         icon: 'warning',
-  //         text: 'Please verify your email first!',
-  //       });
-  //       router.push('/verify_code');
-  //     }, 3000);
-  //   } else if (User) {
-  //     setUserInfo(User);
-  //   }
-  // }, []);
   const LogoutUser = async () => {
     setLoading(true)
     try {
@@ -81,7 +44,7 @@ function page() {
         text: error
       });
     }
-    finally{
+    finally {
       setloading(false)
     }
   };
@@ -111,8 +74,13 @@ function page() {
     }
   };
   const Setting = () => {
-    setOpenDiv(true);
+    setOpenDiv(!OPenDiv);
   };
+  const Pages = () => {
+    setPagesOpen(!pagesOpen);
+  };
+
+
   if (loading) {
     return <CustomSpinner />;
   }
@@ -139,7 +107,7 @@ function page() {
                         disabled={loading}
                         className=" rounded-[20px] py-2 hover:bg-green-300 hover:text-white"
                       >
-                        {loading? <CSpinner/> : 'Logout'}
+                        {loading ? <CSpinner /> : 'Logout'}
                       </button>
                       <button
                         onClick={DeletetUser}
@@ -199,9 +167,62 @@ function page() {
               )}
             </div>
           </div>
+          <div className="absolute top-8 left-8  text-black rounded-[20px] px-10">
+            <div className="flex flex-col gap-2 px-4 pb-4">
+              <button
+                className="border-2 px-4 rounded-[20px]  "
+                onClick={Pages}
+              >
+                Pages
+              </button>
+              {pagesOpen ? (
+                <>
+                  <div className="w-[100%] flex border-2  shadow-xl   flex-col gap-4 text-[20px] justify-center items-center 0 text-green-600">
+                    <div className="w-[50%] flex flex-col gap-2 py-2">
+                      <button
+                        onClick={() => router.push('/order')}
+                        className=" rounded-[20px] py-2 hover:bg-green-300 hover:text-white"
+                      >
+                        Order
+                      </button>
+                      <button
+                        onClick={() => router.push('/userInfo')}
+                        className="rounded-[20px] py-2 hover:bg-green-300 hover:text-white"
+                      >
+                        UserInfo
+                      </button>
+                      <button
+                        onClick={() => router.push('/product')}
+                        className="rounded-[20px] py-2 hover:bg-green-300 capitalize hover:text-white"
+                      >
+                        product
+                      </button>
+                      <button
+                        onClick={() => router.push('/cart')}
+                        className="rounded-[20px] py-2 hover:bg-green-300 hover:text-white"
+                      >
+                        Cart
+                      </button>
+
+                    </div>
+                  </div>
+                </>
+              ) : (
+                ''
+              )}
+            </div>
+          </div>
 
           <div className="w-[30%] flex flex-col gap-5 justify-center py-20 border-2 border-black items-center shadow-xl rounded-[20px]">
             <h1> {session?.user.name} </h1>
+            <h1> {count} </h1>
+            <button onClick={() => dispatch(increment())} className='px-3 py-2 rounded-[10px] border-2 '>Increment</button>
+            <button className='px-3 py-2 rounded-[10px] border-2' onClick={() => dispatch(decrement())}>Decrement</button>
+            <button className='px-3 py-2 rounded-[10px] border-2' onClick={() => dispatch(IncremntByAmount(6))}>IncremntByAmount</button>
+            <button className='px-3 py-2 rounded-[10px] border-2' onClick={() => dispatch(IncreasedAmountWithName('ANAS'))}> IncreasedAmountWithName</button>
+            {/* <button onClick={() => dispatch(increment())}>Increment</button> */}
+            {/* <button onClick={() => dispatch(decrement())}>Decrement</button> */}
+            {/* <button onClick={() => dispatch(incrementByAmount(5))}>Increment by 5</button> */}
             <h1> {session?.user.email} </h1>
             <h1> {session?.user.password} </h1>
             <h1> {session?.user.token} </h1>
@@ -214,4 +235,4 @@ function page() {
   );
 }
 
-export default page;
+export default withAuth(page);

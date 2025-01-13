@@ -8,9 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Swal from 'sweetalert2';
 import { FcGoogle } from "react-icons/fc";
 import { ImGithub } from "react-icons/im";
-import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import CustomSpinner from '@/components/Spinner';
 import CSpinner from '@/components/CSpinner';
 function Login() {
 
