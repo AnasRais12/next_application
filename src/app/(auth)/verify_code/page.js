@@ -32,7 +32,7 @@ function page() {
       userInfo.isVerified = true;
       localStorage.setItem('User', JSON.stringify(userInfo));
       if (UserToken) {
-        router.push('/dashboard');
+        router.push('/home');
       } else {
         router.push('/login');
       }

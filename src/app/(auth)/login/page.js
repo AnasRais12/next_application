@@ -73,7 +73,7 @@ function Login() {
           text: `User Login Sucessfully`,
         });
         generateToken();
-        router.push('/dashboard');
+        router.push('/home');
         reset()
       }
     } catch (error) {
@@ -103,14 +103,14 @@ function Login() {
     //     text: `User Login Sucessfully`,
     //   });
     //   generateToken();
-    //   router.push('/dashboard');
+    //   router.push('/home');
     //   reset()
     // }
   };
   const handleGoogleLogin = async () => {
     setgoogleLoading(true)
     try {
-      await signIn('google', { callbackUrl: 'http://localhost:3000/dashboard' })
+      await signIn('google', { callbackUrl: 'http://localhost:3000/home' })
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -125,7 +125,7 @@ function Login() {
   const handleGithubLogin = async () => {
     try {
       setGithubLoading(true)
-      await signIn('github', { callbackUrl: 'http://localhost:3000/dashboard' })
+      await signIn('github', { callbackUrl: 'http://localhost:3000/home' })
     } catch (error) {
       Swal.fire({
         icon: 'error',

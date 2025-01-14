@@ -41,7 +41,7 @@ function page() {
         localStorage.setItem('User', JSON.stringify(Password));
       }
       if (userToken) {
-        router.push('/dashboard');
+        router.push('/home');
       } else {
         router.push('/login');
       }

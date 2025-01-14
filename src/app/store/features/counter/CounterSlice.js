@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-
 const initialState = { value: 0 }
 const counterSlice = createSlice({
     name: 'counter',
@@ -14,14 +13,17 @@ const counterSlice = createSlice({
 
             }
         },
-        IncremntByAmount: (state, action) => {
+        IncremntByAmount: (state,action) => {
             state.value += action.payload
         },
-        IncreasedAmountWithName:(state,action) =>{
-            state.value = state.value + action.payload
+        IncreasedAmountWithName: (state, action) => {
+            state.value += action.payload
+
         }
     }
-})
+}) 
+console.log("Counter Slice + ",counterSlice)
 
-export const { increment, decrement,IncremntByAmount,IncreasedAmountWithName  }=counterSlice.actions
-export const counterReducer =  counterSlice.reducer 
+export const { increment, decrement, IncremntByAmount, IncreasedAmountWithName } = counterSlice.actions
+export const counterReducer = counterSlice.reducer 
+

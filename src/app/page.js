@@ -11,7 +11,7 @@ function page() {
       router.push('/login')
     }
     else {
-      router.push('/dashboard')
+      router.push('/home')
     }
   }, [])
 

@@ -53,7 +53,7 @@ function ChangePasswordModal({ setChangePasswordModal }) {
         localStorage.setItem('User', JSON.stringify(userInfo));
       }
       if (userToken) {
-        router.push('/dashboard');
+        router.push('/home');
         setChangePasswordModal(false);
       } else {
         router.push('/login');
