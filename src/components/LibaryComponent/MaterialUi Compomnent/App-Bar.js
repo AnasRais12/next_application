@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
@@ -121,11 +122,11 @@ export default function Navbar_() {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
+          <Badge badgeContent={0} color="error">
+            <ShoppingCartCheckoutIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Cart</p>
       </MenuItem>
       <MenuItem>
         <IconButton
@@ -133,7 +134,7 @@ export default function Navbar_() {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={0} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -186,9 +187,9 @@ export default function Navbar_() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton className='text-[80px] font-bold text-[rgb(255,255,255)]'  aria-label="show 4 new mails" sx={{ color: '#ffffff ' }}  >
               <Badge badgeContent={0} color="error">
-                <MailIcon />
+                <ShoppingCartCheckoutIcon />
               </Badge>
             </IconButton>
             <IconButton
