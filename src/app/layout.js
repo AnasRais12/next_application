@@ -1,6 +1,7 @@
 'use client'
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
+import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 import { store } from './store/store';
 import './globals.css';
 import UserProvider from '@/context/userProvider/userProvider';
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         <Provider store={store}>      
         <UserProvider>
           <SessionProvider>
+            <Navbar_/>
             {children}
           </SessionProvider>
         </UserProvider>

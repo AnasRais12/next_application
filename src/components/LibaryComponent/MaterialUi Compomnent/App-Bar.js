@@ -47,7 +47,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -123,19 +122,15 @@ export default function Navbar_() {
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="error">
-            <ShoppingCartCheckoutIcon />
+            <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
           </Badge>
         </IconButton>
         <p>Cart</p>
       </MenuItem>
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={0} color="error">
-            <NotificationsIcon />
+            <NotificationsIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
           </Badge>
         </IconButton>
         <p>Notifications</p>
@@ -148,7 +143,7 @@ export default function Navbar_() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <AccountCircle sx={{ fontSize: '36px' }} /> {/* Increased size */}
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -156,49 +151,40 @@ export default function Navbar_() {
   );
 
   return (
-    
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
+          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
+            {/* You can add a MenuIcon here */}
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
+          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
             MUI
           </Typography>
           <Search>
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton className='text-[80px] font-bold text-[rgb(255,255,255)]'  aria-label="show 4 new mails" sx={{ color: '#ffffff ' }}  >
+            <IconButton
+              className="text-[80px] font-bold text-[rgb(255,255,255)]"
+              aria-label="show 4 new mails"
+              sx={{ color: '#ffffff', fontSize: '36px' }} // Increased size for cart icon
+            >
               <Badge badgeContent={0} color="error">
-                <ShoppingCartCheckoutIcon />
+                <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
               </Badge>
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              sx={{ fontSize: '36px' }} // Increased size for notifications icon
             >
               <Badge badgeContent={0} color="error">
-                <NotificationsIcon />
+                <NotificationsIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
               </Badge>
             </IconButton>
             <IconButton
@@ -209,8 +195,9 @@ export default function Navbar_() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              sx={{ fontSize: '36px' }} // Increased size for account icon
             >
-              <AccountCircle />
+              <AccountCircle sx={{ fontSize: '36px' }} /> {/* Increased size */}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -222,7 +209,7 @@ export default function Navbar_() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-                          <MenuIcon />
+              <MenuIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
             </IconButton>
           </Box>
         </Toolbar>

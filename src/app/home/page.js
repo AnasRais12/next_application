@@ -15,7 +15,6 @@ function page() {
   return (
     <>
     <div className='w-full  '>
-      <Navbar_/>
        <Header/>
         <E_commerceCard/>
   </div>
