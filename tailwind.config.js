@@ -6,7 +6,11 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'custom-bg': "url('/images/background.avif')", // Replace with your image path
+      },
+    },
   },
   plugins: [],
 };

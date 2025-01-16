@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -16,6 +17,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { useRouter } from 'next/navigation';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,6 +59,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar_() {
+
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -120,7 +124,7 @@ export default function Navbar_() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+        <IconButton   onClick={()=> router.push('/shoppingcart')} size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="error">
             <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
           </Badge>
@@ -169,11 +173,12 @@ export default function Navbar_() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
+            onClick={()=> router.push('/shoppingcart')}
               className="text-[80px] font-bold text-[rgb(255,255,255)]"
-              aria-label="show 4 new mails"
+              aria-label="s"
               sx={{ color: '#ffffff', fontSize: '36px' }} // Increased size for cart icon
             >
-              <Badge badgeContent={0} color="error">
+              <Badge badgeContent={8} color="error">
                 <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
               </Badge>
             </IconButton>
