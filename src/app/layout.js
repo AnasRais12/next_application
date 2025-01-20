@@ -28,7 +28,6 @@ const geistMono = localFont({
 export default function RootLayout({ children }) {
   const pathName = usePathname()
   const isLoginPage = pathName === '/login';
-console.log("isLoginPage",isLoginPage)
   return (
     <html lang="en">
       <body

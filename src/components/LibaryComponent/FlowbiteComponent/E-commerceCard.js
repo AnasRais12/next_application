@@ -1,9 +1,13 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import { addToCart } from '@/app/store/features/CartReducer/CartSlice'
 import { CardsData, Category } from '@/utils/ProductsDetailPages/ProductData'
+import { useDispatch, useSelector, } from 'react-redux';
+
 
 function E_commerceCard() {
     const router = useRouter()
+    const dispatch = useDispatch();
 
     const handleShopNow = (id) => {
         router.push(`/product/${id}`)
@@ -12,8 +16,8 @@ function E_commerceCard() {
         <>
             <div className='w-full justify-center pt-16 mb-4 items-center text-[40px] font-semibold text-center text-black'>
                 <h1>{Category.Men}</h1>
-                <div class="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
-                    {CardsData.Men.map((items) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
+                    {CardsData.Men.map((items,) => (
                         <>
                             <div key={items.id} className="w-full shadow-lg shadow-black py-2 px-2   border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700">
 
@@ -55,7 +59,7 @@ function E_commerceCard() {
                 </div>
                 <div className='w-full justify-center py-2 items-center text-[40px] font-semibold text-center text-black'>
                     <h1>{Category.Women}</h1></div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
                     {CardsData.Women.map((items) => (
                         <>
                             <div key={items.id} className="w-full shadow-lg shadow-black py-2 px-2   border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700">
@@ -98,7 +102,7 @@ function E_commerceCard() {
                 </div>
                 <div className='w-full justify-center py-2 items-center text-[40px] font-semibold text-center text-black'>
                     <h1>{Category.Kids}</h1></div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
                     {CardsData.Kids.map((items) => (
                         <>
                             <div key={items.id} className="w-full shadow-lg shadow-black py-2 px-2   border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700">

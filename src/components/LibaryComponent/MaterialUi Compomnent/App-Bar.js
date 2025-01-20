@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { useSelector } from 'react-redux';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -83,7 +84,7 @@ export default function Navbar_() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+   const cart = useSelector((item) => item?.cartItem?.cart );
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -125,7 +126,7 @@ export default function Navbar_() {
     >
       <MenuItem>
         <IconButton   onClick={()=> router.push('/shoppingcart')} size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={0} color="error">
+          <Badge badgeContent={cart?.length} color="error">
             <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
           </Badge>
         </IconButton>
@@ -178,7 +179,7 @@ export default function Navbar_() {
               aria-label="s"
               sx={{ color: '#ffffff', fontSize: '36px' }} // Increased size for cart icon
             >
-              <Badge badgeContent={8} color="error">
+              <Badge badgeContent={cart?.length} color="error">
                 <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
               </Badge>
             </IconButton>

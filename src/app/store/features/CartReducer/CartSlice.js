@@ -1,28 +1,47 @@
 import React from 'react'                              
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { cart: [],value: 0 }
+const initialState = { cart: []  }
 
 
 const CartSlice = createSlice({
-  name: 'cartItem',
+  name: 'cartItems',
   initialState,
   reducers: {
     addToCart: (state, action) => {
       const cart = action.payload;     
-      const existingItem = state.cart.find(item => item.id === cart.id);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        state.cart.push({ ...cart, quantity: 1 });
+      console.log(cart, "Cart From Action")
+        const existingItem = state.cart.find((items)=> items.id === cart.id)
+      if(existingItem){
+          existingItem.quantity+=1
       }
-      // Optional: Update value if needed
-      // state.value += cart.price || 0; // Assuming cart items have a price
+      else{
+   state.cart.push({...cart})
+      }
+     
+      
+    },
+    IncrementQunatity: (state,action) => {
+         const itemId = action.payload
+         const item = state.cart.find((items) => items.id === itemId)
+         if(item){
+          item.quantity +=1
+         }
+    },
+    DecrementQuantity: (state,action) => {
+      const itemId = action.payload
+      const DecrementItem = state.cart.find((items)=> items.id === itemId )
+      if(DecrementItem){
+        if(DecrementItem.quantity > 1){
+          DecrementItem.quantity -=1
+        }
+      }
+
     }
   }
 });
 
-export const { addToCart } = CartSlice.actions;
+export const { addToCart,IncrementQunatity,DecrementQuantity } = CartSlice.actions;
 export const CartReducer = CartSlice.reducer;
 // import slice
 // create intial state

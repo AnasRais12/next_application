@@ -22,7 +22,7 @@ const counterSlice = createSlice({
         }
     }
 }) 
-console.log("Counter Slice + ",counterSlice)
+// console.log("Counter Slice + ",counterSlice)
 
 export const { increment, decrement, IncremntByAmount, IncreasedAmountWithName } = counterSlice.actions
 export const counterReducer = counterSlice.reducer 

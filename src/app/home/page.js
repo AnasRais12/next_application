@@ -10,7 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 function page() {
   const router = useRouter();
   const [Loading, setLoading] = useState(false);
-  const count = useSelector((state) => state.counter.value)
+  const cart = useSelector((state => state?.cartItem?.cart) || "")
+  
   const dispatch = useDispatch()
   return (
     <>

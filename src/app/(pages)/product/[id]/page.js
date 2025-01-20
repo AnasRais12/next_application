@@ -15,25 +15,29 @@ function Single_Product() {
   const sizes = ['US 7', 'US 8', 'US 9', 'US 10', 'US 11'];
     const params = useParams()
     const router = useRouter()
-    const product = Object.values(CardsData).flat().find((item) => item.id === parseInt(params?.id))
-    console.log("Params:", params?.id)
-    console.log("Product Details:", product) // Converting the string ID to a number
+    const productId = Object.values(CardsData).flat().find((item) => item.id === parseInt(params?.id))
+    const product ={
+      ...productId,quantity: 1
+    }
+    console.log("Product ITems",productId)
+    // console.log("Params:", params?.id)
+    // console.log("Product Details:", product) // Converting the string ID to a number
 
     useEffect(() => {
-        if (!product) {
+        if (!productId) {
             Swal.fire({
         icon: 'info',
                 text: 'Endless Stock'
             })
             router.push('/home')
         }
-    }, [product])
+    }, [productId])
 
 
     return (
       <>
       
-       <ProductCard image={product?.image} desc={product?.desc} id={product?.id} ProductName={product?.ProductName} Price={product?.Price}    />
+       <ProductCard product={product}     />
 
         </>
       );
