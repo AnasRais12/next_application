@@ -1,227 +1,126 @@
 'use client'
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import { useSelector } from 'react-redux';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import { useRouter } from 'next/navigation';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
-export default function Navbar_() {
-
-  const router = useRouter()
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-   const cart = useSelector((item) => item?.cartItem?.cart );
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton   onClick={()=> router.push('/shoppingcart')} size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={cart?.length} color="error">
-            <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
-          </Badge>
-        </IconButton>
-        <p>Cart</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={0} color="error">
-            <NotificationsIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle sx={{ fontSize: '36px' }} /> {/* Increased size */}
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
+import { useEffect, useState } from "react";
+import { useSession } from 'next-auth/react'
+import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogIn } from "react-icons/fi";
+export default function Navbar() {
+  const [click, setclick] = useState(false);
+  const {data } = useSession()
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ paddingTop: '10px', paddingBottom: '10px' }}>
-        <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
-            {/* You can add a MenuIcon here */}
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-            MUI
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
-            </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-            onClick={()=> router.push('/shoppingcart')}
-              className="text-[80px] font-bold text-[rgb(255,255,255)]"
-              aria-label="s"
-              sx={{ color: '#ffffff', fontSize: '36px' }} // Increased size for cart icon
-            >
-              <Badge badgeContent={cart?.length} color="error">
-                <ShoppingCartCheckoutIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              sx={{ fontSize: '36px' }} // Increased size for notifications icon
-            >
-              <Badge badgeContent={0} color="error">
-                <NotificationsIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-              sx={{ fontSize: '36px' }} // Increased size for account icon
-            >
-              <AccountCircle sx={{ fontSize: '36px' }} /> {/* Increased size */}
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MenuIcon sx={{ fontSize: '36px' }} /> {/* Increased size */}
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+    <nav className="bg-white shadow-md relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="sm:text-2xl text-[22px] font-bold text-orange-600">ShopEase</div>
+
+          {/* Navigation Links - Centered */}
+          <div className="hidden md:flex space-x-6 absolute left-1/2 transform -translate-x-1/2">
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Home
+            </a>
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Shop
+            </a>
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Categories
+            </a>
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Contact
+            </a>
+          </div>
+
+          {/* Icons: Search, Cart, User, Mobile Menu */}
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <button onClick={()=> setclick(true)}>
+              <FiSearch className="text-2xl text-gray-700 hover:text-orange-600" />
+            </button>
+           
+
+            <button className="relative">
+              <FiShoppingCart className="text-2xl text-gray-700 hover:text-orange-600" />
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                3
+              </span>
+            </button>
+            <button className={`px-2 py-1 rounded-[10px]  text-white`}>
+              {data?  <FiUser className="text-2xl text-gray-700 hover:text-orange-600" />  :  <FiLogIn className="text-2xl text-gray-700 hover:text-orange-600"/> }
+            </button>
+            {/* Search bar Div */} 
+            {click? (
+            <>
+              <div className=" gimm  block   overflow-hidden top-full h-[300px] bg-white absolute left-0 right-0   ">
+                <div className="w-full bg-white pt-[20px]  pb-[10px] flex ">
+                  <img className="z-10" src="images/favicon.ico" />
+                  <div className="flex bg-gray-100 w-[65%]  items-center rounded-[20px]">
+                    <div className="w-[40px] h-[40px] rounded-[50%] hover:bg-gray-300 bg-white flex justify-center items-center">
+                      <FiSearch className="text-[25px] " />
+                    </div>
+
+                    <input
+                      className="pl-[10px] h-[5vh] w-full rounded-[20px] hover:bg-gray-200 border-gray-200 border-2"
+                      placeholder="Search"
+                    />
+                  </div>
+
+                  <button
+                    onClick={()=> setclick(false)}
+                    className="bg-white font-bold rounded-[15px] py-1 px-4 border-2 border-gray-100 hover:bg-gray-100 "
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <div className="w-full bg-white pt-[20px] pl-[18%] pb-[20px]">
+                  <div className=" flex flex-col">
+                    <h1 className="mb-[15px] text-gray-400">
+                      Popular Search Items
+                    </h1>
+                    <h1 className="mb-[5px] text-[20px] font-semi-bold">
+                      Air Force 1
+                    </h1>
+                    <h1 className="mb-[5px] text-[20px] font-semi-bold">
+                      Jordan
+                    </h1>
+                    <h1 className="mb-[5px] text-[20px]  font-semi-bold">
+                      Air Max
+                    </h1>
+                    <h1 className="mb-[5px] text-[20px]  font-semi-bold">
+                      Blazer
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
+            {/* Mobile Menu Toggle */}
+            <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+        
+              {isOpen ? (
+                <FiX className="text-2xl text-gray-700" />
+              ) : (
+                <FiMenu className="text-2xl text-gray-700" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden flex flex-col space-y-4 py-4">
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Home
+            </a>
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Shop
+            </a>
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Categories
+            </a>
+            <a href="#" className="text-gray-700 hover:text-orange-600">
+              Contact
+            </a>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }

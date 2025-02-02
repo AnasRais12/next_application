@@ -139,7 +139,95 @@ function Login() {
 
   return (
     <>
-      <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
+
+      <div className="fixed bg-custom-gradient inset-0 flex items-center justify-center z-50">
+        <div className="bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2  relative">
+          {/* <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-700" onClick={onClose}>
+          <IoClose size={24} />
+        </button> */}
+
+          {/* Logo */}
+          <div className="flex flex-col items-center">
+            {/* <div className="bg-black text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl">
+            E<span></span>
+          </div> */}
+            <h2 className="text-2xl font-bold mt-2">Welcome Back</h2>
+            <p className="text-gray-500 text-sm">Please login to your account</p>
+          </div>
+
+          {/* Login Form */}
+
+          <div className="mt-4">
+            <form onSubmit={handleSubmit(handleLoginSumbit)}>
+              <input
+                {...register('username')}
+                type="text"
+                placeholder="Username "
+                className="w-full p-3 border-2 border-[#ccc] rounded-[10px]   bg-white b focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              <input
+                {...register('password')}
+                type="password"
+                placeholder="Password"
+                className="w-full p-3 border-2 border-[#ccc] rounded-lg bg-white mt-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              <div className="text-right text-sm text-unique mt-3 cursor-pointer">
+                <p onClick={moveToForgetAccount}>Forgot password?</p>
+              </div>
+
+              <button type="submit"
+                disabled={credentialLoading}
+                className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique">
+                {credentialLoading ? (
+                  <CSpinner />
+                ) : (
+                  "Login In")}
+              </button>
+            </form>
+
+          </div>
+
+          {/* Social Login */}
+          <div className="mt-4 text-center">
+            <p className="text-black text-md">Or Login with</p>
+            <div className="flex flex-col items-center justify-center gap-4 mt-2">
+              <button onClick={handleGoogleLogin} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
+                <FcGoogle size={20} className="text-red-500" />
+                Google
+              </button>
+              <button onClick={handleGithubLogin} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
+                <ImGithub size={20} className="text-white" />
+                Facebook
+              </button>
+            </div>
+            <p onClick={moveToRegister} className='text-left mt-2 cursor-pointer'>Not registered? <span className='text-unique'>Create account</span></p>
+
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Login;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
         <div className=" w-full h-full sm:max-h-fit relative sm:w-[70vw]  md:w-[60vw] lg:w-[60vw] xl:w-[50vw] py-5 rounded-md shadow-2xl ">
           <div className="sm:pt-10 pt-0 px-6 sm:px-10">
             <div
@@ -160,14 +248,14 @@ function Login() {
                 {...register('username')}
                 type="text"
                 placeholder="Enter Your Username"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-unique"
               />
               <p>{errors?.username?.message}</p>
               <input
                 {...register('password')}
                 type="password"
                 placeholder="Enter Your Password"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-unique"
               />
               <p>{errors?.password?.message}</p>
             </div>
@@ -209,34 +297,29 @@ function Login() {
                     <ImGithub size={25} style={{ marginRight: "10px" }} />  // Agar loading nahi hai toh GitHub icon dikhaiye
                   )}
                   {githubLoading ? "" : "Sign In with GitHub"} {/* Button text */}
-                </button>
+//         </button>
 
-              </div>
-            </div>
-          </form>
+//       </div>
+//     </div>
+//   </form>
 
-          <div className="w-full justify-center flex">
-            <div className="flex w-[80%] justify-between  items-center">
-              <button
-                onClick={moveToRegister}
-                className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
-              >
-                {' '}
-                Did'nt Have an Account
-              </button>
-              <button
-                onClick={moveToForgetAccount}
-                className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
-              >
-                {' '}
-                Forgetten Account?
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
-export default Login;
+//   <div className="w-full justify-center flex">
+//     <div className="flex w-[80%] justify-between  items-center">
+//       <button
+//         onClick={moveToRegister}
+//         className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
+//       >
+//         {' '}
+//         Did'nt Have an Account
+//       </button>
+//       <button
+//         onClick={moveToForgetAccount}
+//         className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
+//       >
+//         {' '}
+//         Forgetten Account?
+//       </button>
+//     </div>
+//   </div>
+// </div>
+// </div> */}

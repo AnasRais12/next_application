@@ -28,6 +28,10 @@ const geistMono = localFont({
 export default function RootLayout({ children }) {
   const pathName = usePathname()
   const isLoginPage = pathName === '/login';
+  const isRegisterPage = pathName === '/register';
+  const isForgetPage = pathName === '/forget_account';
+
+
   return (
     <html lang="en">
       <body
@@ -36,7 +40,7 @@ export default function RootLayout({ children }) {
         <Provider store={store}>      
         <UserProvider>
           <SessionProvider>
-           {!isLoginPage && <Navbar_/> }
+          {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
             {children}
           </SessionProvider>
         </UserProvider>
