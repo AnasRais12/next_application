@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { getUser } from '@/lib/Auth';
 import withAuth from '@/utils/withAuth';
 import Header from '@/components/LibaryComponent/FlowbiteComponent/Header';
 import E_commerceCard from '@/components/LibaryComponent/FlowbiteComponent/E-commerceCard';
@@ -10,8 +11,18 @@ import { useSelector, useDispatch } from 'react-redux';
 function page() {
   const router = useRouter();
   const [Loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
   const cart = useSelector((state => state?.cartItem?.cart) || "")
   
+  useEffect(() => {
+    const fetchUser = async () => {
+      const loggedInUser = await getUser();
+      setUser(loggedInUser);
+    };
+
+    fetchUser();
+  }, []);
+  console.log("User Here!___________>",user)
   const dispatch = useDispatch()
   return (
     <>
