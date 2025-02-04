@@ -1,30 +1,33 @@
 'use client';
 import React, { useContext, createContext, useState, useEffect } from 'react';
-const userContext = createContext();
-export const UseAuth = () => useContext(userContext);
-function UserProvider({ children }) {
-  const [UserToken, setUserToken] = useState(null);
-  const [User, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
+import { supabase } from '@/lib/supabase';
+const GlobalContext = createContext();
+export const GlobalDetail = ({ children }) =>  {
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    const token = localStorage.getItem('User-Token');
-    const user = localStorage.getItem('User');
-
-    setTimeout(() => {
-      setUserToken(token);
-      setUser(user ? JSON.parse(user) : null);
-      setLoading(false);
-    }, 1000);
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Error fetching user:", error);
+      } else {
+        console.log(data);
+        setUser(data.user);
+      }
+    };
+    fetchUser();
   }, []);
+
 
   return (
     <>
-      <userContext.Provider value={{ UserToken, User, setUser, setUserToken }}>
+      <GlobalContext.Provider value={{user,setUser }}>
         {children}
-      </userContext.Provider>
+      </GlobalContext.Provider>
     </>
   );
 }
 
-export default UserProvider;
+
+export const UserDetail = () => {
+  return useContext(GlobalContext);
+};

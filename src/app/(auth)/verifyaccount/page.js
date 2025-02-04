@@ -1,22 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react'
-import supabase from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 function page() {
   const [user, setuser] = useState(null);
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {data,error} = await supabase.auth.getUser()
-       if (error) {
-        console.error("Error fetching user:", error);
-      } else {
-        console.log(data);
-        setuser(data.user);
-      }
-    };
-    fetchUser();
-   console.log(user);
-   
-  }, []);
+ 
   return (
     <div className='fixed inset-0 bg-custom-gradient flex items-center justify-center z-50"'>
       <div className=' bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2  relative'>

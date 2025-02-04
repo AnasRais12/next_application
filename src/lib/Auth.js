@@ -11,6 +11,17 @@ export const signInWithGoogle = async () => {
     }
 };
 
+export const signInWithFacebook = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+  });
+
+  if (error) {
+      console.error('Facebook Sign-In Error:', error.message);
+  } else {
+      console.log('Signed in with Facebook:', data);
+  }
+};
 
 export const getUser = async () => {
     // 🔹 Pehle session check karein
@@ -28,6 +39,8 @@ export const getUser = async () => {
       console.error('Error fetching user:', error.message);
       return null;
     }
+    console.log("Data",data);
+    
   
     return data.user;
   };

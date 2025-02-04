@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { signIn } from 'next-auth/react';
 import { signInWithGoogle } from '@/lib/Auth';
 import { RxCross2 } from "react-icons/rx";
+import { signInWithFacebook } from '@/lib/Auth';
 import { supabase } from '@/lib/supabase';
 import { ImGithub } from "react-icons/im";
 import { useRouter } from 'next/navigation';
@@ -227,7 +228,7 @@ function Register() {
                 <FcGoogle size={20} className="text-red-500" />
                 Google
               </button>
-              <button onClick={handleGithubLogin} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
+              <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
                 <ImGithub size={20} className="text-white" />
                 Facebook
               </button>

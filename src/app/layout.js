@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 import './globals.css';
+import { GlobalDetail } from '@/context/userProvider/userProvider';
 import { usePathname } from 'next/navigation';
 import UserProvider from '@/context/userProvider/userProvider';
 import { SessionProvider } from 'next-auth/react';
@@ -38,12 +39,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider store={store}>      
-        <UserProvider>
+        <GlobalDetail>
           <SessionProvider>
           {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
             {children}
           </SessionProvider>
-        </UserProvider>
+        </GlobalDetail>
         </Provider> 
       </body>
     </html>
