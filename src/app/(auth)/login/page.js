@@ -2,9 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup'
+import { BsFacebook } from "react-icons/bs";
+import { signInWithFacebook,signInWithGoogle } from '@/lib/Auth';
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import { yupResolver } from '@hookform/resolvers/yup'
+import { supabase } from '@/lib/supabase';
 import Swal from 'sweetalert2';
 import { FcGoogle } from "react-icons/fc";
 import { ImGithub } from "react-icons/im";
@@ -17,7 +20,11 @@ function Login() {
   const [googleLoading, setgoogleLoading] = useState(false);
 
   const LoginSchema = yup.object().shape({
-    username: yup.string().min(6, '6 Characters minimum ').required('Username is Required'),
+   email: yup.string()
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        'Invalid email format'
+      ).required(),
     password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is Required')
   })
 
@@ -44,68 +51,51 @@ function Login() {
     router.push('/forget_account');
   };
   const handleLoginSumbit = async (data) => {
-    const { username, password } = data;
-    // if (!storedUser) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     text: ' No user found, please register first!',
-    //   });
-    // }
+    const { email, password } = data;
+   
     setCredentialLoading(true)
     try {
-      const response = await signIn('credentials', {
-        redirect: false,
-        username,
-        password
-      })
-      console.log("SignIn Response:", response);
-      if (response?.error) {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
         Swal.fire({
           icon: 'error',
-          text: response.error,
+          text: `${error.message}`,
         });
-
-        reset()
+        console.log(error,"! ");
+        
+      } else {
+        const user = data.user;
+      
+        if (!user.email_confirmed_at) {
+          console.error('Login failed: Email not verified.');
+          Swal.fire({
+            icon: 'info',
+            text: `Email not verified`,
+          });
+        } else {
+          console.log('User logged in successfully:', user);
+          Swal.fire({
+            icon: 'success',
+            text: `User Login Sucessfully`,
+          });
+        }
       }
-      else {
-        Swal.fire({
-          icon: 'success',
-          text: `User Login Sucessfully`,
-        });
-        generateToken();
-        router.push('/home');
-        reset()
-      }
+    
     } catch (error) {
       Swal.fire({
         icon: 'error',
         text: 'Wrong Credentials',
       });
-      reset()
 
     }
     finally {
       setCredentialLoading(false)
+      reset()
     }
-
-    // else if (
-    //   data.username !== storedUser?.username ||
-    //   data.password !== storedUser?.password
-    // ) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     text: 'Wrong Credentials',
-    //   });
-    //   reset()
-    // } else {
-    //   Swal.fire({
-    //     icon: 'success',
-    //     text: `User Login Sucessfully`,
-    //   });
-    //   generateToken();
-    //   router.push('/home');
-    //   reset()
-    // }
   };
   const handleGoogleLogin = async () => {
     setgoogleLoading(true)
@@ -160,9 +150,9 @@ function Login() {
           <div className="mt-4">
             <form onSubmit={handleSubmit(handleLoginSumbit)}>
               <input
-                {...register('username')}
-                type="text"
-                placeholder="Username "
+                {...register('email')}
+                type="email"
+                placeholder="Enter Email "
                 className="w-full p-3 border-2 border-[#ccc] rounded-[10px]   bg-white b focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
               <input
@@ -191,14 +181,14 @@ function Login() {
           <div className="mt-4 text-center">
             <p className="text-black text-md">Or Login with</p>
             <div className="flex flex-col items-center justify-center gap-4 mt-2">
-              <button onClick={handleGoogleLogin} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
-                <FcGoogle size={20} className="text-red-500" />
-                Google
-              </button>
-              <button onClick={handleGithubLogin} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
-                <ImGithub size={20} className="text-white" />
-                Facebook
-              </button>
+             <button onClick={signInWithGoogle} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
+                             <FcGoogle size={20} className="text-red-500" />
+                             Google
+                           </button>
+                           <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
+                             <BsFacebook size={20} className="text-blue-500" />
+                             Facebook
+                           </button>
             </div>
             <p onClick={moveToRegister} className='text-left mt-2 cursor-pointer'>Not registered? <span className='text-unique'>Create account</span></p>
 

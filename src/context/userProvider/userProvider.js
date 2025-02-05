@@ -4,6 +4,8 @@ import { supabase } from '@/lib/supabase';
 const GlobalContext = createContext();
 export const GlobalDetail = ({ children }) =>  {
   const [user, setUser] = useState(null);
+  const [authField, setAuthfield] = useState({username:'',email:''});
+
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await supabase.auth.getUser();
@@ -20,7 +22,7 @@ export const GlobalDetail = ({ children }) =>  {
 
   return (
     <>
-      <GlobalContext.Provider value={{user,setUser }}>
+      <GlobalContext.Provider value={{user,setUser,setAuthfield,authField }}>
         {children}
       </GlobalContext.Provider>
     </>

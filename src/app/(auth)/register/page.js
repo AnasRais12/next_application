@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { ImCross } from 'react-icons/im';
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from 'next-auth/react';
+import { BsFacebook } from "react-icons/bs";
+
 import { signInWithGoogle } from '@/lib/Auth';
 import { RxCross2 } from "react-icons/rx";
 import { signInWithFacebook } from '@/lib/Auth';
@@ -15,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { FaArrowLeftLong } from 'react-icons/fa6';
-
+import { UserDetail } from '@/context/userProvider/userProvider';
 import CSpinner from '@/components/CSpinner';
 const schema = yup.object().shape({
   username: yup.string().min(6,"Username Must be 6 Character").required('Username is Required'),
@@ -32,6 +34,7 @@ function Register() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) })
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
+  const { setAuthfield,authField } = UserDetail();
   const [loading, setLoading] = useState(false);
   const [storedRegister, setstoredRegister] = useState(null);
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
@@ -43,42 +46,47 @@ function Register() {
       [name]: value,
     }));
   };
-
+  useEffect(() => {
+    console.log("Updated authField:", authField);
+  }, [authField]);
   const OnSumbithandler = async (data) => {
     setLoading(true);
     try {
-      // Check if username already exists
+      // Username check
       const { data: existingUserName } = await supabase
         .from('users')
         .select('*')
         .eq('username', data.username)
-        .limit(1); // Limit to 1 result only
+        .limit(1);
   
-      if (existingUserName.length > 0) {
+      if (existingUserName && existingUserName.length > 0) {
         Swal.fire({
           icon: "error",
           text: `Username Already Exists`
         });
-        return; // Stop execution if username exists
+        return;
       }
-  
-      // Check if email already exists
+      setAuthfield((prev)=>({...prev,email:data.email,username:data.username}))
+      console.log("authField",authField);
+      
+      
+      // Email check
       const { data: existingEmail } = await supabase
         .from('users')
         .select('*')
         .eq('email', data.email)
-        .limit(1); // Limit to 1 result only
+        .limit(1);
   
-      if (existingEmail.length > 0) {
+      if (existingEmail && existingEmail.length > 0) {
         Swal.fire({
           icon: "error",
           text: `Email Already Exists`
         });
-        return; // Stop execution if email exists
+        return;
       }
   
-      // If no errors, proceed with signup
-      const { user, error: authError } = await supabase.auth.signUp({
+      // Signup user
+      const { data: signUpData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password
       });
@@ -90,24 +98,34 @@ function Register() {
         });
         return;
       }
+      console.log("signUpData!",signUpData)
   
-      // Insert new user into the 'users' table
-      const { data: newUser, error: insertError } = await supabase
+      // Insert into 'users' table
+      const { error: insertError } = await supabase
         .from('users')
-        .insert([{...data }]);
+        .insert([
+          {
+            username: data.username,
+            email: data.email,
+            password:data.password
+          }
+        ]);
   
       if (insertError) {
         Swal.fire({
           icon: "error",
           text: insertError.message
         });
-      } else {
-        Swal.fire({
-          icon: "success",
-          text: `User Registered Successfully!`
-        });
-        // Redirect or perform other actions
+        return;
       }
+  
+      // Success message and redirect
+      Swal.fire({
+        icon: "success",
+        text: `User Registered Successfully!`
+      }).then(() => {
+        router.push('/verifyaccount');
+      });
   
     } catch (error) {
       Swal.fire({
@@ -116,9 +134,11 @@ function Register() {
       });
     } finally {
       setLoading(false);
-      reset(); // Reset the form
+      reset();
     }
   };
+
+  
   const handleGoogleLogin = async () => {
     setgoogleLoading(true)
     try {
@@ -222,7 +242,7 @@ function Register() {
                 Google
               </button>
               <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
-                <ImGithub size={20} className="text-white" />
+                <BsFacebook size={20} className="text-blue-500" />
                 Facebook
               </button>
             </div>
