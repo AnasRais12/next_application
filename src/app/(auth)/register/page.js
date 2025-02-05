@@ -36,12 +36,6 @@ function Register() {
   const [storedRegister, setstoredRegister] = useState(null);
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
   const [input, setinput] = useState({ username: '', email: '', password: '' });
-
-  useEffect(() => {
-    if (registerUser) {
-      setstoredRegister(JSON.parse(registerUser));
-    }
-  }, [registerUser]);
   const handleInput = (e) => {
     const { name, value } = e.target;
     setinput((prev) => ({
