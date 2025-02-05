@@ -36,7 +36,6 @@ function Register() {
   const [storedRegister, setstoredRegister] = useState(null);
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
   const [input, setinput] = useState({ username: '', email: '', password: '' });
-  const registerUser = localStorage.getItem('User');
 
   useEffect(() => {
     if (registerUser) {
@@ -101,7 +100,7 @@ function Register() {
       // Insert new user into the 'users' table
       const { data: newUser, error: insertError } = await supabase
         .from('users')
-        .insert([{ username: data.username, email: data.email }]);
+        .insert([{...data }]);
   
       if (insertError) {
         Swal.fire({

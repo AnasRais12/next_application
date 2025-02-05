@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 function page() {
   const router = useRouter();
   const [verifyCode, setverifyCode] = useState('');
-  const UserCode = localStorage.getItem('Send-Code');
   const handleVerifySumbit = (e) => {
     e.preventDefault();
     if (!verifyCode) {
@@ -20,7 +19,6 @@ function page() {
         icon: 'success',
         text: 'Verification Successful!',
       });
-      localStorage.removeItem('Send-Code');
       router.push('/changePassword');
     } else {
       Swal.fire({
