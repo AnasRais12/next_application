@@ -48,6 +48,8 @@ function Register() {
   };
   useEffect(() => {
     console.log("Updated authField:", authField);
+    console.log("Updated Field:", authField);
+
   }, [authField]);
   const OnSumbithandler = async (data) => {
     setLoading(true);
