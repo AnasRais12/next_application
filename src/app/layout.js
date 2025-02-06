@@ -4,9 +4,8 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 import './globals.css';
-import { GlobalDetail } from '@/context/userProvider/userProvider';
+import { GlobalProvider } from '@/context/globalprovider/globalProvider';
 import { usePathname } from 'next/navigation';
-import UserProvider from '@/context/userProvider/userProvider';
 import { SessionProvider } from 'next-auth/react';
 
 const geistSans = localFont({
@@ -30,7 +29,7 @@ export default function RootLayout({ children }) {
   const pathName = usePathname()
   const isLoginPage = pathName === '/login';
   const isRegisterPage = pathName === '/register';
-  const isForgetPage = pathName === '/forget_account';
+  const isForgetPage = pathName === '/verifyaccount';
 
 
   return (
@@ -39,12 +38,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider store={store}>      
-        <GlobalDetail>
+        <GlobalProvider>
           <SessionProvider>
           {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
             {children}
           </SessionProvider>
-        </GlobalDetail>
+        </GlobalProvider>
         </Provider> 
       </body>
     </html>

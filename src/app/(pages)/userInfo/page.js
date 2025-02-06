@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import withAuth from '@/utils/withAuth'
+import ProtectedRoute from '@/utils/ProtectedRoute'
 
 function page({ username }) {
   return (
@@ -13,4 +13,4 @@ function page({ username }) {
   )
 }
 
-export default withAuth(page)
+export default ProtectedRoute(page)

@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { FaArrowLeftLong } from 'react-icons/fa6';
-import { UserDetail } from '@/context/userProvider/userProvider';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import CSpinner from '@/components/CSpinner';
 const schema = yup.object().shape({
   username: yup.string().min(6,"Username Must be 6 Character").required('Username is Required'),
@@ -34,7 +34,7 @@ function Register() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) })
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
-  const { setAuthfield,authField } = UserDetail();
+  const { setAuthfield,authField } = GlobalDetails();
   const [loading, setLoading] = useState(false);
   const [storedRegister, setstoredRegister] = useState(null);
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
@@ -46,19 +46,16 @@ function Register() {
       [name]: value,
     }));
   };
-  useEffect(() => {
-    console.log("Updated authField:", authField);
-    console.log("Updated Field:", authField);
-
-  }, [authField]);
+  
   const OnSumbithandler = async (data) => {
+    const { email, password,username } = data;
     setLoading(true);
     try {
       // Username check
       const { data: existingUserName } = await supabase
         .from('users')
         .select('*')
-        .eq('username', data.username)
+        .eq('username', username)
         .limit(1);
   
       if (existingUserName && existingUserName.length > 0) {
@@ -68,7 +65,7 @@ function Register() {
         });
         return;
       }
-      setAuthfield((prev)=>({...prev,email:data.email,username:data.username}))
+     
       console.log("authField",authField);
       
       
@@ -76,7 +73,7 @@ function Register() {
       const { data: existingEmail } = await supabase
         .from('users')
         .select('*')
-        .eq('email', data.email)
+        .eq('email', email)
         .limit(1);
   
       if (existingEmail && existingEmail.length > 0) {
@@ -89,8 +86,8 @@ function Register() {
   
       // Signup user
       const { data: signUpData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password
+        email: email,
+        password: password
       });
   
       if (authError) {
@@ -101,15 +98,16 @@ function Register() {
         return;
       }
       console.log("signUpData!",signUpData)
-  
+      setAuthfield((prev)=>({...prev,email:signUpData?.user?.email,username:username}))
+      localStorage.setItem('AuthFieldVerifyPage',JSON.stringify(authField))
       // Insert into 'users' table
-      const { error: insertError } = await supabase
+      const { data:SignIn ,error: insertError } = await supabase
         .from('users')
         .insert([
           {
-            username: data.username,
-            email: data.email,
-            password:data.password
+            username: username,
+            email: email,
+            password:password
           }
         ]);
   
@@ -120,8 +118,7 @@ function Register() {
         });
         return;
       }
-  
-      // Success message and redirect
+      console.log(SignIn,"SignIn")
       Swal.fire({
         icon: "success",
         text: `User Registered Successfully!`

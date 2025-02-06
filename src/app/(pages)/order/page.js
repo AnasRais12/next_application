@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import withAuth from '@/utils/withAuth'
+import ProtectedRoute from '@/utils/ProtectedRoute'
 function page({username}) {
   return (
     <div className='bg-black text-white lg:text-[10vw] text-[20vw] h-screen flex flex-col gap-10 justify-center font-bold items-center '>
@@ -11,4 +11,4 @@ function page({username}) {
 </div>
   )
 }
-export default withAuth(page)
+export default ProtectedRoute(page)

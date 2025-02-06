@@ -3,24 +3,44 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup'
 import { BsFacebook } from "react-icons/bs";
-import { signInWithFacebook,signInWithGoogle } from '@/lib/Auth';
+import { signInWithFacebook, signInWithGoogle } from '@/lib/Auth';
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import { yupResolver } from '@hookform/resolvers/yup'
+import Cookies from 'js-cookie';
 import { supabase } from '@/lib/supabase';
 import Swal from 'sweetalert2';
 import { FcGoogle } from "react-icons/fc";
 import { ImGithub } from "react-icons/im";
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
+import UserExist from '@/utils/UserExist/UserExist';
 function Login() {
+
+  // useEffect(() => {
+  //     // Listen for session changes (login/logout)
+  //     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+  //       setSession(session);
+  //       console.log("Utils Session",session);
+
+
+  //       // Store the updated session in cookies when state changes
+  //       if (session) {
+  //         Cookies.set('session', JSON.stringify(session), { expires: 1 });  // Set session cookie
+  //       } else {
+  //         // Remove the session cookie if logged out
+  //         Cookies.remove('session');
+  //       }
+  //     });
+
+  //   }, []);
 
   const [credentialLoading, setCredentialLoading] = useState(false); // For credential login loading
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
 
   const LoginSchema = yup.object().shape({
-   email: yup.string()
+    email: yup.string()
       .matches(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         'Invalid email format'
@@ -31,16 +51,7 @@ function Login() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(LoginSchema)
   })
-  const [storedUser, setstoredUser] = useState(null);
-  const createToken = uuidv4();
-  const router = useRouter();
-  useEffect(() => {
-    const User = localStorage.getItem('User');
-    if (User) {
-      setstoredUser(JSON.parse(User));
-    }
-  }, []);
-
+ 
   const generateToken = () => {
     localStorage.setItem('User-Token', createToken);
   };
@@ -52,25 +63,26 @@ function Login() {
   };
   const handleLoginSumbit = async (data) => {
     const { email, password } = data;
-   
+
     setCredentialLoading(true)
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      
+
       if (error) {
         Swal.fire({
           icon: 'error',
-          text: `${error.message}`,
+          text: `${error.message === 'Email not confirmed' ? 'Email not verified' : error.message}`
         });
-        console.log(error,"! ");
-        
+        console.log(error, "! ");
+
       } else {
         const user = data.user;
-      
-        if (!user.email_confirmed_at) {
+        console.log("Data is Here ", data)
+
+        if (!user) {
           console.error('Login failed: Email not verified.');
           Swal.fire({
             icon: 'info',
@@ -82,9 +94,15 @@ function Login() {
             icon: 'success',
             text: `User Login Sucessfully`,
           });
+          if (data.session || data.user) {
+            Cookies.set('sb-access-token', data.session.access_token, { expires: 7, secure: true });
+            Cookies.set('sb-refresh-token', data.session.refresh_token, { expires: 7, secure: true });
+            localStorage.setItem('sb-user', JSON.stringify(data.user));
+          }
+
         }
       }
-    
+
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -181,14 +199,14 @@ function Login() {
           <div className="mt-4 text-center">
             <p className="text-black text-md">Or Login with</p>
             <div className="flex flex-col items-center justify-center gap-4 mt-2">
-             <button onClick={signInWithGoogle} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
-                             <FcGoogle size={20} className="text-red-500" />
-                             Google
-                           </button>
-                           <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
-                             <BsFacebook size={20} className="text-blue-500" />
-                             Facebook
-                           </button>
+              <button onClick={signInWithGoogle} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
+                <FcGoogle size={20} className="text-red-500" />
+                Google
+              </button>
+              <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
+                <BsFacebook size={20} className="text-blue-500" />
+                Facebook
+              </button>
             </div>
             <p onClick={moveToRegister} className='text-left mt-2 cursor-pointer'>Not registered? <span className='text-unique'>Create account</span></p>
 

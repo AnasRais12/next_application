@@ -2,24 +2,10 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 const GlobalContext = createContext();
-export const GlobalDetail = ({ children }) =>  {
+export const GlobalProvider = ({ children }) =>  {
   const [user, setUser] = useState(null);
   const [authField, setAuthfield] = useState({username:'',email:''});
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error("Error fetching user:", error);
-      } else {
-        console.log(data);
-        setUser(data.user);
-      }
-    };
-    fetchUser();
-  }, []);
-
-
+  
   return (
     <>
       <GlobalContext.Provider value={{user,setUser,setAuthfield,authField }}>
@@ -30,6 +16,6 @@ export const GlobalDetail = ({ children }) =>  {
 }
 
 
-export const UserDetail = () => {
+export const GlobalDetails = () => {
   return useContext(GlobalContext);
 };

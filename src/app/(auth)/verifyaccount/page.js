@@ -1,20 +1,64 @@
 'use client';
 import React, { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 function page() {
-  const [user, setuser] = useState(null);
- 
-  return (
-    <div className='fixed inset-0 bg-custom-gradient flex items-center justify-center z-50"'>
-      <div className=' bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2  relative'>
-       <h1>Check Your Email</h1>
-      <p>We have sent a verification link to your email address. Please check your inbox and verify your email.</p>
-    </div>
-    </div>
+  const [userInfo, setUserInfo] = useState(null);
+  const router = useRouter()
+  useEffect(() => {
+    const storedData = localStorage.getItem('AuthFIeldForVerifyPage');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        setUserInfo(parsedData); 
+      } catch (error) {
+        console.error('Error parsing localStorage data:', error);
+      }
+    } 
+  }, []);
 
-  )
+  
+  
+  return (
+    <div className="flex items-center justify-center h-screen bg-custom-gradient ">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center">
+        <div className="flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mx-auto mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-8 h-8 text-purple-600"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21.75 12.75v4.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25v-4.5m19.5 0V9.75m0 3l-9-6.75m9 6.75L12 19.5m9-9.75L12 4.5m0 15L2.25 12.75M12 19.5l9-6.75M12 4.5L3 11.25m0 3.75v4.5a2.25 2.25 0 002.25 2.25h15a2.25 2.25 0 002.25-2.25v-4.5"
+            />
+          </svg>
+        </div>
+
+        <h1 className="text-2xl font-semibold mb-2">Verify your email address</h1>
+        <p className="text-1xl font-semibold text-gray-600 mb-2"> Hello <span className='text-black'>{userInfo?.username}</span>.</p>
+        <p className="text-gray-600 mb-6">
+          We have sent a verification link to <strong className='text-black'>{userInfo?.email}</strong>.
+          <br />Click on the link to complete the verification process.
+          <br />You might need to check your spam folder.
+        </p>
+        <div className="flex justify-center gap-4">
+          <button onClick={()=> router.push('/login')} className="bg-purple-600 w-full text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700">
+            Sign In
+          </button>
+          
+        </div>
+       
+      </div>
+    </div>
+  );
 }
 
+
+ 
 export default page
 
 

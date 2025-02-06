@@ -2,21 +2,43 @@
 import React, { useEffect, useState } from 'react';
 import { getUser } from '@/lib/Auth';
 import { supabase } from '@/lib/supabase';
-import withAuth from '@/utils/withAuth';
 import Header from '@/components/LibaryComponent/FlowbiteComponent/Header';
 import E_commerceCard from '@/components/LibaryComponent/FlowbiteComponent/E-commerceCard';
 import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import useSession from '@/utils/UserExist/GetSession';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import { UserDetail } from '@/context/userProvider/userProvider';
 
 function page() {
   const router = useRouter();
-  const { user } = UserDetail();
   const [Loading, setLoading] = useState(false);
   const cart = useSelector((state => state?.cartItem?.cart) || "")
   const dispatch = useDispatch()
-  console.log("Details Is User",user)
+  
+  const [session, setSession] = useState(null);
+
+  // useEffect(() => {
+  //   // Get the current session
+  //   const fetchSession = async () => {
+  //     const { data: currentSession } = await supabase.auth.getSession();
+  //     setSession(currentSession);
+  //   };
+
+  //   fetchSession();
+
+  //   // Listen for session changes (e.g., login/logout)
+  //   const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+  //     setSession(session);
+  //   });
+
+  //   return () => {
+  //     authListener.unsubscribe();
+  //   };
+  // }, []);
+
+  console.log("session",useSession())
+
+ 
 //  useEffect(() => {
 //   const fetchUser = async () => {
 //     const {data,error} = await supabase.auth.getUser()
@@ -31,9 +53,27 @@ function page() {
 //  console.log(user);
  
 // }, []);
+const handleLogout = async () => {
+  try {
+      // Manually sign out the user (removes session from Supabase)
+      await supabase.auth.signOut();
+      // Manually clear session cookie
+      
+      // Redirect to login page after logout
+  } catch (error) {
+      console.error("Error during logout:", error);
+  }
+};
+
    
   return (
     <>
+        <button className='bg-black py-4 px-6 text-white' onClick={handleLogout}>
+            Logout
+        </button>
+      <div>
+      {/* <h1>Welcome, {session.user?.email}</h1> */}
+    </div>
     <div className='w-full  '>
        <Header/>
         <E_commerceCard/>
