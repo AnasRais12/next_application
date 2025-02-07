@@ -5,7 +5,7 @@ function page() {
   const [userInfo, setUserInfo] = useState(null);
   const router = useRouter()
   useEffect(() => {
-    const storedData = localStorage.getItem('AuthFIeldForVerifyPage');
+    const storedData = localStorage.getItem('AuthFieldVerifyPage');
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
@@ -20,7 +20,7 @@ function page() {
   
   return (
     <div className="flex items-center justify-center h-screen bg-custom-gradient ">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-[90%] sm:w-96 text-center">
         <div className="flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mx-auto mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"

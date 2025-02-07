@@ -98,8 +98,11 @@ function Register() {
         return;
       }
       console.log("signUpData!",signUpData)
-      setAuthfield((prev)=>({...prev,email:signUpData?.user?.email,username:username}))
-      localStorage.setItem('AuthFieldVerifyPage',JSON.stringify(authField))
+      setAuthfield((prev) => {
+        const updatedAuthField = { ...prev, email: signUpData?.user?.email, username: username };
+        localStorage.setItem("AuthFieldVerifyPage", JSON.stringify(updatedAuthField));
+        return updatedAuthField;
+      });
       // Insert into 'users' table
       const { data:SignIn ,error: insertError } = await supabase
         .from('users')

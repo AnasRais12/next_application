@@ -14,26 +14,9 @@ import { FcGoogle } from "react-icons/fc";
 import { ImGithub } from "react-icons/im";
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
-import UserExist from '@/utils/UserExist/UserExist';
 function Login() {
 
-  // useEffect(() => {
-  //     // Listen for session changes (login/logout)
-  //     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-  //       setSession(session);
-  //       console.log("Utils Session",session);
-
-
-  //       // Store the updated session in cookies when state changes
-  //       if (session) {
-  //         Cookies.set('session', JSON.stringify(session), { expires: 1 });  // Set session cookie
-  //       } else {
-  //         // Remove the session cookie if logged out
-  //         Cookies.remove('session');
-  //       }
-  //     });
-
-  //   }, []);
+ const router = useRouter()
 
   const [credentialLoading, setCredentialLoading] = useState(false); // For credential login loading
   const [githubLoading, setGithubLoading] = useState(false);
@@ -59,7 +42,7 @@ function Login() {
     router.push('/register');
   };
   const moveToForgetAccount = (e) => {
-    router.push('/forget_account');
+    router.push('/forgetaccount');
   };
   const handleLoginSumbit = async (data) => {
     const { email, password } = data;
@@ -94,11 +77,13 @@ function Login() {
             icon: 'success',
             text: `User Login Sucessfully`,
           });
+          
           if (data.session || data.user) {
             Cookies.set('sb-access-token', data.session.access_token, { expires: 7, secure: true });
             Cookies.set('sb-refresh-token', data.session.refresh_token, { expires: 7, secure: true });
             localStorage.setItem('sb-user', JSON.stringify(data.user));
           }
+          router.push('/home')
 
         }
       }
