@@ -1,9 +1,14 @@
 'use client'
 import { useEffect, useState } from "react";
 import { useSession } from 'next-auth/react'
+import { GlobalDetails } from "@/context/globalprovider/globalProvider";
+import { useRouter } from "next/navigation";
 import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogIn } from "react-icons/fi";
 export default function Navbar() {
+  const router = useRouter()
   const [click, setclick] = useState(false);
+  const {user} = GlobalDetails()
+  console.log("Mai hu USER", user?.email?.slice(0, 2).toUpperCase().split("").join(" "));
   const {data } = useSession()
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -42,8 +47,8 @@ export default function Navbar() {
                 3
               </span>
             </button>
-            <button className={`px-2 py-1 rounded-[10px]  text-white`}>
-              {data?  <FiUser className="text-2xl text-gray-700 hover:text-orange-600" />  :  <FiLogIn className="text-2xl text-gray-700 hover:text-orange-600"/> }
+            <button className={`px-2 ml-2 py-2 text-[14px] rounded-full bg-orange-600 text-white`}>
+              {user?   user?.email?.slice(0, 2).toUpperCase() :  <FiLogIn onClick={()=> router.push('/login')} className="text-2xl text-gray-700 hover:text-orange-600"/> }
             </button>
             {/* Search bar Div */} 
             {click? (
