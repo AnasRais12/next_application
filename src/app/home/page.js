@@ -68,9 +68,7 @@ const handleLogout = async () => {
    
   return (
     <>
-        <button className='bg-black py-4 px-6 text-white' onClick={handleLogout}>
-            Logout
-        </button>
+       
       <div>
       {/* <h1>Welcome, {session.user?.email}</h1> */}
     </div>
