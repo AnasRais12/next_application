@@ -11,13 +11,13 @@ import Cookies from 'js-cookie';
 import { supabase } from '@/lib/supabase';
 import Swal from 'sweetalert2';
 import { FcGoogle } from "react-icons/fc";
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { ImGithub } from "react-icons/im";
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
 function Login() {
-
- const router = useRouter()
-
+  const { setUser } = GlobalDetails()
+  const router = useRouter()
   const [credentialLoading, setCredentialLoading] = useState(false); // For credential login loading
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
@@ -34,10 +34,8 @@ function Login() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(LoginSchema)
   })
- 
-  const generateToken = () => {
-    localStorage.setItem('User-Token', createToken);
-  };
+
+
   const moveToRegister = (e) => {
     router.push('/register');
   };
@@ -73,16 +71,16 @@ function Login() {
           });
         } else {
           console.log('User logged in successfully:', user);
-          Swal.fire({
-            icon: 'success',
-            text: `User Login Sucessfully`,
-          });
-          
           if (data.session || data.user) {
             Cookies.set('sb-access-token', data.session.access_token, { expires: 7, secure: true });
             Cookies.set('sb-refresh-token', data.session.refresh_token, { expires: 7, secure: true });
             localStorage.setItem('sb-user', JSON.stringify(data.user));
           }
+          setUser(data?.user)
+          Swal.fire({
+            icon: 'success',
+            text: `User Login Sucessfully`,
+          });
           router.push('/home')
 
         }
