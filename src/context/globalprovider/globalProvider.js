@@ -3,13 +3,15 @@ import React, { useContext, createContext, useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) =>  {
-  const UserInfo = localStorage.getItem('sb-user');
-  const [user, setUser] = useState(UserInfo ? JSON.parse(UserInfo) : null);
+  const [user, setUser] = useState(null);
   const [authField, setAuthfield] = useState({username:'',email:''});
   useEffect(() => {
-   if(UserInfo){
-    setUser(JSON.parse(UserInfo));
-   }
+    if (typeof window !== "undefined") { 
+      const UserInfo = localStorage.getItem('sb-user');
+      if (UserInfo) {
+        setUser(JSON.parse(UserInfo));
+      }
+    }
   }, []);
   return (
     <>

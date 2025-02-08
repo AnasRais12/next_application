@@ -1,6 +1,6 @@
 'use client'
-import withAuth from '@/utils/withAuth'
 import { useDispatch,useSelector } from 'react-redux'
+import ProtectedRoute from '@/utils/ProtectedRoute'
 import React from 'react'
 function page() {
   const dispatch = useDispatch()
@@ -428,4 +428,4 @@ function page() {
   )
 }
 
-export default withAuth(page)
+export default ProtectedRoute(page)
