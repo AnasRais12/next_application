@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useSession } from 'next-auth/react'
 import { RxCross2 } from "react-icons/rx";
+import useSession from "@/utils/UserExist/GetSession";
 import { getUser } from "@/lib/Auth";
 import { motion } from "framer-motion";
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
@@ -10,9 +10,12 @@ import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogIn } from "react-ic
 export default function Navbar() {
 
   const router = useRouter()
+
   const [searchBar, setSearchBar] = useState(false);
   const { user } = GlobalDetails()
+  const userss = useSession()
   const [query, setQuery] = useState("");
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +23,8 @@ export default function Navbar() {
   const DropdownMenu = user
     ? ["Dashboard", "Settings", "Orders",]
     : ["Login"];
-
+ console.log("Itemss1 ",userss);
+ 
   return (
     <nav className="bg-white shadow-md relative">
       <div className="max-w-7xl mx-auto sm:px-6 px-4 lg:px-8">

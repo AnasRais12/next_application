@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup'
 import { BsFacebook } from "react-icons/bs";
 import { signInWithFacebook, signInWithGoogle } from '@/lib/Auth';
@@ -12,7 +11,6 @@ import { supabase } from '@/lib/supabase';
 import Swal from 'sweetalert2';
 import { FcGoogle } from "react-icons/fc";
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
-import { ImGithub } from "react-icons/im";
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
 function Login() {
