@@ -8,7 +8,7 @@ import { IoLogOut } from "react-icons/io5";
 const SettingsPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {user} = GlobalDetails()
- console.log(user,"_____________-")
+ console.log("!!!!!!_____________-",user)
   return (
 <div className="flex min-h-screen bg-gray-50">
       {/* Mobile Menu Button */}
@@ -33,7 +33,7 @@ const SettingsPage = () => {
 
         <div className=" sm:mt-0 mt-10  mb-6">
           <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full  flex items-center justify-center text-xl font-bold">
-            IT
+            {user?.email?.charAt(0)?.toUpperCase()}
           </div>
           <h2 className="mt-2 font-semibold text-lg">{user?.user_metadata?.full_name || user?.email?.split("@")[0]}</h2>
           <p className="text-sm text-gray-300">{user?.email }</p>
@@ -55,13 +55,14 @@ const SettingsPage = () => {
       <main className="flex-1 p-6">
         <h1 className="text-xl font-semibold mb-4 text-gray-800">Personal Information</h1>
         <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>
+        <h1 className="text-xl font-semibold text-center mb-4 text-gray-800">Hello {user?.user_metadata?.full_name || user?.email?.split("@")[0]}</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-orange-600">
+          <div className="bg-white-500 px-2 py-2 rounded-lg shadow-md border-l-4 border-orange-600">
             <h2 className="font-semibold text-gray-700">Name</h2>
             <p className="text-gray-500">{user?.user_metadata?.full_name || user?.email?.split("@")[0]}</p>
           </div>
-          <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-orange-600">
+          <div className="bg-white px-2 py-2 rounded-lg shadow-md border-l-4 border-orange-600">
             <h2 className="font-semibold text-gray-700">Date of Birth</h2>
             <p className="text-gray-500">07 July 1993</p>
           </div>
