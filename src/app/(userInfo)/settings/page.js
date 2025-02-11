@@ -1,7 +1,10 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
+import { supabase } from "@/lib/supabase";
+
 import UserQuery from "@/DbQuery/UserQuery";
+import PhoneNumberModal from "@/components/LibaryComponent/FlowbiteComponent/EditNumber";
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
 import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogIn } from "react-icons/fi";
 import { IoLogOut } from "react-icons/io5";
@@ -9,16 +12,65 @@ import { IoLogOut } from "react-icons/io5";
 const SettingsPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [userQuerydata, setuserQuerydata] = useState(false);
+  const [changeNameModal, setChangeNameModal] = useState(false);
+  const [loading, setloading] = useState(false);
 
+  const [PhoneNumber, setPhoneNumber] = useState(false);
+  const [newName, setNewName] = useState(""); // To hold new name input
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [changepasswordModal, setchangepasswordModal] = useState(false);
   const { user } = GlobalDetails()
-  const  {speicifcUser}  = UserQuery()
-console.log("quetasassssssssssssssss",speicifcUser);
+  const { speicifcUser, updateUserDetails } = UserQuery();
+  console.log("quetasassssssssssssssss", speicifcUser);
 
-   
+
+  const handleNameChange = async () => {
+    try {
+      setloading(true)
+      const { data, error } = await supabase
+        .from('users') // Adjust this table name according to your schema
+        .update({ username: newName })
+        .eq('id', speicifcUser?.id).
+        select();// Assuming `user.id` is the logged-in user's ID
+      console.log("uadsddddddddddddddDataa",data);
+      
+      if (error) {
+        console.log("Error updating name: ", error.message);
+      } else {
+        console.log("User's name updated successfully:", data);
+        setChangeNameModal(false); // Close modal on success
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    finally{
+      setloading(false)
+    }
+  };
+
+
+
+
+ 
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Mobile Menu Button */}
+      {changeNameModal || PhoneNumber ?
+        <PhoneNumberModal
+          setChangeNameModal={setChangeNameModal}
+          loading={loading}
+          setNewName={setNewName}
+          handleNameChange={handleNameChange}
+          setNewPhoneNumber={setNewPhoneNumber}
+          setPhoneNumber={setPhoneNumber}
+          changeNameModal={changeNameModal}
+          type={`${changeNameModal? 'text' : 'number'}`}
+          plaecholder={`${changeNameModal? 'Enter Name' : 'Enter PhoneNumber'}`}
+          PhoneNumber={PhoneNumber}
+          heading={`${changeNameModal ? 'Change Name' : 'Phone Number'}`}
+
+        /> : ''}
       <button
         className="md:hidden p-3 m-4 justify-start items-start flex bg-orange-600 text-white rounded-lg shadow-lg"
 
@@ -59,6 +111,7 @@ console.log("quetasassssssssssssssss",speicifcUser);
       </aside>
 
       {/* Main Content */}
+
       <main className="flex-1 p-6">
         <h1 className="text-xl font-semibold mb-2 text-gray-800">Personal Information</h1>
         <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>
@@ -78,7 +131,7 @@ console.log("quetasassssssssssssssss",speicifcUser);
               <p className="text-gray-500">{user?.user_metadata?.full_name || speicifcUser?.username}</p>
 
             </div>
-            <FaEdit className="text-[25px] text-green-500" />
+            <FaEdit onClick={() => setChangeNameModal(true)} className="text-[25px] text-green-500" />
 
           </div>
 
@@ -90,7 +143,7 @@ console.log("quetasassssssssssssssss",speicifcUser);
 
             </div>
 
-            <FaEdit className="text-[25px] text-green-500" />
+            <FaEdit onClick={() => setPhoneNumber(true)} className="text-[25px] text-green-500" />
           </div>
           <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-orange-600 justify-between  ">
             <div className="  flex  flex-col gap-1 ">
