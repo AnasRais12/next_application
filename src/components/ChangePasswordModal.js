@@ -1,137 +1,130 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import { getUser } from '@/lib/Auth';
+import { useForm } from "react-hook-form";
+import UserQuery from "@/DbQuery/UserQuery";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { supabase } from "@/lib/supabase";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import { BsFillCaretUpSquareFill } from "react-icons/bs";
+const passwordSchema = yup.object().shape({
+  currentPassword: yup.string().required("Current password is required"),
+  newPassword: yup.string().min(8, "New password must be at least 8 characters").required("New password is required"),
+  confirmPassword: yup.string()
+    .oneOf([yup.ref("newPassword"), null], "Passwords must match")
+    .required("Confirm password is required"),
+});
 
-const ChangePasswordValidation = yup.object().shape({
-  oldpassoword: yup.string().min(8, 'Password must be at least 8 characters').required('Password is Required'),
-    password:  yup.string().min(8, 'New Password must be at least 8 characters').required('Password is Required'),
-    confirm: yup.string().min(8, ' Confirm Password must be at least 8 characters').required('Password is Required'),
-
-}) 
-
-function ChangePasswordModal({ setChangePasswordModal }) {
+function ChangePassword({setchangepasswordModal}) {
+  const [user, setUser] = useState(null);
+  const {speicifcUser,updateUserDetails} = UserQuery()
+ console.log(
+  speicifcUser,"from change password"
+ );
+ 
+  
   const router = useRouter();
-  const {register,handleSubmit,reset,formState:{errors}} =  useForm({resolver:yupResolver(ChangePasswordValidation)})
-  const [userInfo, setUserInfo] = useState(null);
-  const userToken = localStorage.getItem('User-Token');
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(passwordSchema) });
+  const [loading, setLoading] = useState(false);
+  const handleConfirmPassword = async (data) => {
+    try {
+      setLoading(true);
+      const { currentPassword, newPassword, confirmPassword } = data;
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: speicifcUser?.email,
+        password: currentPassword,
+      });
 
-  useEffect(() => {
-    const User = localStorage.getItem('User');
+      if (signInError) {
+        Swal.fire({ icon: "error", text: "Current Password is incorrect!" });
+        setLoading(false);
+        return;
+      }
 
-    if (User) {
-      setUserInfo(JSON.parse(User));
+      // Step 4: Update Password in Supabase
+      const {data:UpdateUser, error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if(UpdateUser){
+        const updatedFields = { password: newPassword };
+        await updateUserDetails(updatedFields);
+        Swal.fire({ icon: "success", text: "Password changed successfully!" });
+      }
+      if (updateError) {
+        Swal.fire({ icon: "error", text: updateError.message });
+      } 
+    } catch (error) {
+      Swal.fire({ icon: "error", text: error.message });
+    } finally {
+      setLoading(false);
     }
-  }, []);
-
-  const MoveToForgetAccount = () => {
-    router.push('/forget_account');
   };
-
-  const handleChangingSumbit = (data) => {
-   if (data.oldpassoword !== userInfo.password) {
-      Swal.fire({
-        icon: 'info',
-        text: 'Wrong Password',
-      });
-    } else if (data.password !== data.confirm) {
-      Swal.fire({
-        icon: 'info',
-        text: 'Passwords do not match!',
-      });
+  const handleNameChange = async () => {
+    if (newName) {
+      const updatedFields = { username: newName };
+      await updateUserDetails(updatedFields);
+      setChangeNameModal(false)
     } else {
-      Swal.fire({
-        icon: 'success',
-        text: 'Password Saved Successfully!',
-      });
-      reset()
-      if (userInfo) {
-        userInfo.password = data.confirm;
-        localStorage.setItem('User', JSON.stringify(userInfo));
-      }
-      if (userToken) {
-        router.push('/home');
-        setChangePasswordModal(false);
-      } else {
-        router.push('/login');
-      }
+      console.log("Name is unchanged or invalid.");
     }
   };
 
   return (
-    <div>
-      <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
-        <div className=" w-full h-full sm:max-h-fit relative sm:w-[70vw]  md:w-[60vw] lg:w-[60vw] xl:w-[50vw] py-5 rounded-md shadow-2xl ">
-          <div className="sm:pt-10 pt-0 px-6 sm:px-10">
-            <div
-              className=" 
-            sm:gap-0 gap-2  sm:flex-row flex justify-between items-start sm:items-center flex-col-reverse "
-            >
-              <h2 className="text-[24px] sm:text-[30px] xl:text-[36px] font-normal">
-                Change Password
-              </h2>
+    <>
+    <div
+    className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center `}>
+    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <div className="flex justify-between px-2">
+    <h2 className="text-xl font-bold mb-4">Change Password</h2>
+    <h2 onClick={() => setchangepasswordModal(false)} className="text-xl font-bold mb-4">X</h2>
 
-              <button onClick={()=>setChangePasswordModal(false)} className='px-4 rounded-[10px] py-1 bg-red-300 text-[20px] '>
-                    Close
-              </button>
-            </div>
-          </div>
-          <form onSubmit={handleSubmit(handleChangingSumbit)} className="sm:mt-8 mt-4 px-1">
-            <div className="px-6 sm:px-10 flex flex-col gap-10">
-              <input
-              {...register('oldpassoword')}
-                type="password"
-                placeholder="Enter Your Password"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors?.oldpassoword?.message}</p>
-
-
-              <input
-              {...register('password')}
-                type="password"
-                placeholder="Enter Your New Password"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors?.password?.message}</p>
-
-              <input
-              {...register('confirm')}
-                type="password"
-                name="confirm"
-                placeholder="Enter Your Confirm Password"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors?.confirm?.message}</p>
-            </div>
-            <div className="w-full flex justify-center  mt-8    items-center py-2 border-t-2">
-              <div className="flex flex-col gap-3 w-[90%]">
-                <button
-                  type="submit"
-                  className="w-full px-3 py-2 rounded-[8px] text-[20px] bg-green-900 text-white my-[10px]"
-                >
-                  {' '}
-                  Change Password
-                  {/* {loading == true ? <CSpinner color={"black"} /> : "Continue"} */}
-                </button>
-              </div>
-            </div>
-          </form>
-          <div className="w-full justify-end gap-8 flex">
-            <button
-              onClick={MoveToForgetAccount}
-              className="bg-green-600 px-4 py-1 text-white"
-            >
-              Forget Account
-            </button>
-          </div>
-        </div>
-      </div>
+   
     </div>
-  );
+    <form onSubmit={handleSubmit(handleConfirmPassword)}>
+      <div className="mb-3">
+        <label>Current Password</label>
+        <input
+          type="password"
+          {...register("currentPassword")}
+          className="w-full border p-2 rounded"
+        />
+        {errors.currentPassword && <p className="text-red-500">{errors.currentPassword.message}</p>}
+      </div>
+
+      <div className="mb-3">
+        <label>New Password</label>
+        <input
+          type="password"
+          {...register("newPassword")}
+          className="w-full border p-2 rounded"
+        />
+        {errors.newPassword && <p className="text-red-500">{errors.newPassword.message}</p>}
+      </div>
+
+      <div className="mb-3">
+        <label>Confirm New Password</label>
+        <input
+          type="password"
+          {...register("confirmPassword")}
+          className="w-full border p-2 rounded"
+        />
+        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+      </div>
+
+      <button
+        type="submit"
+        className="w-full px-3 py-2 bg-blue-500 text-white rounded"
+        disabled={loading}
+      >
+        {loading ? "Updating..." : "Change Password"}
+      </button>
+    </form>
+  </div>
+  </div>
+  </>
+  )
 }
 
-export default ChangePasswordModal;
+export default ChangePassword

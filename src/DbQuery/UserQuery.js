@@ -6,6 +6,7 @@ const UserQuery = () => {
     const session = useSession(); // Session fetch karega
     const [speicifcUser, setspeicifcUser] = useState(null);
 
+
     // Fetching user details on session change
     useEffect(() => {
         const fetchUser = async () => {
@@ -48,7 +49,7 @@ const UserQuery = () => {
             if (data && data.length > 0) {
                 console.log("User updated successfully:", data);
                 // Step 3: Update the local state with the updated data
-                setspeicifcUser({...speicifcUser,username:data[0].username}); // Update state to trigger re-render
+                setspeicifcUser(data[0]); // Update state to trigger re-render
             } else {
                 console.error("No user updated or user not found.");
             }
