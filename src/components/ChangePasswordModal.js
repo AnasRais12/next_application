@@ -75,7 +75,7 @@ function ChangePassword({setchangepasswordModal}) {
     <>
     <div
     className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center `}>
-    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-md  w-[90%] p-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between px-2">
     <h2 className="text-xl font-bold mb-4">Change Password</h2>
     <h2 onClick={() => setchangepasswordModal(false)} className="text-xl font-bold mb-4">X</h2>
@@ -88,7 +88,7 @@ function ChangePassword({setchangepasswordModal}) {
         <input
           type="password"
           {...register("currentPassword")}
-          className="w-full border p-2 rounded"
+          className="w-full border-2 border-[#ccc] focus:outline-orange-600   p-1 sm p-1:sm:p-2 rounded"
         />
         {errors.currentPassword && <p className="text-red-500">{errors.currentPassword.message}</p>}
       </div>
@@ -98,7 +98,7 @@ function ChangePassword({setchangepasswordModal}) {
         <input
           type="password"
           {...register("newPassword")}
-          className="w-full border p-2 rounded"
+          className="w-full border-2 border-[#ccc] focus:outline-orange-600   p-1 sm:p-2 rounded"
         />
         {errors.newPassword && <p className="text-red-500">{errors.newPassword.message}</p>}
       </div>
@@ -108,7 +108,7 @@ function ChangePassword({setchangepasswordModal}) {
         <input
           type="password"
           {...register("confirmPassword")}
-          className="w-full border p-2 rounded"
+          className="w-full border-2 border-[#ccc] focus:outline-orange-600 p-1 sm:p-2 rounded"
         />
         {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
       </div>
