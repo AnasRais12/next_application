@@ -1,9 +1,16 @@
 'use client'
 import { supabase } from "@/lib/supabase";
 import useSession from "@/utils/UserExist/GetSession";
+import { useRouter } from "next/navigation";
+import { GlobalDetails } from "@/context/globalprovider/globalProvider";
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { NineKOutlined } from "@mui/icons-material";
 const UserQuery = () => {
+    const { setUser} = GlobalDetails()
     const session = useSession(); // Session fetch karega
+    console.log("----------------> Sesssion", session)
+    const router = useRouter()
     const [speicifcUser, setspeicifcUser] = useState(null);
 
 
@@ -47,9 +54,7 @@ const UserQuery = () => {
 
             // Step 2: If the update is successful, re-fetch the user data
             if (data && data.length > 0) {
-                console.log("User updated successfully:", data);
-                // Step 3: Update the local state with the updated data
-                setspeicifcUser(data[0]); // Update state to trigger re-render
+                setspeicifcUser(data[0]);
             } else {
                 console.error("No user updated or user not found.");
             }
@@ -58,7 +63,69 @@ const UserQuery = () => {
         }
     };
 
-    return { speicifcUser, updateUserDetails };
-};
+    // function delete user //
+    const deleteUser = async () => {
+        console.warn("anasasasasasasasasasasasasas")
+        try {
+            // Step 1: Delete the user from the database
+            // const { data, error } = await supabase
+            //     .from("users")
+            //     .delete() // Delete the user
+            //     .eq("id", speicifcUser.id)
 
-export default UserQuery;
+            // if (error) {
+            //     console.error("Error deleting user:", error.message);
+            //     return;
+            // }
+
+            // Auth Delete 
+            const { data, error: authError } = await supabase.auth.admin.deleteUser(session?.user?.id); // Delete from Auth
+            if (authError) {
+                console.warn("Error deleting user from Auth:", authError.message);
+                return console.warn("ANASASASASASASAS")
+
+
+            }
+            else {
+                console.warn(data, "_________________")
+                console.log("User deleted successfully:");
+                Cookies.remove('sb-access-token');
+                Cookies.remove('sb-refresh-token');
+                localStorage.removeItem('sb-user');
+                setspeicifcUser(null);
+                router.push('/register')
+            }
+
+        } catch (error) {
+            console.error("Error deleting user:", error);
+        }
+    };
+    const logoutUser = async () => {
+        try {
+            // Step 1: Sign out from Supabase Auth
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error("Error logging out:", error.message);
+                return;
+            }
+            else {
+
+                Cookies.remove('sb-access-token');
+                Cookies.remove('sb-refresh-token');
+                localStorage.removeItem('sb-user');
+                setspeicifcUser(null);
+                setUser(null)
+                router.push('/login')
+
+            }
+        }
+        catch(error){
+            console.error(error)
+        }
+    }
+
+
+    return { speicifcUser, updateUserDetails, deleteUser,logoutUser };
+    };
+
+    export default UserQuery;

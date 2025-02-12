@@ -13,15 +13,12 @@ const SettingsPage = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [changeNameModal, setChangeNameModal] = useState(false);
   const [loading, setloading] = useState(false);
-
-  const [PhoneNumber, setPhoneNumber] = useState(false);
-  const [newName, setNewName] = useState(""); // To hold new name input
-  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [phoneModal, setPhoneModal] = useState(false);
   const [changepasswordModal, setchangepasswordModal] = useState(false);
+  const [newName, setNewName] = useState(""); 
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const { user } = GlobalDetails()
-  const { speicifcUser, updateUserDetails } = UserQuery();
-  console.log("quetasassssssssssssssss", speicifcUser);
-
+  const { speicifcUser, updateUserDetails,deleteUser,logoutUser } = UserQuery();
 
   const handleNameChange = async () => {
     if (newName) {
@@ -32,11 +29,23 @@ const SettingsPage = () => {
       console.log("Name is unchanged or invalid.");
     }
   };
+  const handlePhoneNumber = async () => {
+    if (newPhoneNumber) {
+      const updatedFields = { phone: newPhoneNumber };
+      await updateUserDetails(updatedFields);
+      setPhoneModal(false)
+    } else {
+      console.log("Name is unchanged or invalid.");
+    }
+  };
 
-
-
-
-
+  const userDelete = async () => {
+    await deleteUser();
+    setDeleteModal(false)
+  }
+  const userlogout = async () => {
+    await logoutUser();
+  }
 
   return (
     <>
@@ -44,19 +53,20 @@ const SettingsPage = () => {
       <div className="flex min-h-screen bg-gray-50">
         {/* Mobile Menu Button */}
         {changepasswordModal ? <ChangePassword setchangepasswordModal={setchangepasswordModal} /> : ''}
-        {changeNameModal || PhoneNumber ?
+        {changeNameModal || phoneModal ?
           <PhoneNumberModal
             setChangeNameModal={setChangeNameModal}
+            handlePhoneNumber={handlePhoneNumber}
             loading={loading}
             label={changeNameModal ? 'Name' : 'No'}
             setNewName={setNewName}
             handleNameChange={handleNameChange}
             setNewPhoneNumber={setNewPhoneNumber}
-            setPhoneNumber={setPhoneNumber}
+            setPhone={setPhoneModal}
             changeNameModal={changeNameModal}
             type={`${changeNameModal ? 'text' : 'number'}`}
             plaecholder={`${changeNameModal ? 'Enter Name' : 'Enter PhoneNumber'}`}
-            PhoneNumber={PhoneNumber}
+            PhoneNumber={phoneModal}
             heading={`${changeNameModal ? 'Change Name' : 'Phone Number'}`}
 
           /> : ''}
@@ -71,7 +81,7 @@ const SettingsPage = () => {
         <aside
           className={`w-72  bg-gradient-to-b from-orange-700 to-orange-700 text-white sm:p-6 p-3 shadow-lg fixed inset-y-0 left-0 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-transform duration-300 md:relative md:block rounded-r-lg`}
         >
-          {/* Close Button for Mobile */}
+        
           <button
             className="md:hidden absolute top-4 right-4 text-white text-[30px]"
             onClick={() => setIsMenuOpen(false)}
@@ -92,7 +102,7 @@ const SettingsPage = () => {
               <li className="text-gray-300 hover:text-orange-400  rounded-md py-2 px-2 mr-2 border-2 cursor-pointer transition-colors">Billing & Payments</li>
               <li className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Order History</li>
               <li className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Change Password</li>
-              <li className="text-gray-300 hover:text-orange-400 flex items-center gap-2 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Logout </li>
+              <button onClick={userlogout} className="text-gray-300 hover:text-orange-400 flex items-center gap-2 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Logout </button>
               {/* <span><IoLogOut className="text-[25px]"/></span> */}
 
             </ul>
@@ -105,7 +115,7 @@ const SettingsPage = () => {
           <h1 className="text-xl font-semibold mb-2 mt-10 text-gray-800">Peronal Information</h1>
           <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>
 
-          <div className="grid grid-cols-1 place-content-center items-center w-full pt-4 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 mb-4 place-content-center items-center w-full pt-4 sm:grid-cols-2 gap-6">
             <div className="  flex  flex-col gap-1 bg-white px-2  py-2 rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  ">
               <h2 className="font-semibold  text-gray-700">Email:</h2>
               <p className="text-gray-900  ">{user?.email}</p>
@@ -126,11 +136,11 @@ const SettingsPage = () => {
             <div className="flex px-3 sm:px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  justify-between  ">
               <div className="  flex  flex-col gap-1 ">
                 <h2 className="font-semibold text-gray-700">Phone</h2>
-                <p className="text-black">{user?.phone || 'Not Set'}</p>
+                <p className="text-black">{user?.phone || speicifcUser?.phone || 'Not Set'}</p>
 
               </div>
 
-              {speicifcUser ? <FaEdit onClick={() => setPhoneNumber(true)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+              {speicifcUser ? <FaEdit onClick={() => setPhoneModal(true)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
             </div>
             <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
               <div className="  flex  flex-col gap-1 ">
@@ -140,11 +150,7 @@ const SettingsPage = () => {
 
               {speicifcUser ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
             </div>
-            <div className="flex ">
-              <button onClick={() => setDeleteModal(true)} className="block text-white bg-[red] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-                Delete
-              </button>
-            </div>
+          
 
 
 
@@ -152,15 +158,15 @@ const SettingsPage = () => {
             {deleteModal ? (
               <div className="  overflow-y-auto overflow-x-hidden fixed flex   top-52 right-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                 <div className="relative p-4 w-full max-w-md h-full md:h-auto">
-                  <div className="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                  <div className="relative p-4 text-center bg-white shadow-lg rounded-lg  dark:bg-gray-800 sm:p-5">
 
-                    <svg className="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                    <p className="mb-4 text-gray-500 dark:text-gray-300">Are you sure you want to delete this item?</p>
+                    <svg className="text-[red] dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
+                    <p className="mb-4  dark:text-gray-300">Are you sure you want to delete this item?</p>
                     <div className="flex justify-center items-center space-x-4">
-                      <button onClick={() => setDeleteModal(false)} className="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-white focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                      <button onClick={() => setDeleteModal(false)} className="py-2 border-[#ccc] px-3 text-sm font-medium text-white bg-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-white focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         No cancel
                       </button>
-                      <button type="submit" className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                      <button onClick={userDelete}  className="py-2 px-3 text-sm font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                         Yes, I'm sure
                       </button>
                     </div>
@@ -170,6 +176,11 @@ const SettingsPage = () => {
             ) : ''}
 
           </div>
+          <div className="flex justify-end px-3 w-full ">
+              <button onClick={() => setDeleteModal(true)} className="block text-white bg-[red] 0 font-medium rounded-lg text-sm px-8 py-2.5 text-center " type="button">
+                Delete
+              </button>
+            </div>
 
         </main>
       </div>
