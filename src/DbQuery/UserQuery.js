@@ -1,5 +1,6 @@
 'use client'
 import { supabase } from "@/lib/supabase";
+import { supabaseRole } from "@/lib/supabase";
 import useSession from "@/utils/UserExist/GetSession";
 import { useRouter } from "next/navigation";
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
@@ -65,7 +66,9 @@ const UserQuery = () => {
 
     // function delete user //
     const deleteUser = async () => {
-        console.warn("anasasasasasasasasasasasasas")
+        // console.warn("anasasasasasasasasasasasasas")
+        console.warn( session?.user?.id,"-------------------------------------------->>>>>>>>>>>>>>>>")
+
         try {
             // Step 1: Delete the user from the database
             // const { data, error } = await supabase
@@ -79,10 +82,10 @@ const UserQuery = () => {
             // }
 
             // Auth Delete 
-            const { data, error: authError } = await supabase.auth.admin.deleteUser(session?.user?.id); // Delete from Auth
+            const { data, error: authError } = await supabaseRole.auth.admin.deleteUser("db6c8f05-f7de-4afa-ab46-6205fba02294"); // Delete from Auth
             if (authError) {
                 console.warn("Error deleting user from Auth:", authError.message);
-                return console.warn("ANASASASASASASAS")
+                // return console.warn("ANASASASASASASAS")
 
 
             }
