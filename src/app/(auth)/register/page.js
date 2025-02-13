@@ -1,22 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { ImCross } from 'react-icons/im';
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from 'next-auth/react';
 import { BsFacebook } from "react-icons/bs";
-
 import { signInWithGoogle } from '@/lib/Auth';
-import { RxCross2 } from "react-icons/rx";
 import { signInWithFacebook } from '@/lib/Auth';
 import { supabase } from '@/lib/supabase';
-import { ImGithub } from "react-icons/im";
-import { useRouter } from 'next/navigation';
-import emailjs from '@emailjs/browser';
+import {  useRouter } from 'next/navigation';
+// import emailjs from '@emailjs/browser';
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-import { FaArrowLeftLong } from 'react-icons/fa6';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import CSpinner from '@/components/CSpinner';
 const schema = yup.object().shape({
@@ -26,7 +21,8 @@ const schema = yup.object().shape({
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       'Invalid email format'
     ).required(),
-  password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is Required')
+  password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is Required'),
+  role:yup.string().required('Role Is Required')
 })
 
 function Register() {
@@ -34,10 +30,10 @@ function Register() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) })
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
+  const [UserId, setUserId] = useState(null);
+
   const { setAuthfield,authField } = GlobalDetails();
   const [loading, setLoading] = useState(false);
-  const [storedRegister, setstoredRegister] = useState(null);
-  const verificationCode = Math.floor(100000 + Math.random() * 900000);
   const [input, setinput] = useState({ username: '', email: '', password: '' });
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -48,7 +44,7 @@ function Register() {
   };
   
   const OnSumbithandler = async (data) => {
-    const { email, password,username } = data;
+    const { email, password,username ,role} = data;
     setLoading(true);
     try {
       // Username check
@@ -85,11 +81,19 @@ function Register() {
       }
   
       // Signup user
-      const { data: signUpData, error: authError } = await supabase.auth.signUp({
-        email: email,
-        password: password
-      });
-  
+      const { data: signUpData, error: authError } = await supabase.auth.signUp(
+        {
+          email: email,
+          password: password,
+          options:{
+            emailRedirectTo:"https://next-application-pi.vercel.app/login",
+          }
+        },
+   
+      
+      );
+      console.log(data,"________________________>>>>>>>>>>>>")
+      setUserId(signUpData?.user?.id)
       if (authError) {
         Swal.fire({
           icon: "error",
@@ -105,13 +109,14 @@ function Register() {
       });
       // Insert into 'users' table
       const { data:SignIn ,error: insertError } = await supabase
-        .from('users')
+      .from('profiles')
         .insert([
           {
-            username: username,
-            email: email,
-            password:password
+            id:signUpData?.user?.id,
+            role:role,
+            name: username,
           }
+          
         ]);
   
       if (insertError) {
@@ -139,38 +144,6 @@ function Register() {
       reset();
     }
   };
-
-  
-  const handleGoogleLogin = async () => {
-    setgoogleLoading(true)
-    try {
-      await signIn('google', { callbackUrl: 'http://localhost:3000/home' })
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: `${error}`
-      })
-    }
-    finally {
-      setgoogleLoading(false)
-    }
-
-  }
-  const handleGithubLogin = async () => {
-    try {
-      setGithubLoading(true)
-      await signIn('github', { callbackUrl: 'http://localhost:3000/home' })
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: `${error}`
-      })
-    }
-    finally {
-      setGithubLoading(false)
-    }
-  };
-
 
   return (
     <>
@@ -226,6 +199,17 @@ function Register() {
                 className="w-full px-4 py-3 sm:py-4 border  rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
               <p>{errors.password?.message}</p>
+              <select
+              id="role"
+              {...register('role')}
+              className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+            </select>
+            <p>{errors.role?.message}</p>
+         
+
               <button type="submit"
                 // disabled={credentialLoading}
                 className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique">

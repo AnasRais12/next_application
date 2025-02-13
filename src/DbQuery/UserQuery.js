@@ -20,9 +20,9 @@ const UserQuery = () => {
         const fetchUser = async () => {
             if (!session?.user?.email) return; // Agar email na ho toh return kar do
             const { data, error } = await supabase
-                .from("users")
+                .from("profiles")
                 .select("*")
-                .eq("email", session.user.email)
+                .eq("id", session.user.id)
                 .maybeSingle(); // Ek hi row return karega
 
             if (error) {
@@ -44,7 +44,7 @@ const UserQuery = () => {
         try {
             // Step 1: Update the user in the database
             const { data, error } = await supabase
-                .from("users")
+                .from("profiles")
                 .update(updatedFields) // Pass the fields to update (name, phone_number, etc.)
                 .eq("id", speicifcUser.id).select(); // Match the user by their unique id
 
@@ -66,43 +66,47 @@ const UserQuery = () => {
 
     // function delete user //
     const deleteUser = async () => {
-        // console.warn("anasasasasasasasasasasasasas")
-        console.warn( session?.user?.id,"-------------------------------------------->>>>>>>>>>>>>>>>")
-
+        console.log("sessionidssss",session?.user?.id)
         try {
-            // Step 1: Delete the user from the database
-            // const { data, error } = await supabase
-            //     .from("users")
-            //     .delete() // Delete the user
-            //     .eq("id", speicifcUser.id)
-
-            // if (error) {
-            //     console.error("Error deleting user:", error.message);
-            //     return;
-            // }
-
-            // Auth Delete 
-            const { data, error: authError } = await supabaseRole.auth.admin.deleteUser("db6c8f05-f7de-4afa-ab46-6205fba02294"); // Delete from Auth
+            // Step 1: Always delete from Supabase Auth using session.user.id
+            const { data: deleteData, error: authError } = await supabaseRole.auth.admin.deleteUser(session?.user?.id);
+    
             if (authError) {
-                console.warn("Error deleting user from Auth:", authError.message);
-                // return console.warn("ANASASASASASASAS")
-
-
-            }
-            else {
-                console.warn(data, "_________________")
-                console.log("User deleted successfully:");
+                console.warn("Error deleting user from Supabase Auth:", authError.message);
+                return; // Stop if there was an issue deleting from Auth
+            } else {
+                console.log("User deleted from Supabase Auth successfully.");
+                
+                // Step 2: If the user was deleted from Supabase Auth, now attempt to delete from the 'users' table if speicifcUser exists
+                if (speicifcUser?.id) {
+                    const { data, error } = await supabase
+                        .from("profiles")
+                        .delete() // Delete the user from the users table
+                        .eq("id", speicifcUser.id); // Match the user by their unique ID
+    
+                    if (error) {
+                        console.error("Error deleting user from 'users' table:", error.message);
+                        return;
+                    }
+    
+                    console.log("User deleted from 'users' table successfully.");
+                }
+    
+                // Step 3: Clear cookies, local storage, and reset user state
                 Cookies.remove('sb-access-token');
                 Cookies.remove('sb-refresh-token');
                 localStorage.removeItem('sb-user');
                 setspeicifcUser(null);
-                router.push('/register')
+                setUser(null);
+                
+                // Step 4: Redirect the user after deletion
+                router.push('/register'); // Or '/login' depending on your flow
             }
-
         } catch (error) {
             console.error("Error deleting user:", error);
         }
     };
+    
     const logoutUser = async () => {
         try {
             // Step 1: Sign out from Supabase Auth

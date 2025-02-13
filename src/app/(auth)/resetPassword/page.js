@@ -4,6 +4,7 @@ import emailjs from '@emailjs/browser';
 import { useRouter } from 'next/navigation';
 import { RxCross2 } from "react-icons/rx";
 import { ImCross } from 'react-icons/im';
+import UserQuery from '@/DbQuery/UserQuery';
 import { supabase } from '@/lib/supabase';
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form';
@@ -19,21 +20,13 @@ const forgetAccountValidation = yup.object().shape({
 
 function Forget_Account() {
   const router = useRouter();
+  const { updateUserDetails, } = UserQuery();
   const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(forgetAccountValidation) })
-  const [UserAuthentication, setUserAuthentication] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const Code = Math.floor(100000 + Math.random() * 600000);
-
-  useEffect(() => {
-    const User = localStorage.getItem('User');
-    setUserAuthentication(JSON.parse(User));
-  }, []);
 
   const moveToLogin = () => {
     router.push('/login');
   };
-  const [newPassword, setNewPassword] = useState("");
 
   const handleResetPassword = async (data) => {
     try {
@@ -42,12 +35,13 @@ function Forget_Account() {
       const { error } = await supabase.auth.updateUser({
         password: resetpassword,
       });
-
       if (error) {
         Swal.fire({ icon: "error", text: error.message });
       } else {
+        const updatedFields = { password: resetpassword };
+        await updateUserDetails(updatedFields);
         Swal.fire({ icon: "success", text: "Password reset successfully!" });
-      router.push('/login')
+        router.push('/login')
       }
     } catch (error) {
       Swal.fire({ icon: "error", text: error.message });

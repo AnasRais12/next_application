@@ -22,7 +22,7 @@ export default function Navbar() {
 
   const DropdownMenu = user
     ? ["Dashboard", "Settings", "Orders",]
-    : ["Login"];
+    : ["Sign Up"];
  console.log("Itemss1 ",userss);
  
   return (
@@ -30,10 +30,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto sm:px-6 px-4 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="sm:text-2xl text-[22px] font-bold text-orange-600">ShopEase</div>
+          <div className="sm:text-[30px] text-[22px]  font-bold text-orange-600">ShopEase</div>
 
           {/* Navigation Links - Centered */}
-          <div className="hidden md:flex space-x-6 absolute left-1/2 transform -translate-x-1/2">
+          <div className="hidden md:flex space-x-8 text-[22px] absolute left-1/2 transform -translate-x-1/2">
             <a href="#" className="text-gray-700 font-medium hover:text-orange-600">
               Home
             </a>
@@ -53,7 +53,7 @@ export default function Navbar() {
           <div className="flex items-center   sm:w-fit w-[60%] justify-end  space-x-2 lg:gap-2 relative">
             {/* Search Button */}
             <button onClick={() => setSearchBar(true)}>
-              <FiSearch className="text-2xl text-gray-700 hover:text-orange-600" />
+              <FiSearch className="sm:text-[30px] text-[22px] text-gray-700 hover:text-orange-600" />
             </button>
 
 
@@ -62,16 +62,16 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setShowModal(!showModal)}
-                className={`flex items-center justify-center  ${user ? " bg-orange-500 text-white  size-6 md:size-8 rounded-full  hover:text-black" : " text-black"
+                className={`flex items-center justify-center  ${user ? " bg-orange-500 text-white  size-7 md:size-8 rounded-full  hover:text-black" : " text-black"
                   }`}
               >
 
                 {user ? (
-                  <span className="text-md text-center font-normal">
+                  <span className="text-lg text-center font-normal">
                     {user.email.slice(0, 1).toUpperCase()}
                   </span>
                 ) : (
-                  <FiUser className="text-2xl" />
+                  <FiUser className="sm:text-[30px] text-[22px]" />
                 )}
               </button>
 
@@ -82,7 +82,7 @@ export default function Navbar() {
                     {DropdownMenu.map((item, index) => (
                       <li
                         key={index}
-                        className={`px-4 text-[12px] md:text-[13px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer ${item === "Login" ? "text-[red]" : "text-black"
+                        className={`px-4 text-[13px] md:text-[16px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer ${item === "Become A buyer" ? "bg-[green] text-white hover:bg-[#4dd14d]" : "text-black"
                           }`}
                         onClick={() =>
                           router.push(`/${item.toLowerCase()}`)
@@ -98,7 +98,7 @@ export default function Navbar() {
             </div>
             {/* Shopping Cart */}
             <button className="relative">
-              <FiShoppingCart className="text-2xl text-gray-700 hover:text-orange-600" />
+              <FiShoppingCart className="sm:text-[30px] text-[22px] text-gray-700 hover:text-orange-600" />
               {/* <span className="absolute -top-2 md:-right-2 -right-1 z-50 bg-orange-500  text-black text-xs px-1.5 py-1.3 rounded-full">
                 3
               </span> */}
@@ -110,9 +110,9 @@ export default function Navbar() {
             <button className="md:hidden px-1" onClick={() => setIsOpen(!isOpen)}>
 
               {isOpen ? (
-                <FiX className="text-2xl text-gray-700" />
+                <FiX className="sm:text-[30px] text-[22px] text-gray-700" />
               ) : (
-                <FiMenu className="text-2xl text-gray-700" />
+                <FiMenu className="sm:text-[30px] text-[22px] text-gray-700" />
               )}
             </button>
           </div>
@@ -166,7 +166,7 @@ export default function Navbar() {
                   onClick={() => setSearchBar(false)}
                   className=" pr-4"
                 >
-                  <RxCross2 className=" text-[red] text-[30px]" />
+                  <RxCross2 className=" text-[red] sm:text-[30px] text-[22px]" />
                 </button>
               </div>
             </div>

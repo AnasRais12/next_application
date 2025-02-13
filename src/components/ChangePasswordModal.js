@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import { getUser } from '@/lib/Auth';
 import { useForm } from "react-hook-form";
 import UserQuery from "@/DbQuery/UserQuery";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,7 +7,6 @@ import * as yup from "yup";
 import { supabase } from "@/lib/supabase";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import { BsFillCaretUpSquareFill } from "react-icons/bs";
 const passwordSchema = yup.object().shape({
   currentPassword: yup.string().required("Current password is required"),
   newPassword: yup.string().min(8, "New password must be at least 8 characters").required("New password is required"),
@@ -51,6 +49,7 @@ function ChangePassword({setchangepasswordModal}) {
         const updatedFields = { password: newPassword };
         await updateUserDetails(updatedFields);
         Swal.fire({ icon: "success", text: "Password changed successfully!" });
+        setchangepasswordModal(false)
       }
       if (updateError) {
         Swal.fire({ icon: "error", text: updateError.message });
@@ -61,15 +60,7 @@ function ChangePassword({setchangepasswordModal}) {
       setLoading(false);
     }
   };
-  const handleNameChange = async () => {
-    if (newName) {
-      const updatedFields = { username: newName };
-      await updateUserDetails(updatedFields);
-      setChangeNameModal(false)
-    } else {
-      console.log("Name is unchanged or invalid.");
-    }
-  };
+
 
   return (
     <>
@@ -78,7 +69,7 @@ function ChangePassword({setchangepasswordModal}) {
     <div className="max-w-md  w-[90%] p-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between px-2">
     <h2 className="text-xl font-bold mb-4">Change Password</h2>
-    <h2 onClick={() => setchangepasswordModal(false)} className="text-xl font-bold mb-4">X</h2>
+    <button onClick={() => setchangepasswordModal(false)} className="text-xl font-bold mb-4">X</button>
 
    
     </div>

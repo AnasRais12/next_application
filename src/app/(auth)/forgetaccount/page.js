@@ -21,16 +21,15 @@ const ForgotPassword = () => {
         return;
       }
   
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "http://localhost:3000/resetPassword", // Yahan reset page ka URL daalna hoga
+      const { data,error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://next-application-pi.vercel.app/resetPassword", // Yahan reset page ka URL daalna hoga
       });
-  
       if (error) {
         Swal.fire({ icon: "error", text: error.message });
       } else {
         Swal.fire({
           icon: "success",
-          text: "We’ve sent a password reset link to your email. Please check your inbox and follow the link to set a new password!"
+          text: "We’ve sent a password reset link to your email in 1 mins. Please check your inbox and follow the link to set a new password!"
 
         });
         router.push('/login')
