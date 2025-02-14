@@ -6,14 +6,12 @@ import { useRouter } from "next/navigation";
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { NineKOutlined } from "@mui/icons-material";
 const UserQuery = () => {
-    const { setUser} = GlobalDetails()
+    const { setUser } = GlobalDetails()
     const session = useSession(); // Session fetch karega
     console.log("----------------> Sesssion", session)
     const router = useRouter()
     const [speicifcUser, setspeicifcUser] = useState(null);
-
 
     // Fetching user details on session change
     useEffect(() => {
@@ -66,39 +64,39 @@ const UserQuery = () => {
 
     // function delete user //
     const deleteUser = async () => {
-        console.log("sessionidssss",session?.user?.id)
+        console.log("sessionidssss", session?.user?.id)
         try {
             // Step 1: Always delete from Supabase Auth using session.user.id
             const { data: deleteData, error: authError } = await supabaseRole.auth.admin.deleteUser(session?.user?.id);
-    
+
             if (authError) {
                 console.warn("Error deleting user from Supabase Auth:", authError.message);
                 return; // Stop if there was an issue deleting from Auth
             } else {
                 console.log("User deleted from Supabase Auth successfully.");
-                
+
                 // Step 2: If the user was deleted from Supabase Auth, now attempt to delete from the 'users' table if speicifcUser exists
                 if (speicifcUser?.id) {
                     const { data, error } = await supabase
                         .from("profiles")
                         .delete() // Delete the user from the users table
                         .eq("id", speicifcUser.id); // Match the user by their unique ID
-    
+
                     if (error) {
                         console.error("Error deleting user from 'users' table:", error.message);
                         return;
                     }
-    
+
                     console.log("User deleted from 'users' table successfully.");
                 }
-    
+
                 // Step 3: Clear cookies, local storage, and reset user state
                 Cookies.remove('sb-access-token');
                 Cookies.remove('sb-refresh-token');
                 localStorage.removeItem('sb-user');
                 setspeicifcUser(null);
                 setUser(null);
-                
+
                 // Step 4: Redirect the user after deletion
                 router.push('/register'); // Or '/login' depending on your flow
             }
@@ -106,7 +104,7 @@ const UserQuery = () => {
             console.error("Error deleting user:", error);
         }
     };
-    
+
     const logoutUser = async () => {
         try {
             // Step 1: Sign out from Supabase Auth
@@ -126,13 +124,13 @@ const UserQuery = () => {
 
             }
         }
-        catch(error){
+        catch (error) {
             console.error(error)
         }
     }
 
 
-    return { speicifcUser, updateUserDetails, deleteUser,logoutUser };
-    };
+    return { speicifcUser, updateUserDetails, deleteUser, logoutUser };
+};
 
-    export default UserQuery;
+export default UserQuery;

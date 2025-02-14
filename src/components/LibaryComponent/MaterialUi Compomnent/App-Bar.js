@@ -22,9 +22,9 @@ export default function Navbar() {
 
   const DropdownMenu = user
     ? ["Dashboard", "Settings", "Orders",]
-    : ["Sign Up"];
- console.log("Itemss1 ",userss);
- 
+    : ["Become A Seller", "Become A buyer"];
+  console.log("Itemss1 ", userss);
+
   return (
     <nav className="bg-white shadow-md relative">
       <div className="max-w-7xl mx-auto sm:px-6 px-4 lg:px-8">
@@ -79,18 +79,23 @@ export default function Navbar() {
               {showModal && (
                 <div className="absolute md:-right-4 -right-7 mt-2  bg-white border rounded-md shadow-lg z-50">
                   <ul className="py-1">
-                    {DropdownMenu.map((item, index) => (
-                      <li
-                        key={index}
-                        className={`px-4 text-[13px] md:text-[16px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer ${item === "Become A buyer" ? "bg-[green] text-white hover:bg-[#4dd14d]" : "text-black"
-                          }`}
-                        onClick={() =>
-                          router.push(`/${item.toLowerCase()}`)
-                        }
-                      >
-                        {item}
-                      </li>
-                    ))}
+
+                    {DropdownMenu.map((item, index) => {
+                      const role = item === "Become A Seller" ? "seller" : "buyer";
+
+                      return (
+                        <li
+                          key={index}
+                          className={`px-4 text-[13px] md:text-[16px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer ${item === "Become A buyer" ? "bg-[green] text-white hover:bg-[#4dd14d]" : "text-black"
+                            }`}
+                          onClick={() =>
+                            router.push(`/signup?role=${role}`)
+                          }
+                        >
+                          {item}
+                        </li>
+                      )
+                    })}
                   </ul>
 
                 </div>
@@ -139,10 +144,10 @@ export default function Navbar() {
       {searchBar ? (
         <>
           <motion.div
-          initial={{ x: "100%", opacity: 0 }} // Start position (Right side)
-          animate={{ x: 0, opacity: 1 }} // End position (Visible)
-          exit={{ x: "-100%", opacity: 1, transition: { duration: 0.7, ease: "easeInOut" } }}
-          transition={{ duration: 0.4, ease: "linear" }} // Smooth animation
+            initial={{ x: "100%", opacity: 0 }} // Start position (Right side)
+            animate={{ x: 0, opacity: 1 }} // End position (Visible)
+            exit={{ x: "-100%", opacity: 1, transition: { duration: 0.7, ease: "easeInOut" } }}
+            transition={{ duration: 0.4, ease: "linear" }} // Smooth animation
             className="fixed top-0 left-0 py-1 right-0 z-50 bg-gray-200 shadow-lg">
             {/* Search Bar Section */}
             <div className="w-full flex sm:flex-row flex-col sm:items-center gap-2 justify-between  p-4  backdrop-blur-md rounded-b-2xl">

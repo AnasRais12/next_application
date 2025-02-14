@@ -35,7 +35,7 @@ function Login() {
 
 
   const moveToRegister = (e) => {
-    router.push('/register');
+    router.push('/signup');
   };
   const moveToForgetAccount = (e) => {
     router.push('/forgetaccount');
