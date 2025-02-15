@@ -22,7 +22,7 @@ export default function Navbar() {
 
   const DropdownMenu = user
     ? ["Dashboard", "Settings", "Orders",]
-    : ["Become A Seller", "Become A buyer"];
+    : ["Login"];
   console.log("Itemss1 ", userss);
 
   return (
@@ -81,15 +81,15 @@ export default function Navbar() {
                   <ul className="py-1">
 
                     {DropdownMenu.map((item, index) => {
-                      const role = item === "Become A Seller" ? "seller" : "buyer";
-
                       return (
                         <li
                           key={index}
                           className={`px-4 text-[13px] md:text-[16px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer ${item === "Become A buyer" ? "bg-[green] text-white hover:bg-[#4dd14d]" : "text-black"
                             }`}
                           onClick={() =>
-                            router.push(`/signup?role=${role}`)
+                            // router.push(`/signup?role=${role}`)
+                            router.push(`/login`)
+
                           }
                         >
                           {item}

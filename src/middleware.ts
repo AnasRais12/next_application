@@ -6,11 +6,17 @@ export async function middleware(req: NextRequest) {
   const userRole = req.cookies.get('sb-user-role')?.value;
 
   // 1) Agar user role hi nahi hai, to login pe bhejo
-  if (!userRole) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl.origin));
+  if (!userRole && pathname !== '/home') {
+    return NextResponse.redirect(new URL('/home', req.nextUrl.origin));
   }
 
-  
+  if (pathname === '/' || pathname === '/home' && userRole){
+    if (userRole === 'buyer') {
+      return NextResponse.redirect(new URL('/shop/home', req.nextUrl.origin));
+    } else if (userRole === 'seller') {
+      return NextResponse.redirect(new URL('/sell/dashboard', req.nextUrl.origin));
+    }
+  }
 
   // 2) /shop routes → Sirf seller ke liye
   if (pathname.startsWith('/shop')) {
@@ -32,5 +38,5 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ['/shop/:path*', '/sell/:path*'],
+  matcher: ['/', '/home', '/shop/:path*', '/sell/:path*'],
 };

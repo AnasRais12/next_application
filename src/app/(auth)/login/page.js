@@ -16,7 +16,9 @@ import CSpinner from '@/components/CSpinner';
 function Login() {
   const { setUser } = GlobalDetails()
   const router = useRouter()
-  const [credentialLoading, setCredentialLoading] = useState(false); // For credential login loading
+  const [credentialLoading, setCredentialLoading] = useState(false); 
+  const [checkingUserRole, setCheckingUserRole] = useState(false); 
+
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
 
@@ -35,7 +37,7 @@ function Login() {
 
 
   const moveToRegister = (e) => {
-    router.push('/signup');
+    setCheckingUserRole(true)
   };
   const moveToForgetAccount = (e) => {
     router.push('/forgetaccount');
@@ -75,24 +77,24 @@ function Login() {
             localStorage.setItem('sb-user', JSON.stringify(data.user));
             setUser(data?.user)
           }
-        
-          const { data:Profile, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", data?.user?.id)
-          .maybeSingle().select(); // Ek hi row return karega
-          if(Profile){
-          Cookies.set('sb-user-role', Profile?.role, { expires: 7, secure: true,path:'/' });
-          Swal.fire({
-            icon: 'success',
-            text: `User Login Sucessfully`,
-          });
-          if(Profile?.role === 'buyer'){
-            router.push('/shop/home')
-          }
-          else {
-          router.push('/sell/dashboard')
-          }
+
+          const { data: Profile, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", data?.user?.id)
+            .maybeSingle().select(); // Ek hi row return karega
+          if (Profile) {
+            Cookies.set('sb-user-role', Profile?.role, { expires: 7, secure: true, path: '/' });
+            Swal.fire({
+              icon: 'success',
+              text: `User Login Sucessfully`,
+            });
+            if (Profile?.role === 'buyer') {
+              router.push('/shop/home')
+            }
+            else {
+              router.push('/sell/dashboard')
+            }
           }
         }
       }
@@ -191,7 +193,7 @@ function Login() {
 
           {/* Social Login */}
           <div className="mt-4 text-center">
-            <p className="text-black text-md">Or Login with</p>
+            {/* <p className="text-black text-md">Or Login with</p>
             <div className="flex flex-col items-center justify-center gap-4 mt-2">
               <button onClick={signInWithGoogle} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
                 <FcGoogle size={20} className="text-red-500" />
@@ -201,8 +203,22 @@ function Login() {
                 <BsFacebook size={20} className="text-blue-500" />
                 Facebook
               </button>
-            </div>
+            </div> */}
             <p onClick={moveToRegister} className='text-left mt-2 cursor-pointer'>Not registered? <span className='text-unique'>Create account</span></p>
+
+            {checkingUserRole ? (
+              <>
+                <div
+                  className={`fixed inset-0 bg-opacity-50 bg-black  flex items-center justify-center `}>
+                  <div className=" sm:w-[30%] w-[90%] p-6 py-10 bg-white shadow-lg rounded-lg">
+                    <div className='flex flex-col gap-2 justify-center items-center'>
+                      <button onClick={()=>router.push(`/signup?role=buyer`)} className='w-full font-bold py-3 rounded-[10px] text-white bg-orange-600 hover:bg-custom-gradient shadow-lg text-current'>Become A Buyer </button>
+                      <button  onClick={()=>router.push(`/signup?role=seller`)} className='w-full py-3 font-bold rounded-[10px] text-white bg-orange-600 hover:bg-custom-gradient  shadow-lg text-current'>Become A Seller </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
 
           </div>
         </div>
