@@ -68,26 +68,39 @@ function Login() {
             text: `Email not verified`,
           });
         } else {
-          console.log('User logged in successfully:', user);
+          // console.log('User logged in successfully:', user);
           if (data.session || data.user) {
             Cookies.set('sb-access-token', data.session.access_token, { expires: 7, secure: true });
             Cookies.set('sb-refresh-token', data.session.refresh_token, { expires: 7, secure: true });
             localStorage.setItem('sb-user', JSON.stringify(data.user));
+            setUser(data?.user)
           }
-          setUser(data?.user)
+        
+          const { data:Profile, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", data?.user?.id)
+          .maybeSingle().select(); // Ek hi row return karega
+          if(Profile){
+          Cookies.set('sb-user-role', Profile?.role, { expires: 7, secure: true,path:'/' });
           Swal.fire({
             icon: 'success',
             text: `User Login Sucessfully`,
           });
-          router.push('/home')
-
+          if(Profile?.role === 'buyer'){
+            router.push('/shop/home')
+          }
+          else {
+          router.push('/sell/dashboard')
+          }
+          }
         }
       }
 
     } catch (error) {
       Swal.fire({
         icon: 'error',
-        text: 'Wrong Credentials',
+        text: error?.message,
       });
 
     }

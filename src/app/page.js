@@ -7,12 +7,7 @@ function page() {
   const { status } = useSession()
   const router = useRouter()
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login')
-    }
-    else {
       router.push('/home')
-    }
   }, [])
 
   return <CustomSpinner />

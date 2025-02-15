@@ -10,13 +10,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.nextUrl.origin));
   }
 
-  if (pathname === '/' || pathname === '/home') {
-    if (userRole === 'seller') {
-      return NextResponse.redirect(new URL('/shop/home', req.nextUrl.origin));
-    } else if (userRole === 'buyer') {
-      return NextResponse.redirect(new URL('/sell/home', req.nextUrl.origin));
-    }
-  }
+  
 
   // 2) /shop routes → Sirf seller ke liye
   if (pathname.startsWith('/shop')) {
@@ -38,5 +32,5 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ['/', '/home','/shop/:path*', '/sell/:path*'],
+  matcher: ['/shop/:path*', '/sell/:path*'],
 };
