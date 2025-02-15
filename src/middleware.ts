@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/home', req.nextUrl.origin));
   }
 
-  if (pathname === '/' || pathname === '/home' && userRole){
+  if  ((pathname === '/' || pathname === '/home') && userRole){
     if (userRole === 'buyer') {
       return NextResponse.redirect(new URL('/shop/home', req.nextUrl.origin));
     } else if (userRole === 'seller') {
