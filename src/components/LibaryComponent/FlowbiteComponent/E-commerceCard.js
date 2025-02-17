@@ -3,6 +3,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { addToCart } from '@/app/store/features/CartReducer/CartSlice'
 import { CardsData, Category } from '@/utils/ProductsDetailPages/ProductData'
+import ProductFilter from './Filter'
 import { useDispatch, useSelector, } from 'react-redux';
 
 
@@ -15,6 +16,8 @@ function E_commerceCard() {
     }
     return (
         <>
+        <div className='w-full flex '>
+        <ProductFilter />
             <div className='w-full justify-center pt-16 mb-4 items-center text-[40px] font-semibold text-center text-black'>
                 <h1>{Category.Men}</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
@@ -145,6 +148,8 @@ function E_commerceCard() {
                     ))}
                 </div>
             </div>
+        </div>
+         
         </>
     )
 }

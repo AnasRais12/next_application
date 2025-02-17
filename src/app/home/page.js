@@ -73,8 +73,18 @@ const handleLogout = async () => {
       {/* <h1>Welcome, {session.user?.email}</h1> */}
     </div>
     <div className='w-full  '>
-       <Header/>
+      {/* Header */}
+       <Header/>   
+       {/* Trending Prodcus */}
+       {/* Ayaingeeee */}
+        {/* Categoreis */}
         <E_commerceCard/>
+         {/* Deals waley sectin */}
+       {/* Ayaingeeee */}
+         {/* New arival*/}
+       {/* Ayaingeeee */}
+          {/* Footer*/}
+       {/* Ayaingeeee */}
   </div>
     </>
   );

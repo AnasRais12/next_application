@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import { BsFacebook } from "react-icons/bs";
 import { signInWithFacebook, signInWithGoogle } from '@/lib/Auth';
 import { useForm } from 'react-hook-form';
+import { RxCross2 } from 'react-icons/rx';
 import { signIn } from 'next-auth/react';
 import { yupResolver } from '@hookform/resolvers/yup'
 import Cookies from 'js-cookie';
@@ -210,7 +211,10 @@ function Login() {
               <>
                 <div
                   className={`fixed inset-0 bg-opacity-50 bg-black  flex items-center justify-center `}>
-                  <div className=" sm:w-[30%] w-[90%] p-6 py-10 bg-white shadow-lg rounded-lg">
+                  <div className=" sm:w-[30%] w-[90%]  p-6 py-4 bg-white shadow-lg rounded-lg">
+                    <div className='flex justify-end  w-full hover:text-red-900 mb-4 px-2'>
+                      <button  className='text-[20px]' onClick={()=>setCheckingUserRole(false)}><RxCross2/></button>
+                    </div>
                     <div className='flex flex-col gap-2 justify-center items-center'>
                       <button onClick={()=>router.push(`/signup?role=buyer`)} className='w-full font-bold py-3 rounded-[10px] text-white bg-orange-600 hover:bg-custom-gradient shadow-lg text-current'>Become A Buyer </button>
                       <button  onClick={()=>router.push(`/signup?role=seller`)} className='w-full py-3 font-bold rounded-[10px] text-white bg-orange-600 hover:bg-custom-gradient  shadow-lg text-current'>Become A Seller </button>
