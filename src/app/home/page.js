@@ -14,64 +14,8 @@ function page() {
   const [Loading, setLoading] = useState(false);
   const cart = useSelector((state => state?.cartItem?.cart) || "")
   const dispatch = useDispatch()
-  
-  const [session, setSession] = useState(null);
-
-  // useEffect(() => {
-  //   // Get the current session
-  //   const fetchSession = async () => {
-  //     const { data: currentSession } = await supabase.auth.getSession();
-  //     setSession(currentSession);
-  //   };
-
-  //   fetchSession();
-
-  //   // Listen for session changes (e.g., login/logout)
-  //   const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-  //     setSession(session);
-  //   });
-
-  //   return () => {
-  //     authListener.unsubscribe();
-  //   };
-  // }, []);
-
-  console.log("session",useSession())
-
- 
-//  useEffect(() => {
-//   const fetchUser = async () => {
-//     const {data,error} = await supabase.auth.getUser()
-//      if (error) {
-//       console.error("Error fetching user:", error);
-//     } else {
-//       console.log(data);
-//       setuser(data.user);
-//     }
-//   };
-//   fetchUser();
-//  console.log(user);
- 
-// }, []);
-const handleLogout = async () => {
-  try {
-      // Manually sign out the user (removes session from Supabase)
-      await supabase.auth.signOut();
-      // Manually clear session cookie
-      
-      // Redirect to login page after logout
-  } catch (error) {
-      console.error("Error during logout:", error);
-  }
-};
-
-   
   return (
     <>
-       
-      <div>
-      {/* <h1>Welcome, {session.user?.email}</h1> */}
-    </div>
     <div className='w-full  '>
       {/* Header */}
        <Header/>   

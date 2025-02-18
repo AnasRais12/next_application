@@ -8,17 +8,17 @@ const ProductFilter = () => {
   const toggleFilter = () => setIsOpen(!isOpen);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container border-r border-t px-3 ml-3 h-fit mt-10  w-fit p-3">
       {/* Mobile Filter Button */}
       <button
         className="md:hidden flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded"
         onClick={toggleFilter}
       >
-        <FaFilter /> Filters
+        <FaFilter /> 
       </button>
       
       {/* Sidebar Filter (Desktop) */}
-      <div className="hidden md:block w-1/4 p-4 border-r">
+      <div className="hidden md:block  p-2 ">
         <FilterOptions />
       </div>
 

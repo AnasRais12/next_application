@@ -4,22 +4,49 @@ import { useRouter } from 'next/navigation'
 import { addToCart } from '@/app/store/features/CartReducer/CartSlice'
 import { CardsData, Category } from '@/utils/ProductsDetailPages/ProductData'
 import ProductFilter from './Filter'
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector, } from 'react-redux';
+import Link from 'next/link'
 
 
 function E_commerceCard() {
+
+const navItems = [
+  { name: 'All', href: '/' },
+  { name: 'Women', href: '/women' },
+  { name: 'Men', href: '/men' },
+  { name: 'Bag', href: '/bag' },
+  { name: 'Shoes', href: '/shoes' },
+  { name: 'Watches', href: '/watches' },
+];
     const router = useRouter()
     const dispatch = useDispatch();
-
     const handleShopNow = (id) => {
         router.push(`/product/${id}`)
     }
     return (
         <>
-        <div className='w-full flex '>
+        <div className='md:px-8 px-4 mt-16  flex-col flex gap-6 font-semibold'>
+            <h1 className=' font-poppins text-3xl sm:text-4xl'>Products Overview</h1>
+            {/* <div className="flex space-x-3 sm:space-x-6 sm:w-full  flex-wrap  text-gray-500 text-lg font-medium">
+      {navItems.map((item, index) => (
+        <div key={index} className="relative   cursor-pointer group">
+          <div  className="hover:text-black text-sm sm:text-[16px] font-normal" >
+            {item.name}
+          </div>
+          <div
+            className="absolute left-0 w-full h-[2px] translate-y-1 duration-300 bg-black scale-0 group-hover:scale-100 origin-left"
+           ></div>
+           
+          
+        </div>
+      ))}
+    </div> */}
+            </div>
+        <div className='w-full flex md:flex-row flex-col '>
         <ProductFilter />
-            <div className='w-full justify-center pt-16 mb-4 items-center text-[40px] font-semibold text-center text-black'>
-                <h1>{Category.Men}</h1>
+            <div className='w-full justify-center pt-5 mb-4 items-center text-[40px] font-semibold text-center text-black'>
+                {/* <h1>{Category.Men}</h1> */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
                     {CardsData.Men.map((items,) => (
                         <>
@@ -62,7 +89,7 @@ function E_commerceCard() {
                     ))}
                 </div>
                 <div className='w-full justify-center py-2 items-center text-[40px] font-semibold text-center text-black'>
-                    <h1>{Category.Women}</h1></div>
+                   </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
                     {CardsData.Women.map((items) => (
                         <>
@@ -105,7 +132,7 @@ function E_commerceCard() {
                     ))}
                 </div>
                 <div className='w-full justify-center py-2 items-center text-[40px] font-semibold text-center text-black'>
-                    <h1>{Category.Kids}</h1></div>
+                   </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
                     {CardsData.Kids.map((items) => (
                         <>
