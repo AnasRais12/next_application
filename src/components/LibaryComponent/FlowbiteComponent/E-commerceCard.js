@@ -1,183 +1,68 @@
 'use client'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import { addToCart } from '@/app/store/features/CartReducer/CartSlice'
-import { CardsData, Category } from '@/utils/ProductsDetailPages/ProductData'
-import ProductFilter from './Filter'
-import { motion } from 'framer-motion';
-import { useDispatch, useSelector, } from 'react-redux';
-import Link from 'next/link'
-
+import React, { useState, useEffect } from 'react';
+import { CardsData } from '@/utils/ProductsDetailPages/ProductData';
+import imageCompression from "browser-image-compression";
+import { useRouter } from 'next/navigation';
 
 function E_commerceCard() {
-
-const navItems = [
-  { name: 'All', href: '/' },
-  { name: 'Women', href: '/women' },
-  { name: 'Men', href: '/men' },
-  { name: 'Bag', href: '/bag' },
-  { name: 'Shoes', href: '/shoes' },
-  { name: 'Watches', href: '/watches' },
-];
+    const allProducts = Object.values(CardsData).flat();
     const router = useRouter()
-    const dispatch = useDispatch();
+    const [compressedImages, setCompressedImages] = useState({}); // Store compressed images
     const handleShopNow = (id) => {
         router.push(`/product/${id}`)
     }
+    useEffect(() => {
+        async function compressImages() {
+            let compressedData = {};
+            for (let item of allProducts) {
+                try {
+                    const response = await fetch(item?.image); // Fetch image from backend
+                    const blob = await response.blob();
+                    const compressedBlob = await imageCompression(blob, {
+                        maxSizeMB: 0.1,  // Maximum size 100KB
+                        maxWidthOrHeight: 300, // Max height or width
+                        useWebWorker: true
+                    });
+                    compressedData[item.id] = URL.createObjectURL(compressedBlob);
+                } catch (error) {
+                    console.error("Error compressing image:", error);
+                    compressedData[item.id] = item.image; // If error, use original image
+                }
+            }
+            setCompressedImages(compressedData);
+        }
+
+        compressImages();
+    }, [allProducts]);
+
     return (
-        <>
-        <div className='md:px-8 px-4 mt-16  flex-col flex gap-6 font-semibold'>
-            <h1 className=' font-poppins text-3xl sm:text-4xl'>Products Overview</h1>
-            {/* <div className="flex space-x-3 sm:space-x-6 sm:w-full  flex-wrap  text-gray-500 text-lg font-medium">
-      {navItems.map((item, index) => (
-        <div key={index} className="relative   cursor-pointer group">
-          <div  className="hover:text-black text-sm sm:text-[16px] font-normal" >
-            {item.name}
-          </div>
-          <div
-            className="absolute left-0 w-full h-[2px] translate-y-1 duration-300 bg-black scale-0 group-hover:scale-100 origin-left"
-           ></div>
-           
-          
-        </div>
-      ))}
-    </div> */}
+        <div className='w-full justify-center pt-5 mb-4 items-center text-[40px] font-semibold text-center text-black'>
+            <div className="grid grid-cols-1 sm:grid-cols-2 px-4 md:px-6 pb-8 justify-items-center md:grid-cols-2 xl:grid-cols-4 py-6 gap-4">
+                {allProducts.map((items) => (
+                    <div key={items.id} className="w-full shadow-orange-500 border-2 hover:shadow-lg border-gray-200 rounded-lg">
+                        <div className='flex justify-center mb-4 border-b-2 bg-gray-50'>
+                            <img 
+                                className="w-full  h-[200px] aspect-[1/1] object-contain"
+                                src={compressedImages[items.id] || items.image} 
+                                alt="product image" 
+                            />
+                        </div>
+                                <div className="pb-3 ">
+                                    <div className='border-b-2 text-left px-4'>
+                                        <h5 onClick={()=> items.ProductName.length > 20? handleShopNow(items.id) : null } className="xl:text-xl text-xl  lg:text-[22px] sm:text-[17px] md:text-[20px] text-[15px] font-normal mb-2 tracking-tight cursor-pointer  text-gray-900 dark:text-white"> {items.ProductName.length > 20 ? items.ProductName.slice(0, 20) + "..." : items.ProductName}</h5>
+                                    </div>
+                                  
+                                    <div className="flex  px-4 mt-3 gap-3 items-center justify-between">
+                                        <span className="text-2xl font-bold text-gray-900 dark:text-white">${items.Price}</span>
+                                        <button onClick={() => handleShopNow(items.id)} className="text-white bg-unique hover:bg-unique focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:px-5 px-3 sm:py-2.5 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                    ))}
+                </div>
+             
             </div>
-        <div className='w-full flex md:flex-row flex-col '>
-        <ProductFilter />
-            <div className='w-full justify-center pt-5 mb-4 items-center text-[40px] font-semibold text-center text-black'>
-                {/* <h1>{Category.Men}</h1> */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
-                    {CardsData.Men.map((items,) => (
-                        <>
-                            <div key={items.id} className="w-full shadow-lg shadow-black py-2 px-2   border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700">
 
-                                <div className='flex justify-center'>
-                                    <img className="w-[50%] md:w-full mb-4" src={items.image} alt="product image" />
-                                </div>
-                                <div className="px-5 pb-5">
-                                    <div>
-                                        <h5 className="xl:text-xl text-xl  lg:text-[22px] sm:text-[17px] md:text-[20px] text-[15px] font-normal mb-4 tracking-tight text-gray-900 dark:text-white">{items.ProductName}</h5>
-                                    </div>
-                                    <div className="flex items-center  justify-center mt-2.5 mb-5">
-                                        <div className="flex items-center justify-center space-x-1 rtl:space-x-reverse">
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                        </div>
-                                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
-                                    </div>
-                                    <div className="flex  md:flex-row flex-col gap-3 items-center justify-between">
-                                        <span className="lg:text-3xl md:text-2xl text-[20px] sm:text-[20px] font-bold text-gray-900 dark:text-white">${items.Price}</span>
-                                        <button onClick={() => handleShopNow(items.id)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Shop Now</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    ))}
-                </div>
-                <div className='w-full justify-center py-2 items-center text-[40px] font-semibold text-center text-black'>
-                   </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
-                    {CardsData.Women.map((items) => (
-                        <>
-                            <div key={items.id} className="w-full shadow-lg shadow-black py-2 px-2   border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700">
-
-                                <div className='flex justify-center'>
-                                    <img className="w-[50%] md:w-full mb-4" src={items.image} alt="product image" />
-                                </div>
-                                <div className="px-5 pb-5">
-                                    <div>
-                                        <h5 className="xl:text-xl text-xl  lg:text-[22px] sm:text-[17px] md:text-[20px] text-[15px] font-normal mb-4 tracking-tight text-gray-900 dark:text-white">{items.ProductName}</h5>
-                                    </div>
-                                    <div className="flex items-center  justify-center mt-2.5 mb-5">
-                                        <div className="flex items-center justify-center space-x-1 rtl:space-x-reverse">
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                        </div>
-                                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
-                                    </div>
-                                    <div className="flex  md:flex-row flex-col gap-3 items-center justify-between">
-                                        <span className="lg:text-3xl md:text-2xl text-[20px] sm:text-[20px] font-bold text-gray-900 dark:text-white">${items.Price}</span>
-                                        <button onClick={() => handleShopNow(items.id)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Shop Now</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    ))}
-                </div>
-                <div className='w-full justify-center py-2 items-center text-[40px] font-semibold text-center text-black'>
-                   </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 mb-12 px-4 md:px-6 border-b-4 pb-8  justify-items-center md:grid-cols-3 xl:grid-cols-4 py-6 gap-4">
-                    {CardsData.Kids.map((items) => (
-                        <>
-                            <div key={items.id} className="w-full shadow-lg shadow-black py-2 px-2   border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700">
-
-                                <div className='flex justify-center'>
-                                    <img className="w-[50%] md:w-full mb-4" src={items.image} alt="product image" />
-                                </div>
-                                <div className="px-5 pb-5">
-                                    <div>
-                                        <h5 className="xl:text-xl text-xl  lg:text-[22px] sm:text-[17px] md:text-[20px] text-[15px] font-normal mb-4 tracking-tight text-gray-900 dark:text-white">{items.ProductName}</h5>
-                                    </div>
-                                    <div className="flex items-center  justify-center mt-2.5 mb-5">
-                                        <div className="flex items-center justify-center space-x-1 rtl:space-x-reverse">
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <svg className="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                        </div>
-                                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
-                                    </div>
-                                    <div className="flex  md:flex-row flex-col gap-3 items-center justify-between">
-                                        <span className="lg:text-3xl md:text-2xl text-[20px] sm:text-[20px] font-bold text-gray-900 dark:text-white">${items.Price}</span>
-                                        <button onClick={() => handleShopNow(items.id)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Shop Now</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    ))}
-                </div>
-            </div>
-        </div>
-         
-        </>
     )
 }
 

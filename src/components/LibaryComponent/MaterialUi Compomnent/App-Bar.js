@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FiShoppingCart, FiUser, FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { getCart } from "@/utils/reduxGlobalStates/ReduxStates";
 import { RxCross2 } from "react-icons/rx"
 import { motion } from "framer-motion";
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
@@ -9,9 +10,10 @@ import { GlobalDetails } from "@/context/globalprovider/globalProvider";
 export default function Navbar() {
   const router = useRouter();
   const { user } = GlobalDetails();
+  const cartState = getCart()
   const [searchBar, setSearchBar] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+ console.log("______________<> state",cartState)
   const DropdownMenu = user ? ["Dashboard", "Settings", "Orders"] : ["Login"];
 
   return (
@@ -93,6 +95,7 @@ export default function Navbar() {
             {/* Shopping Cart */}
             <button className="relative">
               <FiShoppingCart className="sm:text-[30px] text-[25px] text-gray-700 hover:text-orange-600" />
+              {cartState?.length > 0 ? <span className="absolute top-[-10px]   md:top-[-10px]  right-[-10px] text-white md:size-6 size-5 text-sm sm:mt-0 text-center rounded-full bg-orange-400">{cartState?.length}</span> : null} 
             </button>
           </div>
         </div>

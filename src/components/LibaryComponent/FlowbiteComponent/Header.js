@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
   const categories = [
     {
@@ -42,6 +43,7 @@ import { useState, useEffect } from 'react';
 
 export default function HeroSection() {
   const [index, setIndex] = useState(0);
+  const router = useRouter()
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,7 +54,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full py-16 sm:mt-16 mt-10 gap-10 overflow-hidden  bg-gray-100 flex md:flex-row items-center justify-center md:justify-between px-6 md:pl-16 lg:pl-24">
+    <section className="relative w-full py-16 sm:mt-16 mt-10 gap-10 overflow-hidden  bg-gray-50 flex md:flex-row items-center justify-center md:justify-between px-6 md:pl-16 lg:pl-24">
       
       {/* Text Section */}
       <motion.div 
@@ -65,7 +67,7 @@ export default function HeroSection() {
         <h1 className="sm:text-4xl text-3xl md:text-4xl xl:text-6xl font-bold text-gray-900">{categories[index].title}</h1>
         <p className="text-gray-500 text-md sm:text-2xl">{categories[index].subtitle}</p>
 
-        <motion.button 
+        <motion.button onClick={()=> router.push('/shop/category')}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="mt-4 px-8 w-fit sm:w-[50%] py-3 bg-orange-600 text-1xl text-white rounded-lg hover:bg-orange-600 transition"

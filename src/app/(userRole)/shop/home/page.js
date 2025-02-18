@@ -2,7 +2,7 @@ import React from 'react'
 
 function HOME() {
   return (
-    <div>HOME</div>
+    <div className='mt-20'>HOME</div>
   )
 }
 

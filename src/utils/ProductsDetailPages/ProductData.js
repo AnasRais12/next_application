@@ -5,7 +5,7 @@ export const CardsData = {
         { 
             id: 1, 
             image: 'images/big-shoe1.png', 
-            ProductName: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport', 
+            ProductName: 'Apple Watch', 
             Price: 599, 
             desc: 'Stay connected and track your fitness with the Apple Watch Series 7, featuring a sleek Aluminium case and GPS functionality.' 
         },
