@@ -17,6 +17,7 @@ function page() {
   const dispatch = useDispatch()
   return (
     <>
+      {/* <div className='px-3 py-3 mt-16 w-full bg-red-500 text-white'>{count}</div> */}
     <div className='w-full  '>
       {/* Header */}
        <Header/>   
@@ -27,9 +28,7 @@ function page() {
          {/* Deals waley sectin */}
        {/* Ayaingeeee */}
          {/* New arival*/}
-       {/* Ayaingeeee */}
-          {/* Footer*/}
-          <Footer/>
+      
       
   </div>
     </>

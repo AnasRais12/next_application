@@ -7,33 +7,33 @@ import { useRouter } from 'next/navigation';
 function E_commerceCard() {
     const allProducts = Object.values(CardsData).flat();
     const router = useRouter()
-    const [compressedImages, setCompressedImages] = useState({}); // Store compressed images
+    // const [compressedImages, setCompressedImages] = useState({}); // Store compressed images
     const handleShopNow = (id) => {
         router.push(`/product/${id}`)
     }
-    useEffect(() => {
-        async function compressImages() {
-            let compressedData = {};
-            for (let item of allProducts) {
-                try {
-                    const response = await fetch(item?.image); // Fetch image from backend
-                    const blob = await response.blob();
-                    const compressedBlob = await imageCompression(blob, {
-                        maxSizeMB: 0.1,  // Maximum size 100KB
-                        maxWidthOrHeight: 300, // Max height or width
-                        useWebWorker: true
-                    });
-                    compressedData[item.id] = URL.createObjectURL(compressedBlob);
-                } catch (error) {
-                    console.error("Error compressing image:", error);
-                    compressedData[item.id] = item.image; // If error, use original image
-                }
-            }
-            setCompressedImages(compressedData);
-        }
+    // useEffect(() => {
+    //     async function compressImages() {
+    //         let compressedData = {};
+    //         for (let item of allProducts) {
+    //             try {
+    //                 const response = await fetch(item?.image); // Fetch image from backend
+    //                 const blob = await response.blob();
+    //                 const compressedBlob = await imageCompression(blob, {
+    //                     maxSizeMB: 0.1,  // Maximum size 100KB
+    //                     maxWidthOrHeight: 300, // Max height or width
+    //                     useWebWorker: true
+    //                 });
+    //                 compressedData[item.id] = URL.createObjectURL(compressedBlob);
+    //             } catch (error) {
+    //                 console.error("Error compressing image:", error);
+    //                 compressedData[item.id] = item.image; // If error, use original image
+    //             }
+    //         }
+    //         setCompressedImages(compressedData);
+    //     }
 
-        compressImages();
-    }, [allProducts]);
+    //     compressImages();
+    // }, [allProducts]);
 
     return (
         <div className='w-full justify-center pt-5 mb-4 items-center text-[40px] font-semibold text-center text-black'>
@@ -43,7 +43,7 @@ function E_commerceCard() {
                         <div className='flex justify-center mb-4 border-b-2 bg-gray-50'>
                             <img 
                                 className="w-full  h-[200px] aspect-[1/1] object-contain"
-                                src={compressedImages[items.id] || items.image} 
+                                src={items?.image} 
                                 alt="product image" 
                             />
                         </div>
@@ -54,7 +54,7 @@ function E_commerceCard() {
                                   
                                     <div className="flex  px-4 mt-3 gap-3 items-center justify-between">
                                         <span className="text-2xl font-bold text-gray-900 dark:text-white">${items.Price}</span>
-                                        <button onClick={() => handleShopNow(items.id)} className="text-white bg-unique hover:bg-unique focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:px-5 px-3 sm:py-2.5 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to Cart</button>
+                                        <button onClick={() => handleShopNow(items.id)} className="text-white bg-unique hover:bg-unique focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:px-5 px-3 sm:py-2.5 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Shop Now</button>
                                     </div>
                                 </div>
                             </div>

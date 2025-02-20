@@ -93,7 +93,7 @@ export default function Navbar() {
               )}
             </div>
             {/* Shopping Cart */}
-            <button className="relative">
+            <button onClick={()=> router.push('/shoppingcart')}  className="relative">
               <FiShoppingCart className="sm:text-[30px] text-[25px] text-gray-700 hover:text-orange-600" />
               {cartState?.length > 0 ? <span className="absolute top-[-10px]   md:top-[-10px]  right-[-10px] text-white md:size-6 size-5 text-sm sm:mt-0 text-center rounded-full bg-orange-400">{cartState?.length}</span> : null} 
             </button>

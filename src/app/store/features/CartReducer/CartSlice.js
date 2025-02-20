@@ -36,12 +36,15 @@ const CartSlice = createSlice({
           DecrementItem.quantity -=1
         }
       }
-
+    },
+    RemoveFromCart: (state,action) => {
+      const itemId = action.payload
+      state.cart = state.cart.filter((items)=> items.id !== itemId)
     }
   }
 });
 
-export const { addToCart,IncrementQunatity,DecrementQuantity } = CartSlice.actions;
+export const { addToCart,IncrementQunatity,DecrementQuantity,RemoveFromCart } = CartSlice.actions;
 export const CartReducer = CartSlice.reducer;
 // import slice
 // create intial state

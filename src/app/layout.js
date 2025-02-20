@@ -2,6 +2,7 @@
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 import './globals.css';
 import { GlobalProvider } from '@/context/globalprovider/globalProvider';
@@ -42,6 +43,8 @@ export default function RootLayout({ children }) {
           <SessionProvider>
           {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
             {children}
+          {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />}
+
           </SessionProvider>
         </GlobalProvider>
         </Provider> 
