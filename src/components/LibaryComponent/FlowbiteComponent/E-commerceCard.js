@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { CardsData } from '@/utils/ProductsDetailPages/ProductData';
-import imageCompression from "browser-image-compression";
 import { useRouter } from 'next/navigation';
 
 function E_commerceCard() {
