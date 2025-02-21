@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { FaShoppingCart } from 'react-icons/fa';
-import { GrAdd } from "react-icons/gr";
-import { TfiMinus } from "react-icons/tfi";
+import { ToastContainer, toast } from 'react-toastify';
+import CSpinner from '@/components/CSpinner';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { addToCart, IncrementQunatity, DecrementQuantity } from '@/app/store/features/CartReducer/CartSlice';
 import { CardsData } from '@/utils/ProductsDetailPages/ProductData';
 import { useDispatch, useSelector, } from 'react-redux';
+import Link from 'next/link';
 const ProductCard = (props) => {
   console.log("Props", props);
   const [quantity, setQuantity] = useState(props.product?.quantity || 1);
+  const [loading, setloading] = useState(false)
   const dispatch = useDispatch();
   const cart = useSelector((state => state?.cartItem?.cart) || "")
 
@@ -25,15 +26,26 @@ const ProductCard = (props) => {
   }
 
   const handleAddToCart = () => {
-    const productCart = {
-      id: props.product?.id,
-      image: props?.product?.image,
-      ProductName: props?.product?.ProductName,
-      Price: props?.product?.Price,
-      desc: props?.product?.desc,
-      quantity,
-    }
-    dispatch(addToCart(productCart));
+  try {
+    setloading(true)
+      const productCart = {
+        id: props.product?.id,
+        image: props?.product?.image,
+        ProductName: props?.product?.ProductName,
+        Price: props?.product?.Price,
+        desc: props?.product?.desc,
+        quantity,
+      }
+      dispatch(addToCart(productCart));
+      toast.success('Added to cart successfully!', { autoClose: 1000 }); 
+  } catch (error) {
+    toast.warning(error, { autoClose: 1000 }); 
+    
+  }
+  finally{    
+    setloading(false)
+  }
+
   };
   console.log("Cart Product Page wala ", cart)
   console.log("Cart", cart);
@@ -41,7 +53,7 @@ const ProductCard = (props) => {
 
 
   return (
-    <div className="font-[sans-serif] mt-20 h-screen flex justify-center p-4 bg-gray-100">
+    <div className="font-[sans-serif] mt-20 py-10 flex justify-center p-4 bg-gray-50">
       <div className="lg:max-w-6xl max-w-xl mx-auto">
         <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-12 max-sm:gap-8">
           <div className="w-full lg:sticky top-0">
@@ -74,35 +86,6 @@ const ProductCard = (props) => {
           <div className="w-full lg:pt-16">
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800">{props?.product?.ProductName}</h3>
-              {/* <div className="flex items-center gap-3 mt-1">
-              <div className="flex items-center gap-1">
-                <p className="text-base text-gray-500">4</p>
-                <svg className="w-4 h-4 bg-orange-600" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg className="w-4 h-4 bg-orange-600" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg className="w-4 h-4 bg-orange-600" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg className="w-4 h-4 bg-orange-600" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg className="w-4 h-4 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-              </div>
-              <span className="text-gray-500">|</span>
-              <p className="text-sm text-gray-500">76 Ratings</p>
-              <span className="text-gray-500">|</span>
-              <p className="text-sm text-gray-500">50 Reviews</p>
-            </div> */}
               <div className="mt-2">
                 <p className="text-gray-500 mt-1 text-sm">{props?.product?.desc}</p>
               </div>
@@ -116,8 +99,6 @@ const ProductCard = (props) => {
 
             <div>
               <div className="flex gap-2 items-center   bg-inherit px-3 py-2.5 w-max rounded-lg">
-                {/* Decrement Button */}
-                {/* Increment Button */}
                 <button onClick={handleDecrement}
                   disabled={existingProduct}
                   type="button"
@@ -143,12 +124,16 @@ const ProductCard = (props) => {
                   disabled={existingProduct}
                   onClick={handleAddToCart} type="button"
                   className={`px-4 py-3 w-[45%] rounded-[10px] ${existingProduct ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ' bg-unique text-white'} text-sm font-semibold`}>
-                  {existingProduct ? 'Added' : 'Add to Cart'}
+                  {existingProduct  ? 'Added' : 'Add to Cart'}
                 </button>
                 <button type="button"
                   className="px-4 py-3 w-[45%] border  bg-unique text-white rounded-[10px] text-sm font-semibold">Buy
                   it now</button>
+                  <div className='w-full justify-center flex items-center'>
+               <p className='text-sm underline pb-1'><Link href="/home" className="text-unique">Back To Home</Link></p>
+                  </div>
               </div>
+              <ToastContainer />
             </div>
 
             <hr className="my-6 border-gray-300" />

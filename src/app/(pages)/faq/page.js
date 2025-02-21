@@ -2,7 +2,7 @@ import React from 'react'
 
 function page() {
   return (
-    <div className="max-w-screen-xl mt-24 mb-8 mx-auto px-5 bg-white min-h-sceen">
+    <div className="max-w-screen-xl mt-20 pb-4 mx-auto px-5 bg-gray-50 min-h-sceen">
 	<div className="flex flex-col items-center">
 		<h2 className="font-bold text-unique text-5xl mt-5 tracking-tight">
 			FAQ

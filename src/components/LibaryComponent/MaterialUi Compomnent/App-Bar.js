@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import { FiShoppingCart, FiUser, FiSearch } from "react-icons/fi";
+import { FiShoppingCart, FiUser, FiSearch,FiHeart } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { getCart } from "@/utils/reduxGlobalStates/ReduxStates";
 import { RxCross2 } from "react-icons/rx"
@@ -92,11 +92,17 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+            {/* Wishlist */}
+            <button onClick={()=> router.push('/shoppingcart')}  className="relative">
+              <FiHeart className="sm:text-[27px] text-[25px] text-gray-700 hover:text-orange-600" />
+              {cartState?.length > 0 ? <span className="absolute top-[-10px]   md:top-[-10px]  right-[-10px] text-white md:size-6 size-5 text-sm sm:mt-0 text-center rounded-full bg-orange-400">{cartState?.length}</span> : null} 
+            </button>
             {/* Shopping Cart */}
             <button onClick={()=> router.push('/shoppingcart')}  className="relative">
               <FiShoppingCart className="sm:text-[30px] text-[25px] text-gray-700 hover:text-orange-600" />
               {cartState?.length > 0 ? <span className="absolute top-[-10px]   md:top-[-10px]  right-[-10px] text-white md:size-6 size-5 text-sm sm:mt-0 text-center rounded-full bg-orange-400">{cartState?.length}</span> : null} 
             </button>
+           
           </div>
         </div>
         {searchBar ? (
