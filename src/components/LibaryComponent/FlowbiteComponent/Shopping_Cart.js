@@ -13,6 +13,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { supabase } from '@/lib/supabase'
+import { toast } from 'react-toastify'
+import useSession from '@/utils/UserExist/GetSession'
 import { useRouter } from 'next/navigation'
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { calculateTotalPrice } from '@/utils/CartCalculation';
@@ -20,20 +23,94 @@ import { addToCart, IncrementQunatity, DecrementQuantity,RemoveFromCart } from '
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 function Shopping_Cart() {
 const [RemoveCart, setRemoveCart] = useState(false)
-
+const session = useSession()
   const router = useRouter()
   const dispatch = useDispatch()
   const cart = getCart()
   const [subTotal, setSubTotal] = useState(0);
-  const cartIncrement = (id) => {
-    dispatch(IncrementQunatity(id))
-  }
-  const cartDerement = (id) => {
-    dispatch(DecrementQuantity(id))
-  }
-  const deleteCartItem = (id) => {
-    dispatch(RemoveFromCart(id))
-  }
+  const cartIncrement = async (id) => {
+    try {
+      // Find the item in the cart
+      const item = cart.find((item) => item.id === id);
+      if (!item) return;
+      const newQuantity = item.quantity + 1;
+
+      // Update quantity in Supabase
+      const { data, error } = await supabase
+        .from("cart")
+        .update({ quantity: newQuantity })
+        .eq("product_id", id)
+        .eq("user_id", session?.user?.id);
+
+      if (error) {
+        console.error("Error updating quantity:", error);
+        toast.error("Failed to update quantity");
+      } else {
+        // Update local Redux state
+        dispatch(IncrementQunatity(id));
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.toString());
+    }
+  };
+
+  // Updated Decrement Function with database update
+  const cartDerement = async (id) => {
+    try {
+      const item = cart.find((item) => item.id === id);
+      if (!item) return;
+      // Prevent quantity going below 1
+      if (item.quantity <= 1) return;
+      const newQuantity = item.quantity - 1;
+
+      const { data, error } = await supabase
+        .from("cart")
+        .update({ quantity: newQuantity })
+        .eq("product_id", id)
+        .eq("user_id", session?.user?.id);
+
+      if (error) {
+        console.error("Error updating quantity:", error);
+        toast.error("Failed to update quantity");
+      } else {
+        dispatch(DecrementQuantity(id));
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.toString());
+    }
+  };
+ 
+  const deleteCartItem = async (id) => {
+    if (!session?.user?.id) {
+      toast.error("User not logged in");
+      return;
+    }
+    try {
+      // Delete from Supabase cart table
+      const { data, error } = await supabase
+        .from("cart")
+        .delete()
+        // Assuming product_id is used for uniqueness; adjust column name if needed
+        .eq("product_id", id)
+        .eq("user_id", session.user.id);
+        
+      if (error) {
+        console.error("Error deleting cart item from database:", error);
+        toast.error("Failed to remove item from cart");
+        return;
+      }
+      // If deletion is successful, update Redux state
+      dispatch(RemoveFromCart(id));
+      toast.success("Item removed from cart successfully");
+      setRemoveCart(false)
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("An error occurred while removing the item");
+    }
+  };
+  
   useEffect(() => {
     setSubTotal(calculateTotalPrice(cart));
   }, [cart]);
@@ -86,12 +163,7 @@ const [RemoveCart, setRemoveCart] = useState(false)
                           <a href="#" className="text-base font-normal text-gray-900 hover:underline dark:text-white">{item?.ProductName}</a>
 
                           <div className="flex items-center gap-4">
-                            <button type="button" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white">
-                              <svg className="me-1.5 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                              </svg>
-                              Add to Favorites
-                            </button>
+                        
 
                             <button onClick={()=> setRemoveCart(true)} type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
                               <svg className="me-1.5 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -103,15 +175,15 @@ const [RemoveCart, setRemoveCart] = useState(false)
                           {RemoveCart ? (
               <div className="  overflow-y-auto overflow-x-hidden fixed flex   top-52 right-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                 <div className="relative p-4 w-full max-w-md h-full md:h-auto">
-                  <div className="relative p-4 text-center bg-white shadow-lg rounded-lg  dark:bg-gray-800 sm:p-5">
+                  <div className="relative p-4 text-center bg-gray-100 shadow-lg rounded-lg  dark:bg-gray-800 sm:p-5">
 
                     <svg className="text-[red] dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
                     <p className="mb-4  dark:text-gray-300">Are you sure you want to delete this item?</p>
                     <div className="flex justify-center items-center space-x-4">
-                      <button onClick={() => setRemoveCart(false)} className="py-2 border-[#ccc] px-3 text-sm font-medium text-white bg-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-white focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                      <button onClick={() => setRemoveCart(false)} className="py-2 border-[#ccc]  px-3 text-sm font-medium  bg-gray-300 text-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300  focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         No cancel
                       </button>
-                      <button onClick={()=>deleteCartItem(item?.id) }  className="py-2 px-3 text-sm font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                      <button onClick={()=>deleteCartItem(item?.id) }  className="py-2 px-3 text-sm font-medium text-center text-black bg-gray-300 rounded-lg hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                         Yes, I'm sure
                       </button>
                     </div>

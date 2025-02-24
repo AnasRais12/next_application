@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { CartReducer } from "./features/CartReducer/CartSlice";
-import { counterReducer } from "./features/counter/CounterSlice";
+import { WishListReducer } from "./features/wishList/WishList";
 export const store = configureStore({
     reducer:{
-        lime:counterReducer,
-        cartItem: CartReducer 
+        cartItem: CartReducer ,
+        wishListItem: WishListReducer
     },
 })

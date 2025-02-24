@@ -2,6 +2,7 @@
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { ToastContainer } from 'react-toastify';
 import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 import './globals.css';
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
           <SessionProvider>
           {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
             {children}
+          <ToastContainer autoClose={1000} />
           {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />}
 
           </SessionProvider>

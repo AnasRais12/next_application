@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import CSpinner from '@/components/CSpinner';
+import useSession from '@/utils/UserExist/GetSession';
+import { supabase } from '@/lib/supabase';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { addToCart, IncrementQunatity, DecrementQuantity } from '@/app/store/features/CartReducer/CartSlice';
-import { CardsData } from '@/utils/ProductsDetailPages/ProductData';
 import { useDispatch, useSelector, } from 'react-redux';
 import Link from 'next/link';
 const ProductCard = (props) => {
-  console.log("Props", props);
   const [quantity, setQuantity] = useState(props.product?.quantity || 1);
+  const session = useSession()
   const [loading, setloading] = useState(false)
   const dispatch = useDispatch();
   const cart = useSelector((state => state?.cartItem?.cart) || "")
-
   const existingProduct = cart.find((item) => item.id === props?.product?.id);
   console.log("Exist Prod", existingProduct)
   const handleIncrement = () => {
@@ -25,28 +25,48 @@ const ProductCard = (props) => {
     }
   }
 
-  const handleAddToCart = () => {
-  try {
-    setloading(true)
+  const handleAddToCart = async () => {
+    try {
+      setloading(true)
       const productCart = {
-        id: props.product?.id,
+        id: props?.product?.id,
         image: props?.product?.image,
         ProductName: props?.product?.ProductName,
         Price: props?.product?.Price,
         desc: props?.product?.desc,
         quantity,
       }
-      dispatch(addToCart(productCart));
-      toast.success('Added to cart successfully!', { autoClose: 1000 }); 
-  } catch (error) {
-    toast.warning(error, { autoClose: 1000 }); 
-    
-  }
-  finally{    
-    setloading(false)
-  }
+      console.log("ProductCart", productCart) 
+      const { data, error } = await supabase
+        .from("cart")
+        .insert([
+          {
+            user_id: session?.user?.id,
+            product_id: props?.product?.id,
+            product_name: props?.product?.ProductName,
+            product_price: props?.product?.Price,
+            product_image: props?.product?.image,
+            quantity: quantity,
+          },
+        ]);
 
-  };
+      if (error) {
+        console.error("Error saving cart item to database:", error);
+        toast.error("Failed to add item to cart");
+        return;
+      }
+
+      // Update local Redux state if database insertion is successful
+      dispatch(addToCart(productCart));
+      toast.success("Added to cart successfully!");
+    }
+    catch (error) {
+      toast.warning(error.toString());
+    } finally {
+      setloading(false);
+
+    };
+  }
   console.log("Cart Product Page wala ", cart)
   console.log("Cart", cart);
 
@@ -122,18 +142,18 @@ const ProductCard = (props) => {
               <div className="mt-4 flex flex-wrap gap-4">
                 <button
                   disabled={existingProduct}
-                  onClick={handleAddToCart} type="button"
+                  onClick={ handleAddToCart} type="button"
                   className={`px-4 py-3 w-[45%] rounded-[10px] ${existingProduct ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ' bg-unique text-white'} text-sm font-semibold`}>
-                  {existingProduct  ? 'Added' : 'Add to Cart'}
+                  {loading ? <CSpinner /> : existingProduct ? 'Added' : 'Add to Cart'}
+
                 </button>
                 <button type="button"
                   className="px-4 py-3 w-[45%] border  bg-unique text-white rounded-[10px] text-sm font-semibold">Buy
                   it now</button>
-                  <div className='w-full justify-center flex items-center'>
-               <p className='text-sm underline pb-1'><Link href="/home" className="text-unique">Back To Home</Link></p>
-                  </div>
+                <div className='w-full justify-center flex items-center'>
+                  <p className='text-sm underline pb-1'><Link href="/home" className="text-unique">Back To Home</Link></p>
+                </div>
               </div>
-              <ToastContainer />
             </div>
 
             <hr className="my-6 border-gray-300" />
