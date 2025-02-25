@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import CSpinner from '@/components/CSpinner';
 import useSession from '@/utils/UserExist/GetSession';
+import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { supabase } from '@/lib/supabase';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { addToCart, IncrementQunatity, DecrementQuantity } from '@/app/store/features/CartReducer/CartSlice';
 import { useDispatch, useSelector, } from 'react-redux';
 import Link from 'next/link';
 const ProductCard = (props) => {
+  const { data } = props
+  console.log(data, "ye raha mera product")
   const [quantity, setQuantity] = useState(props.product?.quantity || 1);
   const session = useSession()
   const [loading, setloading] = useState(false)
   const dispatch = useDispatch();
-  const cart = useSelector((state => state?.cartItem?.cart) || "")
-  const existingProduct = cart.find((item) => item.id === props?.product?.id);
-  console.log("Exist Prod", existingProduct)
+  const cart = getCart()
+  const existingProduct = cart.find((item) => item.product_id === data?.product_id);
   const handleIncrement = () => {
     setQuantity(quantity + 1)
   }
@@ -29,23 +31,23 @@ const ProductCard = (props) => {
     try {
       setloading(true)
       const productCart = {
-        id: props?.product?.id,
-        image: props?.product?.image,
-        product_name: props?.product?.product_name,
-        product_price: props?.product?.product_price,
-        desc: props?.product?.desc,
+        product_id: data?.product_id,
+        product_image: data?.product_image,
+        product_name: data?.product_name,
+        product_price: data?.product_price,
+        desc: data?.desc,
         quantity,
       }
-      console.log("ProductCart", productCart) 
-      const { data, error } = await supabase
+      console.log("ProductCart", productCart)
+      const { dataItems, error } = await supabase
         .from("cart")
         .insert([
           {
             user_id: session?.user?.id,
-            product_id: props?.product?.id,
-            product_name: props?.product?.product_name,
-            product_product_price: props?.product?.product_price,
-            product_image: props?.product?.image,
+            product_id: data?.product_id,
+            product_name: data?.product_name,
+            product_price: data?.product_price,
+            product_image: data?.image,
             quantity: quantity,
           },
         ]);
@@ -79,7 +81,7 @@ const ProductCard = (props) => {
           <div className="w-full lg:sticky top-0">
             <div className="flex flex-col gap-4">
               <div className="bg-white shadow p-2">
-                <img src={`/${props.product.image}`} alt="Product"
+                <img src={`/${data?.product_image}`} alt="Product"
                   className="w-full  aspect-[11/8] object-cover object-top" />
               </div>
 
@@ -105,13 +107,13 @@ const ProductCard = (props) => {
 
           <div className="w-full lg:pt-16">
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800">{props?.product?.product_name}</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800">{data?.product_name}</h3>
               <div className="mt-2">
-                <p className="text-gray-500 mt-1 text-sm">{props?.product?.desc}</p>
+                <p className="text-gray-500 mt-1 text-sm">{data?.desc}</p>
               </div>
             </div>
             <div className="flex items-center flex-wrap gap-2 mt-4">
-              <h4 className="text-unique text-2xl sm:text-3xl font-bold">${props?.product?.product_price}</h4>
+              <h4 className="text-unique text-2xl sm:text-3xl font-bold">${data?.product_price}</h4>
             </div>
 
 
@@ -142,7 +144,7 @@ const ProductCard = (props) => {
               <div className="mt-4 flex flex-wrap gap-4">
                 <button
                   disabled={existingProduct}
-                  onClick={ handleAddToCart} type="button"
+                  onClick={handleAddToCart} type="button"
                   className={`px-4 py-3 w-[45%] rounded-[10px] ${existingProduct ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ' bg-unique text-white'} text-sm font-semibold`}>
                   {loading ? <CSpinner /> : existingProduct ? 'Added' : 'Add to Cart'}
 

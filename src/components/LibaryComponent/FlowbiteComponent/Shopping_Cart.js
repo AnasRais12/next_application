@@ -1,121 +1,68 @@
-// import React from 'react'
-// import { addToCart } from '@/app/store/features/CartReducer/CartSlice'
-// import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
-// import { calculatesubTotal } from '@/utils/CartCalculation';
-// import { useDispatch,} from 'react-redux'
-// function Shopping_Cart() {
-//   const dispatch = useDispatch();
-//   const cart = getCart()
 
-//   const handleAddToCart = (product) => {
-//     dispatch(addToCart(product));
-//   };
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { supabase } from '@/lib/supabase'
+import { cartIncrement,cartDecrement,deleteCartItem } from '@/helper/cartHelpers'
 import { toast } from 'react-toastify'
 import useSession from '@/utils/UserExist/GetSession'
 import { useRouter } from 'next/navigation'
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { calculateTotalproduct_price } from '@/utils/CartCalculation';
-import { addToCart, IncrementQunatity, DecrementQuantity,RemoveFromCart } from '@/app/store/features/CartReducer/CartSlice';
+import { IncrementQunatity, DecrementQuantity, RemoveFromCart } from '@/app/store/features/CartReducer/CartSlice';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import CSpinner from '@/components/CSpinner'
 function Shopping_Cart() {
-const [RemoveCart, setRemoveCart] = useState(false)
-const session = useSession()
+
+  const [RemoveCart, setRemoveCart] = useState(false)
+  const session = useSession()
   const router = useRouter()
+  const [crossButtonLoading, setCrossButtonLoading] = useState({});
   const dispatch = useDispatch()
   const cart = getCart()
   const [subTotal, setSubTotal] = useState(0);
-  const cartIncrement = async (id) => {
-    try {
-      // Find the item in the cart
-      const item = cart.find((item) => item.id === id);
-      if (!item) return;
-      const newQuantity = item.quantity + 1;
-
-      // Update quantity in Supabase
-      const { data, error } = await supabase
-        .from("cart")
-        .update({ quantity: newQuantity })
-        .eq("product_id", id)
-        .eq("user_id", session?.user?.id);
-
-      if (error) {
-        console.error("Error updating quantity:", error);
-        toast.error("Failed to update quantity");
-      } else {
-        // Update local Redux state
-        dispatch(IncrementQunatity(id));
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error(err.toString());
-    }
-  };
-
-  // Updated Decrement Function with database update
-  const cartDerement = async (id) => {
-    try {
-      const item = cart.find((item) => item.id === id);
-      if (!item) return;
-      // Prevent quantity going below 1
-      if (item.quantity <= 1) return;
-      const newQuantity = item.quantity - 1;
-
-      const { data, error } = await supabase
-        .from("cart")
-        .update({ quantity: newQuantity })
-        .eq("product_id", id)
-        .eq("user_id", session?.user?.id);
-
-      if (error) {
-        console.error("Error updating quantity:", error);
-        toast.error("Failed to update quantity");
-      } else {
-        dispatch(DecrementQuantity(id));
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error(err.toString());
-    }
-  };
- 
-  const deleteCartItem = async (id) => {
-    if (!session?.user?.id) {
-      toast.error("User not logged in");
-      return;
-    }
-    try {
-      // Delete from Supabase cart table
-      const { data, error } = await supabase
-        .from("cart")
-        .delete()
-        // Assuming product_id is used for uniqueness; adjust column name if needed
-        .eq("product_id", id)
-        .eq("user_id", session.user.id);
-        
-      if (error) {
-        console.error("Error deleting cart item from database:", error);
-        toast.error("Failed to remove item from cart");
-        return;
-      }
-      // If deletion is successful, update Redux state
-      dispatch(RemoveFromCart(id));
-      toast.success("Item removed from cart successfully");
-      setRemoveCart(false)
-    } catch (err) {
-      console.error("Delete error:", err);
-      toast.error("An error occurred while removing the item");
-    }
-  };
-  
   useEffect(() => {
     setSubTotal(calculateTotalproduct_price(cart));
   }, [cart]);
-
   const Total = subTotal + 99
+
+ 
+
+  // const deleteCartItem = async (id) => {
+  //   if (!session?.user?.id) {
+  //     toast.error("User not logged in");
+  //     return;
+  //   }
+
+  //   try {
+  //     // Delete from Supabase cart table
+  //     setCrossButtonLoading((prev) => ({ ...prev, [id]: true })); // S
+  //     const { data, error } = await supabase
+  //       .from("cart")
+  //       .delete()
+  //       // Assuming product_id is used for uniqueness; adjust column name if needed
+  //       .eq("product_id", id)
+  //       .eq("user_id", session.user.id);
+
+  //     if (error) {
+  //       console.error("Error deleting cart item from database:", error);
+  //       toast.error("Failed to remove item from cart");
+  //       return;
+  //     }
+  //     // If deletion is successful, update Redux state
+  //     dispatch(RemoveFromCart(id));
+  //     toast.success("Item removed from cart successfully");
+  //     setRemoveCart(false)
+  //   } catch (err) {
+
+  //     toast.error("An error occurred while removing the item");
+  //   }
+  //   finally {
+  //     setCrossButtonLoading((prev) => ({ ...prev, [id]: false })); // S
+  //   }
+  // };
+
+ 
 
 
   return (
@@ -138,7 +85,7 @@ const session = useSession()
 
                         <div className="flex  items-center justify-between md:order-3 md:justify-end">
                           <div className="flex gap-3 items-center">
-                            <button onClick={() => cartDerement(item?.id)}
+                            <button onClick={() => cartDecrement(item?.product_id, cart, dispatch, supabase, DecrementQuantity, session?.user?.id)}
                               type="button"
                               className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-orange-600  focus:outline-none  transition duration-200 ease-in-out"
                             >
@@ -147,7 +94,7 @@ const session = useSession()
                             </button>
                             <p>{item?.quantity}</p>
                             <button
-                              onClick={() => cartIncrement(item?.id)}
+                              onClick={() => cartIncrement(item?.product_id, cart, dispatch, supabase, IncrementQunatity, session?.user?.id)}
                               type="button"
                               className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200 ease-in-out"
                             >
@@ -163,9 +110,9 @@ const session = useSession()
                           <a href="#" className="text-base font-normal text-gray-900 hover:underline dark:text-white">{item?.product_name}</a>
 
                           <div className="flex items-center gap-4">
-                        
 
-                            <button onClick={()=> setRemoveCart(true)} type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
+
+                            <button onClick={() => setRemoveCart(true)} type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
                               <svg className="me-1.5 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
                               </svg>
@@ -173,24 +120,24 @@ const session = useSession()
                             </button>
                           </div>
                           {RemoveCart ? (
-              <div className="  overflow-y-auto overflow-x-hidden fixed flex   top-52 right-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-                <div className="relative p-4 w-full max-w-md h-full md:h-auto">
-                  <div className="relative p-4 text-center bg-gray-100 shadow-lg rounded-lg  dark:bg-gray-800 sm:p-5">
+                            <div className="  overflow-y-auto overflow-x-hidden fixed flex   top-52 right-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                              <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+                                <div className="relative p-4 text-center bg-gray-100 shadow-lg rounded-lg  dark:bg-gray-800 sm:p-5">
 
-                    <svg className="text-[red] dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
-                    <p className="mb-4  dark:text-gray-300">Are you sure you want to delete this item?</p>
-                    <div className="flex justify-center items-center space-x-4">
-                      <button onClick={() => setRemoveCart(false)} className="py-2 border-[#ccc]  px-3 text-sm font-medium  bg-gray-300 text-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300  focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        No cancel
-                      </button>
-                      <button onClick={()=>deleteCartItem(item?.id) }  className="py-2 px-3 text-sm font-medium text-center text-black bg-gray-300 rounded-lg hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
-                        Yes, I'm sure
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : ''}
+                                  <svg className="text-[red] dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
+                                  <p className="mb-4  dark:text-gray-300">Are you sure you want to delete this item?</p>
+                                  <div className="flex justify-center items-center space-x-4">
+                                    <button onClick={() => setRemoveCart(false)} className="py-2 border-[#ccc]  px-3 text-sm font-medium  bg-gray-300 text-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300  focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                      No cancel
+                                    </button>
+                                    <button    onClick={() => deleteCartItem(item?.product_id, supabase, session, dispatch, RemoveFromCart, toast, setCrossButtonLoading, setRemoveCart)} className="py-2 px-3 text-sm font-medium text-center text-black bg-gray-300 rounded-lg hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                      {crossButtonLoading[item?.product_id] ? <CSpinner /> : 'Yes I`m sure'}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : ''}
                         </div>
                       </div>
                     </div>
@@ -238,7 +185,7 @@ const session = useSession()
 
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
-                    <p onClick={()=> router.push('/home')}  className=" cursor-pointer inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+                    <p onClick={() => router.push('/home')} className=" cursor-pointer inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
                       Continue Shopping
                       <svg className="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 12H5m14 0-4 4m4-4-4-4" />

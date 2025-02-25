@@ -14,19 +14,19 @@ import { useEffect, useState } from "react";
 export default function Wishlist({ setWishlistModal }) {
   const wishlistItems = getWishList()
   const session = useSession()
-  const [loading, setloading] = useState({})
+  const [loadingItems, setLoadingItems] = useState({}); 
+  const [crossButtonLoading, setCrossButtonLoading] = useState({}); 
+
   const dispatch = useDispatch()
 
   const wishListToCart = async (cartToWishList) => {
-    const itemId = cartToWishList?.id;
-    setloading((prev) => ({ ...prev, [itemId]: true }));
     try {
-      setloading(true)
+      setLoadingItems((prev) => ({ ...prev, [cartToWishList.product_id]: true })); // S
       const wishListProduct = {
-        id: cartToWishList?.id,
+        product_id: cartToWishList?.product_id,
         image: cartToWishList?.product_image,
         product_name: cartToWishList?.product_name,
-        product_price: cartToWishList?.product_product_price,
+        product_price: cartToWishList?.product_price,
         desc: cartToWishList?.desc,
         quantity: 1
       }
@@ -34,12 +34,12 @@ export default function Wishlist({ setWishlistModal }) {
         .from("cart")
         .insert([
           {
-            user_id: cartToWishList?.user_id,
+            user_id: session?.user?.id || cartToWishList?.user_id,
             product_id: cartToWishList?.product_id,
             product_name: cartToWishList?.product_name,
-            product_product_price: cartToWishList?.product_product_price,
+            product_price: cartToWishList?.product_price,
             product_image: cartToWishList?.product_image,
-            quantity: cartToWishList?.quantity,
+            quantity: cartToWishList?.quantity || 1,
           },
         ]);
 
@@ -52,13 +52,13 @@ export default function Wishlist({ setWishlistModal }) {
         .from("wishlist")
         .delete()
         .eq("product_id", cartToWishList?.product_id)
-        .eq("user_id", cartToWishList?.user_id);
+        .eq("user_id", session?.user?.id || cartToWishList?.user_id);
 
       if (errordeleteFromWishlist) {
         console.error("Error deleting wishlist item:", error);
         toast.error("Failed to remove item from backend");
       } else {
-        dispatch(RemoveFromWishList(cartToWishList?.id));
+        dispatch(RemoveFromWishList(cartToWishList?.product_id));
         dispatch(addToCart(wishListProduct));
         setWishlistModal(false)
         toast.success("Item added to Cart");
@@ -69,7 +69,7 @@ export default function Wishlist({ setWishlistModal }) {
 
     }
     finally {
-      setloading((prev) => ({ ...prev, [itemId]: false }));
+      setLoadingItems((prev) => ({ ...prev, [cartToWishList.product_id]: false }));
     }
   };
   const deleteWishListItem = async (id) => {
@@ -79,11 +79,12 @@ export default function Wishlist({ setWishlistModal }) {
     }
     try {
       // Delete from Supabase wishlist table
-      const { data, error } = await supabase
+      setCrossButtonLoading((prev) => ({ ...prev, [id]: true })); // S
+      const {  error } = await supabase
         .from("wishlist")
         .delete()
         .eq("product_id", id)
-        .eq("user_id", session.user.id);
+        .eq("user_id", session?.user.id);
 
       if (error) {
         console.error("Error deleting wishlist item:", error);
@@ -97,9 +98,11 @@ export default function Wishlist({ setWishlistModal }) {
       console.error("Delete error:", err);
       toast.error("Error removing item");
     }
+    finally {
+      setCrossButtonLoading((prev) => ({ ...prev, [id]: false })); // S
+    }
   };
 
-console.log("_____________________>>>>>>>",loading)
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50">
@@ -149,7 +152,7 @@ console.log("_____________________>>>>>>>",loading)
                     onClick={() => wishListToCart(item)}
                     className="flex items-center bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-2 py-1 rounded"
                   >
-                    {loading[item.id] ? <CSpinner /> : (
+                    {loadingItems[item?.product_id] ? <CSpinner /> : (
 
                       <>
                         <FiShoppingCart className="mr-1" size={16} />
@@ -158,13 +161,13 @@ console.log("_____________________>>>>>>>",loading)
 
                     )}
                   </button>
-                  <button
+                  <button onClick={() => deleteWishListItem(item?.product_id)}
 
                     className="flex items-center  text-[red] hover:text-[#ff3737] text-sm font-medium px-2 py-1 rounded"
                   >
-                    <RxCross2
-                      onClick={() => deleteWishListItem(item?.id)}
-                      size={22} />
+                    {crossButtonLoading[item?.product_id] ? <CSpinner /> : <RxCross2 size={22} />}
+
+
                   </button>
                 </div>
               </li>

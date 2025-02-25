@@ -16,7 +16,7 @@ const WishListSlice = createSlice({
 
         RemoveFromWishList: (state,action) => {
             const wishListId = action.payload
-            state.wishList = state.wishList.filter((items)=> items.id !== wishListId)
+            state.wishList = state.wishList.filter((items)=> items.product_id !== wishListId)
           },
           setWishlist: (state, action) => {                      // supabase se wishlisst ka data yahan saved horaha hai 
             state.wishList = action.payload; // Backend se data update

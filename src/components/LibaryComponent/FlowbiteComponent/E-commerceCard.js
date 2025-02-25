@@ -10,10 +10,12 @@ import { useDispatch } from 'react-redux';
 import { FaHeart } from "react-icons/fa";
 import { FiShoppingCart, FiUser, FiSearch, FiHeart } from "react-icons/fi";
 import { useRouter } from 'next/navigation';
+import CSpinner from '@/components/CSpinner';
 
 function E_commerceCard() {
     const session = useSession()
     const dispatch = useDispatch()
+    const [loadingItems, setLoadingItems] = useState({}); // Individual loading state
     const wishlistItems = getWishList()
     const allProducts = Object.values(CardsData).flat();
     const router = useRouter()
@@ -22,18 +24,18 @@ function E_commerceCard() {
     }
     console.log("session!", session)
     const handleAddToWishlist = async (wishListProduct) => {
-        // console.log("WISHLISTPRODUCTSS!", wishListProduct)
         try {
             const userId = session?.user?.id;
+            setLoadingItems((prev) => ({ ...prev, [wishListProduct.product_id]: true })); // S
             const { data, error } = await supabase
                 .from('wishlist')
                 .insert([
                     {
                         user_id: userId, // Ensure user is logged in
-                        product_id: wishListProduct.id,
-                        product_name: wishListProduct.product_name,
-                        product_price: wishListProduct.product_price,
-                        product_image: wishListProduct.image,
+                        product_id: wishListProduct?.product_id,
+                        product_name: wishListProduct?.product_name,
+                        product_price: wishListProduct?.product_price,
+                        product_image: wishListProduct?.image,
                         // Optionally, include description or quantity if needed
                     }
                 ]);
@@ -43,7 +45,7 @@ function E_commerceCard() {
                 toast.error("Failed to save wishlist item");
             } else {
                 const productWishlist = {
-                    id: wishListProduct?.id,
+                    product_id: wishListProduct?.product_id,
                     image: wishListProduct?.image,
                     product_name: wishListProduct?.product_name,
                     desc: wishListProduct?.desc,
@@ -51,19 +53,19 @@ function E_commerceCard() {
                 }
                 dispatch(addtoWishList(productWishlist));
                 toast.success('Added to Wishlist');
-                // console.log("dataaa!!!!!!", data)
 
             }
         } catch (error) {
             toast.warning(error.toString());
 
         }
+        finally {
+            setLoadingItems((prev) => ({ ...prev, [wishListProduct.product_id]: false }));
+        }
 
 
     };
 
-
-    // console.log("Wishlistitemesss??????", wishlistItems)
 
 
     return (
@@ -71,7 +73,7 @@ function E_commerceCard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 px-4 md:px-6 pb-8 py-6 justify-items-center">
                 {allProducts.map((items) => {
                     // Check if the item is already in the wishlist
-                    const isInWishlist = wishlistItems.some(wishlist => wishlist.id === items.id);
+                    const isInWishlist = wishlistItems.some(wishlist => wishlist?.product_id === items?.product_id);
                     return (
                         <div key={items.id} className="w-full relative shadow-orange-500 border-2 hover:shadow-lg border-gray-200 rounded-lg">
                             <div className='flex justify-center mb-4 border-b-2 bg-gray-50'>
@@ -84,7 +86,7 @@ function E_commerceCard() {
                             <div className="pb-3">
                                 <div className='border-b-2 pb-2 flex justify-between items-center text-left px-2 pr-4 gap-3'>
                                     <h5
-                                        onClick={() => items.product_name.length > 20 ? handleShopNow(items.id) : null}
+                                        onClick={() => items.product_name.length > 20 ? handleShopNow(items.product_id) : null}
                                         className="xl:text-xl text-xl lg:text-[22px] sm:text-[17px] md:text-[20px] text-[15px] font-normal tracking-tight cursor-pointer text-gray-900 dark:text-white"
                                     >
                                         {items.product_name.length > 20 ? items.product_name.slice(0, 20) + "..." : items.product_name}
@@ -97,14 +99,14 @@ function E_commerceCard() {
                                             : "text-[25px] text-gray-300 hover:text-orange-400"
                                         }
                                     >
-                                        <FaHeart />
+                                        {loadingItems[items.product_id] ? <CSpinner /> : <FaHeart />}
                                     </button>
                                 </div>
 
                                 <div className="flex px-4 mt-3 gap-3 items-center justify-between">
                                     <span className="text-2xl font-bold text-gray-900 dark:text-white">${items.product_price}</span>
                                     <button
-                                        onClick={() => handleShopNow(items.id)}
+                                        onClick={() => handleShopNow(items.product_id)}
                                         className="text-white bg-unique hover:bg-unique focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:px-5 px-3 sm:py-2.5 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     >
                                         Shop Now
