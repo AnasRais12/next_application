@@ -25,8 +25,8 @@ export default function Wishlist({ setWishlistModal }) {
       const wishListProduct = {
         id: cartToWishList?.id,
         image: cartToWishList?.product_image,
-        ProductName: cartToWishList?.product_name,
-        Price: cartToWishList?.product_price,
+        product_name: cartToWishList?.product_name,
+        product_price: cartToWishList?.product_product_price,
         desc: cartToWishList?.desc,
         quantity: 1
       }
@@ -37,7 +37,7 @@ export default function Wishlist({ setWishlistModal }) {
             user_id: cartToWishList?.user_id,
             product_id: cartToWishList?.product_id,
             product_name: cartToWishList?.product_name,
-            product_price: cartToWishList?.product_price,
+            product_product_price: cartToWishList?.product_product_price,
             product_image: cartToWishList?.product_image,
             quantity: cartToWishList?.quantity,
           },
@@ -139,7 +139,7 @@ console.log("_____________________>>>>>>>",loading)
                     <h3 className="text-sm font-medium text-gray-800">
                       {item.product_name}
                     </h3>
-                    <p className="text-gray-600 text-md">${item.product_price}</p>
+                    <p className="text-gray-600 text-md">${item?.product_price}</p>
                   </div>
                 </div>
 

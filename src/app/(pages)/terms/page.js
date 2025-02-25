@@ -40,8 +40,8 @@ function page() {
 
   <h2 className="text-2xl font-semibold text-gray-800">4. Pricing and Availability</h2>
   <p className="text-gray-600">
-    All prices are displayed on our website in the relevant currency and include applicable taxes unless
-    stated otherwise. We strive to ensure that all prices and product information are accurate; however,
+    All product_prices are displayed on our website in the relevant currency and include applicable taxes unless
+    stated otherwise. We strive to ensure that all product_prices and product information are accurate; however,
     errors may occur. In such cases, we reserve the right to cancel or modify orders with incorrect pricing.
   </p>
 
@@ -73,7 +73,7 @@ function page() {
 
   <h2 className="text-2xl font-semibold text-gray-800">8. Product Information</h2>
   <p className="text-gray-600">
-    We make every effort to display our products accurately, including their descriptions, prices, and
+    We make every effort to display our products accurately, including their descriptions, product_prices, and
     images. However, due to differences in device settings and other factors, we cannot guarantee that
     colors or other details will appear exactly as shown on your device.
   </p>

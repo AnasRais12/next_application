@@ -1,3 +1,3 @@
-export const calculateTotalPrice = (cart) => {
-    return cart.reduce((total, item) => total + item.Price * item.quantity, 0);
+export const calculateTotalproduct_price = (cart) => {
+    return cart.reduce((total, item) => total + item.product_price * item.quantity, 0);
   };

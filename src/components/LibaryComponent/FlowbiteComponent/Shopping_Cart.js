@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import useSession from '@/utils/UserExist/GetSession'
 import { useRouter } from 'next/navigation'
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
-import { calculateTotalPrice } from '@/utils/CartCalculation';
+import { calculateTotalproduct_price } from '@/utils/CartCalculation';
 import { addToCart, IncrementQunatity, DecrementQuantity,RemoveFromCart } from '@/app/store/features/CartReducer/CartSlice';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 function Shopping_Cart() {
@@ -112,7 +112,7 @@ const session = useSession()
   };
   
   useEffect(() => {
-    setSubTotal(calculateTotalPrice(cart));
+    setSubTotal(calculateTotalproduct_price(cart));
   }, [cart]);
 
   const Total = subTotal + 99

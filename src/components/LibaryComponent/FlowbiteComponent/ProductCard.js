@@ -31,8 +31,8 @@ const ProductCard = (props) => {
       const productCart = {
         id: props?.product?.id,
         image: props?.product?.image,
-        ProductName: props?.product?.ProductName,
-        Price: props?.product?.Price,
+        product_name: props?.product?.product_name,
+        product_price: props?.product?.product_price,
         desc: props?.product?.desc,
         quantity,
       }
@@ -43,8 +43,8 @@ const ProductCard = (props) => {
           {
             user_id: session?.user?.id,
             product_id: props?.product?.id,
-            product_name: props?.product?.ProductName,
-            product_price: props?.product?.Price,
+            product_name: props?.product?.product_name,
+            product_product_price: props?.product?.product_price,
             product_image: props?.product?.image,
             quantity: quantity,
           },
@@ -105,13 +105,13 @@ const ProductCard = (props) => {
 
           <div className="w-full lg:pt-16">
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800">{props?.product?.ProductName}</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800">{props?.product?.product_name}</h3>
               <div className="mt-2">
                 <p className="text-gray-500 mt-1 text-sm">{props?.product?.desc}</p>
               </div>
             </div>
             <div className="flex items-center flex-wrap gap-2 mt-4">
-              <h4 className="text-unique text-2xl sm:text-3xl font-bold">${props?.product?.Price}</h4>
+              <h4 className="text-unique text-2xl sm:text-3xl font-bold">${props?.product?.product_price}</h4>
             </div>
 
 

@@ -51,7 +51,7 @@ function Page() {
       <section className="bg-gray-50 py-12 px-4">
         <h2 className="text-3xl font-semibold text-center text-gray-800">Our Commitment</h2>
         <p className="mt-6 text-lg text-center text-gray-600 max-w-3xl mx-auto">
-          We believe in delivering quality products at the best prices, ensuring customer satisfaction and trust in every purchase.
+          We believe in delivering quality products at the best product_prices, ensuring customer satisfaction and trust in every purchase.
         </p>
       </section>
 
@@ -64,7 +64,7 @@ function Page() {
             <h3 className="mt-4 font-semibold">- Customer A</h3>
           </div>
           <div className="p-6 shadow-xl rounded-lg bg-gray-50 hover:bg-gray-200 transition duration-300">
-            <p className="italic">"Great customer support and quality products at affordable prices."</p>
+            <p className="italic">"Great customer support and quality products at affordable product_prices."</p>
             <h3 className="mt-4 font-semibold">- Customer B</h3>
           </div>
           <div className="p-6 shadow-xl rounded-lg bg-gray-50 hover:bg-gray-200 transition duration-300">

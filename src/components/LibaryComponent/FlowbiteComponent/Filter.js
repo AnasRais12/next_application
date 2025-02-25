@@ -44,9 +44,9 @@ const ProductFilter = () => {
 const FilterOptions = () => (
   <div>
     <h2 className="text-lg font-bold mb-3">Filters</h2>
-    {/* Price Range */}
+    {/* product_price Range */}
     <div className="mb-4">
-      <label className="font-semibold">Price Range</label>
+      <label className="font-semibold">product_price Range</label>
       <select className="w-full border p-2 rounded mt-1">
         <option>Under ₹500</option>
         <option>₹500 - ₹1000</option>
