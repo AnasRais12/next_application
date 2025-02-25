@@ -40,11 +40,14 @@ const CartSlice = createSlice({
     RemoveFromCart: (state,action) => {
       const itemId = action.payload
       state.cart = state.cart.filter((items)=> items.id !== itemId)
-    }
+    },
+    setCartlist: (state, action) => {                      // supabase se wishlisst ka data yahan saved horaha hai 
+      state.cart = action.payload; // Backend se data update
+  }
   }
 });
 
-export const { addToCart,IncrementQunatity,DecrementQuantity,RemoveFromCart } = CartSlice.actions;
+export const { addToCart,IncrementQunatity,DecrementQuantity,RemoveFromCart,setCartlist } = CartSlice.actions;
 export const CartReducer = CartSlice.reducer;
 // import slice
 // create intial state

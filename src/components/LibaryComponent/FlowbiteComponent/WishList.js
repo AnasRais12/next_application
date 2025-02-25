@@ -14,33 +14,62 @@ import { useEffect, useState } from "react";
 export default function Wishlist({ setWishlistModal }) {
   const wishlistItems = getWishList()
   const session = useSession()
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState({})
   const dispatch = useDispatch()
 
-  const wishListToCart = (cartToWishList) => {
-    console.log("CARTTOWISHLIST", cartToWishList)
-
+  const wishListToCart = async (cartToWishList) => {
+    const itemId = cartToWishList?.id;
+    setloading((prev) => ({ ...prev, [itemId]: true }));
     try {
       setloading(true)
       const wishListProduct = {
         id: cartToWishList?.id,
-        image: cartToWishList?.image,
-        ProductName: cartToWishList?.ProductName,
-        Price: cartToWishList?.Price,
+        image: cartToWishList?.product_image,
+        ProductName: cartToWishList?.product_name,
+        Price: cartToWishList?.product_price,
         desc: cartToWishList?.desc,
         quantity: 1
       }
-      dispatch(addToCart(wishListProduct));
-      dispatch(RemoveFromWishList(cartToWishList?.id))
-      toast.success('Added to cart successfully!');
-      setWishlistModal(false)
+      const { data, error } = await supabase
+        .from("cart")
+        .insert([
+          {
+            user_id: cartToWishList?.user_id,
+            product_id: cartToWishList?.product_id,
+            product_name: cartToWishList?.product_name,
+            product_price: cartToWishList?.product_price,
+            product_image: cartToWishList?.product_image,
+            quantity: cartToWishList?.quantity,
+          },
+        ]);
+
+      if (error) {
+        console.error("Error saving cart item to database:", error);
+        toast.error("Failed to add item to cart");
+        return;
+      }
+      const { deleteFromWishlist, errordeleteFromWishlist } = await supabase
+        .from("wishlist")
+        .delete()
+        .eq("product_id", cartToWishList?.product_id)
+        .eq("user_id", cartToWishList?.user_id);
+
+      if (errordeleteFromWishlist) {
+        console.error("Error deleting wishlist item:", error);
+        toast.error("Failed to remove item from backend");
+      } else {
+        dispatch(RemoveFromWishList(cartToWishList?.id));
+        dispatch(addToCart(wishListProduct));
+        setWishlistModal(false)
+        toast.success("Item added to Cart");
+      }
 
     } catch (error) {
       toast.warning(error);
 
     }
     finally {
-      setloading(false)
+      setloading((prev) => ({ ...prev, [itemId]: false }));
     }
   };
   const deleteWishListItem = async (id) => {
@@ -70,6 +99,7 @@ export default function Wishlist({ setWishlistModal }) {
     }
   };
 
+console.log("_____________________>>>>>>>",loading)
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50">
@@ -99,17 +129,17 @@ export default function Wishlist({ setWishlistModal }) {
                 <div className="flex items-center">
                   {/* Product Image */}
                   <img
-                    src={`/${item.image}`}
-                    alt={item.ProductName}
+                    src={`/${item.product_image}`}
+                    alt={item.product_name}
                     className="w-16 h-16 object-cover rounded-md"
                   />
 
                   {/* Product Info */}
                   <div className="flex-1 ml-4">
                     <h3 className="text-sm font-medium text-gray-800">
-                      {item.ProductName}
+                      {item.product_name}
                     </h3>
-                    <p className="text-gray-600 text-md">${item.Price}</p>
+                    <p className="text-gray-600 text-md">${item.product_price}</p>
                   </div>
                 </div>
 
@@ -119,7 +149,7 @@ export default function Wishlist({ setWishlistModal }) {
                     onClick={() => wishListToCart(item)}
                     className="flex items-center bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-2 py-1 rounded"
                   >
-                    {loading ? <CSpinner /> : (
+                    {loading[item.id] ? <CSpinner /> : (
 
                       <>
                         <FiShoppingCart className="mr-1" size={16} />

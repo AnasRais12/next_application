@@ -12,13 +12,17 @@ import { addtoWishList } from "@/app/store/features/wishList/WishList";
 export default function Navbar() {
   const router = useRouter();
   const { user } = GlobalDetails();
-  const cartState = getCart()
+  const cartItem = getCart()
 const wishListState = getWishList()
   const [searchBar, setSearchBar] = useState(false);
   const [wishlistModal, setWishlistModal] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const DropdownMenu = user ? ["Dashboard", "Settings", "Orders"] : ["Login"];
+console.log("cartState",cartItem)
+console.log("wishListState",wishListState)
+
+
   return (
     <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-50">
       <div className="  px-6 md:px-6 lg:px-8">
@@ -103,7 +107,7 @@ const wishListState = getWishList()
             {/* Shopping Cart */}
             <button onClick={() => router.push('/shoppingcart')} className="relative">
               <FiShoppingCart className="sm:text-[30px] text-[25px] text-gray-700 hover:text-orange-600" />
-              {cartState?.length > 0 ? <span className="absolute top-[-10px]   md:top-[-10px]  right-[-10px] text-white md:size-6 size-5 text-sm sm:mt-0 text-center rounded-full bg-orange-400">{cartState?.length}</span> : null}
+              {cartItem?.length > 0 ? <span className="absolute top-[-10px]   md:top-[-10px]  right-[-10px] text-white md:size-6 size-5 text-sm sm:mt-0 text-center rounded-full bg-orange-400">{cartItem?.length}</span> : null}
             </button>
 
           </div>
