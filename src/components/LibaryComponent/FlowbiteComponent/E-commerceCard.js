@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import useSession from '@/utils/UserExist/GetSession';
 import { supabase } from '@/lib/supabase';
 import { CardsData } from '@/utils/ProductsDetailPages/ProductData';
+import Swal from 'sweetalert2';
 import { addtoWishList } from "@/app/store/features/wishList/WishList";
 import { getWishList } from '@/utils/reduxGlobalStates/ReduxStates';
 import { toast } from 'react-toastify';
@@ -24,6 +25,14 @@ function E_commerceCard() {
     }
     console.log("session!", session)
     const handleAddToWishlist = async (wishListProduct) => {
+        if (!session?.user?.id) {
+          Swal.fire({
+            text: 'Please login to add items to wishlist',
+            icon: 'info',
+            confirmButtonText: 'Ok'
+          })
+          return ;
+        }
         try {
             const userId = session?.user?.id;
             setLoadingItems((prev) => ({ ...prev, [wishListProduct.product_id]: true })); // S
@@ -69,8 +78,8 @@ function E_commerceCard() {
 
 
     return (
-        <div className='w-full justify-center pt-5 mb-4 items-center text-[40px] font-semibold text-center text-black'>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 px-4 md:px-6 pb-8 py-6 justify-items-center">
+        <div className='w-full justify-center  mb-4 items-center text-[40px] font-semibold text-center text-black'>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 px-4 md:px-6 pb-8  justify-items-center">
                 {allProducts.map((items) => {
                     // Check if the item is already in the wishlist
                     const isInWishlist = wishlistItems.some(wishlist => wishlist?.product_id === items?.product_id);

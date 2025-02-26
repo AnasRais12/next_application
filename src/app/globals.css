@@ -3,9 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @font-face {
-    font-family: "Poppins-Bold";
-    public: url("/fonts/Poppins-Bold.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-  } */
+:root {
+  --swiper-navigation-color: #7de143; /* Custom Color */
+  --swiper-navigation-size: 18px;
+}
+@layer utilities {
+  :focus {
+    --tw-ring-color: rgb(
+      113 212 66 / var(--tw-ring-opacity, 1)
+    ) !important; /* Green Ring Color */
+    border-color: #7de143 !important; /* Green Border */
+  }
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: var(--swiper-navigation-top-offset, 50%);
+  width: calc(var(--swiper-navigation-size) / 24 * 24);
+  height: var(--swiper-navigation-size,);
+  margin-top: calc(0px - (var(--swiper-navigation-size) / 2));
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--swiper-navigation-color, #7de143); /* Use the custom color */
+}

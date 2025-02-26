@@ -33,7 +33,7 @@ function page() {
   useFetchCartlist(session?.user?.id);
   const  {cartListLoading} = useFetchCartlist(session?.user?.id)
   const {wishListLoading} = useFetchWishlist(session?.user?.id)
-  if(wishListLoading || cartListLoading){
+  if(session?.user?.id && wishListLoading || cartListLoading ){
     return <CustomSpinner/>
   }
 

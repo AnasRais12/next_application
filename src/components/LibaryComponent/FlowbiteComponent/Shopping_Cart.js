@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { supabase } from '@/lib/supabase'
-import { cartIncrement,cartDecrement,deleteCartItem } from '@/helper/cartHelpers'
+import { cartIncrement, cartDecrement, deleteCartItem } from '@/helper/cartHelpers'
 import { toast } from 'react-toastify'
 import useSession from '@/utils/UserExist/GetSession'
 import { useRouter } from 'next/navigation'
@@ -19,6 +19,7 @@ function Shopping_Cart() {
   const router = useRouter()
   const [crossButtonLoading, setCrossButtonLoading] = useState({});
   const dispatch = useDispatch()
+
   const cart = getCart()
   const [subTotal, setSubTotal] = useState(0);
   useEffect(() => {
@@ -26,43 +27,6 @@ function Shopping_Cart() {
   }, [cart]);
   const Total = subTotal + 99
 
- 
-
-  // const deleteCartItem = async (id) => {
-  //   if (!session?.user?.id) {
-  //     toast.error("User not logged in");
-  //     return;
-  //   }
-
-  //   try {
-  //     // Delete from Supabase cart table
-  //     setCrossButtonLoading((prev) => ({ ...prev, [id]: true })); // S
-  //     const { data, error } = await supabase
-  //       .from("cart")
-  //       .delete()
-  //       // Assuming product_id is used for uniqueness; adjust column name if needed
-  //       .eq("product_id", id)
-  //       .eq("user_id", session.user.id);
-
-  //     if (error) {
-  //       console.error("Error deleting cart item from database:", error);
-  //       toast.error("Failed to remove item from cart");
-  //       return;
-  //     }
-  //     // If deletion is successful, update Redux state
-  //     dispatch(RemoveFromCart(id));
-  //     toast.success("Item removed from cart successfully");
-  //     setRemoveCart(false)
-  //   } catch (err) {
-
-  //     toast.error("An error occurred while removing the item");
-  //   }
-  //   finally {
-  //     setCrossButtonLoading((prev) => ({ ...prev, [id]: false })); // S
-  //   }
-  // };
-
- 
 
 
   return (
@@ -85,12 +49,12 @@ function Shopping_Cart() {
 
                         <div className="flex  items-center justify-between md:order-3 md:justify-end">
                           <div className="flex gap-3 items-center">
-                            <button onClick={() => cartDecrement(item?.product_id, cart, dispatch, supabase, DecrementQuantity, session?.user?.id)}
-                              type="button"
-                              className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-orange-600  focus:outline-none  transition duration-200 ease-in-out"
-                            >
+                            <button
+                              onClick={() => cartDecrement(item?.product_id, cart, dispatch, supabase, DecrementQuantity, session?.user?.id)}
+                              type='button'
+                               className={` ${item.quantity <= 1? 'cursor-not-allowed hover:bg-gray-300 hover:text-black' : 'cursor-pointer hover:text-white '} flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full hover:bg-orange-600  transition duration-200 ease-in-out`}
+                            > 
                               <AiOutlineMinus />
-
                             </button>
                             <p>{item?.quantity}</p>
                             <button
@@ -130,7 +94,7 @@ function Shopping_Cart() {
                                     <button onClick={() => setRemoveCart(false)} className="py-2 border-[#ccc]  px-3 text-sm font-medium  bg-gray-300 text-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300  focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                       No cancel
                                     </button>
-                                    <button    onClick={() => deleteCartItem(item?.product_id, supabase, session, dispatch, RemoveFromCart, toast, setCrossButtonLoading, setRemoveCart)} className="py-2 px-3 text-sm font-medium text-center text-black bg-gray-300 rounded-lg hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                    <button onClick={() => deleteCartItem(item?.product_id, supabase, session, dispatch, RemoveFromCart, toast, setCrossButtonLoading, setRemoveCart)} className="py-2 px-3 text-sm font-medium text-center text-black bg-gray-300 rounded-lg hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                       {crossButtonLoading[item?.product_id] ? <CSpinner /> : 'Yes I`m sure'}
                                     </button>
                                   </div>
@@ -209,9 +173,11 @@ function Shopping_Cart() {
         </section>
       ) : (
         <>
+
           <div className='w-full flex-col gap-3 h-screen flex justify-center items-center'>
             <p>There are no items in this cart</p>
             <button onClick={() => router.push('/home')} className='py-3 px-6 border-unique border-2 text-unique'>Continue Shopping</button>
+
           </div>
         </>
       )}

@@ -1,56 +1,59 @@
 
-export const cartIncrement = async (id, cart, dispatch, supabase, IncrementQunatity,userId) => {
-    try {
-        const item = cart.find((item) => item.product_id === id);
-        if (!item) return;
-        const newQuantity = item.quantity + 1;
+let debounceTimer;
+export const cartIncrement = (id, cart, dispatch, supabase, IncrementQuantity, userId) => {
+    clearTimeout(debounceTimer);
 
-        const { error } = await supabase
-            .from("cart")
-            .update({ quantity: newQuantity })
-            .eq("product_id", id)
-            .eq("user_id", userId);
+    const item = cart.find((item) => item.product_id === id);
+    if (!item) return;
 
-        if (error) {
-            console.error("Error updating quantity:", error);
-            toast.error("Failed to update quantity");
-        } else {
-            dispatch(IncrementQunatity(id));
+    const newQuantity = item.quantity + 1;
+    dispatch(IncrementQuantity(id)); // UI turant update karein
+
+    debounceTimer = setTimeout(async () => {
+        try {
+            const { error } = await supabase
+                .from("cart")
+                .update({ quantity: newQuantity })
+                .eq("product_id", id)
+                .eq("user_id", userId);
+
+            if (error) {
+                console.error("Error updating quantity:", error);
+                toast.error("Failed to update quantity");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(err.toString());
         }
-    } catch (err) {
-        console.error(err);
-        toast.error(err.toString());
-    }
+    }, 500);
 };
 
-export const cartDecrement = async (id, cart, dispatch, supabase,  DecrementQuantity,userId) => {
-    console.log('adasdadsadsasdads')
-    try {
-        const item = cart.find((item) => item.product_id === id);
-        console.log('true')
+export const cartDecrement = (id, cart, dispatch, supabase, DecrementQuantity, userId) => {
+    clearTimeout(debounceTimer); // Pehle se existing timer clear karein
 
-        if (!item || item.quantity <= 1) return;
+    const item = cart.find((item) => item.product_id === id);
+    if (!item || item.quantity <= 1) return;
 
-        console.log('falsesaeaseaeasea')
+    const newQuantity = item.quantity - 1;
+    dispatch(DecrementQuantity(id)); // Pehle UI update karein
 
-        const newQuantity = item.quantity - 1;
+    debounceTimer = setTimeout(async () => {
+        try {
+            const { error } = await supabase
+                .from("cart")
+                .update({ quantity: newQuantity })
+                .eq("product_id", id)
+                .eq("user_id", userId);
 
-        const { error } = await supabase
-            .from("cart")
-            .update({ quantity: newQuantity })
-            .eq("product_id", id)
-            .eq("user_id", userId);
-
-        if (error) {
-            console.error("Error updating quantity:", error);
-            toast.error("Failed to update quantity");
-        } else {
-            dispatch(DecrementQuantity(id));
+            if (error) {
+                console.error("Error updating quantity:", error);
+                toast.error("Failed to update quantity");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(err.toString());
         }
-    } catch (err) {
-        console.error(err);
-        toast.error(err.toString());
-    }
+    }, 500);
 };
 
 export const deleteCartItem = async (id, supabase, session, dispatch, RemoveFromCart, toast, setCrossButtonLoading, setRemoveCart) => {

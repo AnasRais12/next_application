@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import CSpinner from '@/components/CSpinner';
+import Swal from 'sweetalert2';
 import useSession from '@/utils/UserExist/GetSession';
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { supabase } from '@/lib/supabase';
@@ -28,6 +29,13 @@ const ProductCard = (props) => {
   }
 
   const handleAddToCart = async () => {
+    if(!session?.user?.id){
+      Swal.fire({
+        icon: 'info',
+        text: 'Please login first if you  add items to cart'
+      })
+      return;
+    }
     try {
       setloading(true)
       const productCart = {

@@ -2,6 +2,7 @@
 import Header from '@/components/LibaryComponent/FlowbiteComponent/Header';
 import E_commerceCard from '@/components/LibaryComponent/FlowbiteComponent/E-commerceCard';
 import useSession from '@/utils/UserExist/GetSession';
+import Categories from '@/components/LibaryComponent/FlowbiteComponent/Categories';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import CustomSpinner from '@/components/Spinner';
@@ -12,7 +13,7 @@ function page() {
   useFetchCartlist(session?.user?.id);
   const  {cartListLoading} = useFetchCartlist(session?.user?.id)
   const {wishListLoading} = useFetchWishlist(session?.user?.id)
-  if(wishListLoading || cartListLoading){
+  if(session?.user?.id && wishListLoading || cartListLoading ){
     return <CustomSpinner/>
   }
   return (
@@ -24,6 +25,7 @@ function page() {
        {/* Trending Prodcus */}
        {/* Ayaingeeee */}
         {/* Categoreis */}
+        <Categories/>
         <E_commerceCard/>
          {/* Deals waley sectin */}
        {/* Ayaingeeee */}
