@@ -6,20 +6,22 @@ import { supabase } from '@/lib/supabase'
 import { cartIncrement, cartDecrement, deleteCartItem } from '@/helper/cartHelpers'
 import { toast } from 'react-toastify'
 import useSession from '@/utils/UserExist/GetSession'
+import { AddressForm } from './Addresses'
 import { useRouter } from 'next/navigation'
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { calculateTotalproduct_price } from '@/utils/CartCalculation';
 import { IncrementQunatity, DecrementQuantity, RemoveFromCart } from '@/app/store/features/CartReducer/CartSlice';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import CSpinner from '@/components/CSpinner'
+import { useFetchAddress } from '@/customHooks/useFetchAddress'
 function Shopping_Cart() {
-
   const [RemoveCart, setRemoveCart] = useState(false)
   const session = useSession()
+  const { userAddressInfo, userAddressLoading } = useFetchAddress(session?.user?.id);
+
   const router = useRouter()
   const [crossButtonLoading, setCrossButtonLoading] = useState({});
   const dispatch = useDispatch()
-
   const cart = getCart()
   const [subTotal, setSubTotal] = useState(0);
   useEffect(() => {
@@ -27,9 +29,14 @@ function Shopping_Cart() {
   }, [cart]);
   const Total = subTotal + 99
 
+  const proceedToCheckout = () => {
+    router.push('/checkout')
+  }
+
 
 
   return (
+    
     <>
       {cart?.length > 0 ? (
         <section className="bg-[white] mt-10 py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -52,8 +59,8 @@ function Shopping_Cart() {
                             <button
                               onClick={() => cartDecrement(item?.product_id, cart, dispatch, supabase, DecrementQuantity, session?.user?.id)}
                               type='button'
-                               className={` ${item.quantity <= 1? 'cursor-not-allowed hover:bg-gray-300 hover:text-black' : 'cursor-pointer hover:text-white '} flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full hover:bg-orange-600  transition duration-200 ease-in-out`}
-                            > 
+                              className={` ${item.quantity <= 1 ? 'cursor-not-allowed hover:bg-gray-300 hover:text-black' : 'cursor-pointer hover:text-white '} flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full hover:bg-orange-600  transition duration-200 ease-in-out`}
+                            >
                               <AiOutlineMinus />
                             </button>
                             <p>{item?.quantity}</p>
@@ -76,7 +83,8 @@ function Shopping_Cart() {
                           <div className="flex items-center gap-4">
 
 
-                            <button onClick={() => setRemoveCart(true)} type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
+                            <button
+                              onClick={() => setRemoveCart(true)} type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
                               <svg className="me-1.5 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
                               </svg>
@@ -145,7 +153,10 @@ function Shopping_Cart() {
                     </dl>
                   </div>
 
-                  <a href="#" className="flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-unique focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed to Checkout</a>
+                  <button
+                    onClick={proceedToCheckout} className="flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-unique focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                   Proceed to Checkout
+                  </button>
 
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
