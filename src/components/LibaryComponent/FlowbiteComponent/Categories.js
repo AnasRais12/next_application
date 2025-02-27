@@ -17,8 +17,8 @@ const categories = [
 
 const Categories = () => {
     return (
-        <div className="w-full py-6">
-            <div className="container mx-auto border-b-2 sm:px-2 px-4    pb-5  ">
+        <div className="w-full  py-6">
+            <div className="  px-8 border-b-2    pb-5  ">
                 <h2 className=" text-2xl sm:text-3xl font-normal  pt-6 pb-2 mb-6 text-left">Categories</h2>
 
                 <Swiper
@@ -41,11 +41,11 @@ const Categories = () => {
                         },
                         1024: { slidesPerView: 5 },
                     }}
-                    className="px-6"
+                    className="px-6 "
                 >
                     {categories.map((category, index) => (
                         <SwiperSlide key={index}>
-                            <div className="flex flex-col cursor-grab items-center bg- p-4 bg-gray-50 border-2 shadow-lg rounded-lg transition-all hover:scale-105">
+                            <div className="flex flex-col  cursor-grab items-center bg- p-4 bg-gray-50 border-2 shadow-lg rounded-lg transition-all hover:scale-105">
                                 <img
                                     src={category.image}
                                     alt={category.name}

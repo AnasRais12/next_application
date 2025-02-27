@@ -12,20 +12,28 @@ import { calculateTotalproduct_price } from '@/utils/CartCalculation';
 import { IncrementQunatity, DecrementQuantity, RemoveFromCart } from '@/app/store/features/CartReducer/CartSlice';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import CSpinner from '@/components/CSpinner'
+import Address from './UserDetailComp/Address'
 function Shopping_Cart() {
 
   const [RemoveCart, setRemoveCart] = useState(false)
   const session = useSession()
+  const addresss = null
   const router = useRouter()
   const [crossButtonLoading, setCrossButtonLoading] = useState({});
   const dispatch = useDispatch()
-
   const cart = getCart()
   const [subTotal, setSubTotal] = useState(0);
   useEffect(() => {
     setSubTotal(calculateTotalproduct_price(cart));
   }, [cart]);
   const Total = subTotal + 99
+
+
+ const proceedToCheckout = () => {
+     if(!addresss){
+       return <Address/>
+     }
+ }
 
 
 
@@ -52,8 +60,8 @@ function Shopping_Cart() {
                             <button
                               onClick={() => cartDecrement(item?.product_id, cart, dispatch, supabase, DecrementQuantity, session?.user?.id)}
                               type='button'
-                               className={` ${item.quantity <= 1? 'cursor-not-allowed hover:bg-gray-300 hover:text-black' : 'cursor-pointer hover:text-white '} flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full hover:bg-orange-600  transition duration-200 ease-in-out`}
-                            > 
+                              className={` ${item.quantity <= 1 ? 'cursor-not-allowed hover:bg-gray-300 hover:text-black' : 'cursor-pointer hover:text-white '} flex items-center justify-center w-8 h-8 bg-gray-300 rounded-full hover:bg-orange-600  transition duration-200 ease-in-out`}
+                            >
                               <AiOutlineMinus />
                             </button>
                             <p>{item?.quantity}</p>
@@ -145,7 +153,7 @@ function Shopping_Cart() {
                     </dl>
                   </div>
 
-                  <a href="#" className="flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-unique focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed to Checkout</a>
+                  <button onClick={proceedToCheckout} className="flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-unique focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed to Checkout</button>
 
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
