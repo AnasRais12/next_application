@@ -116,8 +116,10 @@ const UserQuery = () => {
 
                 Cookies.remove('sb-access-token');
                 Cookies.remove('sb-refresh-token');
+                Cookies.remove('sb-user-role');
+
                 localStorage.removeItem('sb-user');
-                setspeicifcUser(null);
+                setuserDetails(null);
                 setUser(null)
                 router.push('/login')
 

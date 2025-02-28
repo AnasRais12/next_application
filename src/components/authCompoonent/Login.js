@@ -5,7 +5,6 @@ import { BsFacebook } from "react-icons/bs";
 import { signInWithFacebook, signInWithGoogle } from '@/lib/Auth';
 import { useForm } from 'react-hook-form';
 import { RxCross2 } from 'react-icons/rx';
-import { signIn } from 'next-auth/react';
 import { yupResolver } from '@hookform/resolvers/yup'
 import Cookies from 'js-cookie';
 import { supabase } from '@/lib/supabase';
@@ -14,33 +13,27 @@ import { FcGoogle } from "react-icons/fc";
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
+
+//scheman//
+const LoginSchema = yup.object().shape({
+  email: yup.string().matches(  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email format').required(),
+  password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is Required') })
+
+
 function Login({background,position}) {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(LoginSchema)})
   const { setUser } = GlobalDetails()
   const router = useRouter()
   const [credentialLoading, setCredentialLoading] = useState(false); 
-  const [checkingUserRole, setCheckingUserRole] = useState(false); 
-
-  const [githubLoading, setGithubLoading] = useState(false);
-  const [googleLoading, setgoogleLoading] = useState(false);
-
-  const LoginSchema = yup.object().shape({
-    email: yup.string()
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        'Invalid email format'
-      ).required(),
-    password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is Required')
-  })
-
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: yupResolver(LoginSchema)
-  })
+  const [googleLoading, setgoogleLoading] = useState(false); 
 
 
-  const moveToRegister = (e) => {
-    setCheckingUserRole(true)
+
+
+  const moveToRegister = () => {
+    router.push('signup')
   };
-  const moveToForgetAccount = (e) => {
+  const moveToForgetAccount = () => {
     router.push('/forgetaccount');
   };
   const handleLoginSumbit = async (data) => {
@@ -52,14 +45,11 @@ function Login({background,position}) {
         email,
         password,
       });
-
       if (error) {
         Swal.fire({
           icon: 'error',
           text: `${error.message === 'Email not confirmed' ? 'Email not verified' : error.message}`
         });
-        console.log(error, "! ");
-
       } else {
         const user = data.user;
         console.log("Data is Here ", data)
@@ -83,18 +73,22 @@ function Login({background,position}) {
             .from("profiles")
             .select("*")
             .eq("id", data?.user?.id)
-            .maybeSingle().select(); // Ek hi row return karega
+            .maybeSingle().select(); 
           if (Profile) {
             Cookies.set('sb-user-role', Profile?.role, { expires: 7, secure: true, path: '/' });
-            Swal.fire({
-              icon: 'success',
-              text: `User Login Sucessfully`,
-            });
+           
             if (Profile?.role === 'buyer') {
-              router.push('/shop/home')
+              Swal.fire({
+                icon: 'success',
+                text: `User Login Sucessfully`,
+              });
+              router.push('/home')
             }
             else {
-              router.push('/sell/dashboard')
+              Swal.fire({
+                icon: 'error',
+                text: `Invalid role! Please contact support `,
+              });
             }
           }
         }
@@ -105,42 +99,13 @@ function Login({background,position}) {
         icon: 'error',
         text: error?.message,
       });
-
     }
     finally {
       setCredentialLoading(false)
       reset()
     }
   };
-  const handleGoogleLogin = async () => {
-    setgoogleLoading(true)
-    try {
-      await signIn('google', { callbackUrl: 'http://localhost:3000/home' })
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: `${error}`
-      })
-    }
-    finally {
-      setgoogleLoading(false)
-    }
 
-  }
-  const handleGithubLogin = async () => {
-    try {
-      setGithubLoading(true)
-      await signIn('github', { callbackUrl: 'http://localhost:3000/home' })
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: `${error}`
-      })
-    }
-    finally {
-      setGithubLoading(false)
-    }
-  };
 
   return (
     <>
@@ -194,35 +159,29 @@ function Login({background,position}) {
 
           {/* Social Login */}
           <div className="mt-4 text-center">
-            {/* <p className="text-black text-md">Or Login with</p>
+            <p className="text-black text-md">Or Login with</p>
             <div className="flex flex-col items-center justify-center gap-4 mt-2">
-              <button onClick={signInWithGoogle} className="flex items-center bg-black text-white  justify-center w-full text-center gap-2 px-4 py-2 border rounded-lg  ">
-                <FcGoogle size={20} className="text-red-500" />
-                Google
-              </button>
-              <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
+             
+              <button onClick={() => signInWithGoogle(setgoogleLoading)}
+                  disabled={googleLoading}
+                  type="button"
+                  className="w-full px-3 py-2 flex items-center gap-2 justify-center rounded-[8px] text-[16px] text-black bg-gray-200 x my-[10px]"
+                >
+                  {googleLoading ? (
+                    <CSpinner color="text-black"  size="sm"  />
+                  ) : (
+                    <FcGoogle size={20} style={{ marginRight: "10px" }} />
+                  )}
+                  {googleLoading ? "" : "Sign In with Google"}
+                </button>
+              {/* <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
                 <BsFacebook size={20} className="text-blue-500" />
                 Facebook
-              </button>
-            </div> */}
+              </button> */}
+            </div>
             <p onClick={moveToRegister} className='text-left mt-2 cursor-pointer'>Not registered? <span className='text-unique'>Create account</span></p>
 
-            {checkingUserRole ? (
-              <>
-                <div
-                  className={`fixed inset-0 bg-opacity-50 bg-black  flex items-center justify-center `}>
-                  <div className=" sm:w-[30%] w-[90%]  p-6 py-4 bg-white shadow-lg rounded-lg">
-                    <div className='flex justify-end  w-full hover:text-red-900 mb-4 px-2'>
-                      <button  className='text-[20px]' onClick={()=>setCheckingUserRole(false)}><RxCross2/></button>
-                    </div>
-                    <div className='flex flex-col gap-2 justify-center items-center'>
-                      <button onClick={()=>router.push(`/signup?role=buyer`)} className='w-full font-bold py-3 rounded-[10px] text-white bg-orange-600 hover:bg-custom-gradient shadow-lg text-current'>Become A Buyer </button>
-                      <button  onClick={()=>router.push(`/signup?role=seller`)} className='w-full py-3 font-bold rounded-[10px] text-white bg-orange-600 hover:bg-custom-gradient  shadow-lg text-current'>Become A Seller </button>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : null}
+          
 
           </div>
         </div>

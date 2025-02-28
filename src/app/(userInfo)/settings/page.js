@@ -7,20 +7,21 @@ import PhoneNumberModal from "@/components/LibaryComponent/FlowbiteComponent/Edi
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
 import { FiMenu, FiX, } from "react-icons/fi";
 import { IoLogOut } from "react-icons/io5";
+import CustomSpinner from "@/components/Spinner";
+import CSpinner from "@/components/CSpinner";
 
 const SettingsPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [changeNameModal, setChangeNameModal] = useState(false);
-  const [loading, setloading] = useState(false);
+  const [Logoutloading, setLogoutloading] = useState(false);
   const [phoneModal, setPhoneModal] = useState(false);
   const [changepasswordModal, setchangepasswordModal] = useState(false);
-  const [newName, setNewName] = useState(""); 
+  const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const { user } = GlobalDetails()
-  const { userDetails, updateUserDetails,deleteUser,logoutUser } = UserQuery();
-
-  console.log(userDetails, "userDetails")
+  const { userDetails, updateUserDetails, deleteUser, logoutUser } = UserQuery();
+  console.log("user! is here", user)
 
   const handleNameChange = async () => {
     if (newName) {
@@ -37,17 +38,29 @@ const SettingsPage = () => {
       await updateUserDetails(updatedFields);
       setPhoneModal(false)
     } else {
-      console.log("Name is unchanged or invalid.");
     }
   };
-// delete user 
+  // delete user 
   const userDelete = async () => {
     await deleteUser();
     setDeleteModal(false)
   }
   // logout of user
   const userlogout = async () => {
-    await logoutUser();
+    try {
+      setLogoutloading(true)
+      await logoutUser();
+    } catch (error) {
+      console.warn(error)
+    }
+    finally {
+      setLogoutloading(false)
+    }
+  }
+  //open passowrdModal
+  const OpenPasswordModal = () => {
+    setchangepasswordModal(true)
+    setIsMenuOpen(false)
   }
 
   return (
@@ -81,7 +94,7 @@ const SettingsPage = () => {
         <aside
           className={`w-72  bg-gradient-to-b from-orange-700 to-orange-700 mt-14 text-white sm:p-6 p-3 shadow-lg fixed inset-y-0 left-0 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 lg:relative lg:block rounded-r-lg`}
         >
-        
+
           <button
             className="lg:hidden absolute top-4 right-4 text-white text-[30px]"
             onClick={() => setIsMenuOpen(false)}
@@ -101,8 +114,9 @@ const SettingsPage = () => {
               <li className="text-white font-semibold">Personal Information</li>
               <li className="text-gray-300 hover:text-orange-400  rounded-md py-2 px-2 mr-2 border-2 cursor-pointer transition-colors">Billing & Payments</li>
               <li className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Order History</li>
-              <li onClick={() => setchangepasswordModal(true)} className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Change Password</li>
-              <button onClick={userlogout} className="text-gray-300 hover:text-orange-400 flex items-center gap-2 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Logout </button>
+              {/* if google user to issey change password na dikhey  */}
+              {user?.user_metadata?.provider_id ? null : <li onClick={OpenPasswordModal} className="text-gray-300 cursor-pointer hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Change Password</li>}
+              <button onClick={userlogout} className="text-gray-300 hover:text-orange-400 flex items-center gap-2 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">{Logoutloading? <CSpinner/> :  'Logout'} </button>
               {/* <span><IoLogOut className="text-[25px]"/></span> */}
 
             </ul>
@@ -111,7 +125,7 @@ const SettingsPage = () => {
         <main className="flex flex-col w-full  items-start   lg:mt-10  lg:px-3 lg:py-6">
           <h1 className="text-xl font-semibold mb-2  text-gray-800">Peronal Information</h1>
           <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>
-           {/*  user Details*/}
+          {/*  user Details*/}
           <div className="grid grid-cols-1 mb-4 place-content-center items-center w-full pt-4 lg:grid-cols-2 gap-6">
             <div className="  flex  flex-col gap-1 bg-white px-2  py-2 rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  ">
               <h2 className="font-semibold  text-gray-700">Email:</h2>
@@ -163,7 +177,7 @@ const SettingsPage = () => {
 
               {userDetails ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
             </div>
-          
+
             <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
               <div className="  flex  flex-col gap-1 ">
                 <h2 className="font-semibold whitespace-normal text-gray-700">Zip Code</h2>
@@ -175,10 +189,10 @@ const SettingsPage = () => {
           </div>
           {/* Delete User */}
           <div className="flex justify-end px-3 w-full ">
-              <button onClick={() => setDeleteModal(true)} className="block text-white bg-[red] 0 font-medium rounded-lg text-sm px-8 py-2.5 text-center " type="button">
-                Delete
-              </button>
-              {deleteModal ? (
+            <button onClick={() => setDeleteModal(true)} className="block text-white bg-[red] 0 font-medium rounded-lg text-sm px-8 py-2.5 text-center " type="button">
+              Delete
+            </button>
+            {deleteModal ? (
               <div className="  overflow-y-auto overflow-x-hidden fixed flex   top-52 right-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                 <div className="relative p-4 w-full max-w-md h-full md:h-auto">
                   <div className="relative p-4 text-center bg-white shadow-lg rounded-lg  dark:bg-gray-800 sm:p-5">
@@ -189,7 +203,7 @@ const SettingsPage = () => {
                       <button onClick={() => setDeleteModal(false)} className="py-2 border-[#ccc] px-3 text-sm font-medium text-white bg-black rounded-lg    focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-white focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         No cancel
                       </button>
-                      <button onClick={userDelete}  className="py-2 px-3 text-sm font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                      <button onClick={userDelete} className="py-2 px-3 text-sm font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                         Yes, I'm sure
                       </button>
                     </div>
@@ -197,7 +211,7 @@ const SettingsPage = () => {
                 </div>
               </div>
             ) : ''}
-            </div>
+          </div>
 
         </main>
       </div>

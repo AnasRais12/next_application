@@ -3,6 +3,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { supabaseRole } from '@/lib/supabase';
+import { signInWithGoogle } from '@/lib/Auth';
 import { supabase } from '@/lib/supabase';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import * as yup from 'yup';
@@ -10,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import CSpinner from '@/components/CSpinner';
+import { FcGoogle } from 'react-icons/fc';
 
 const schema = yup.object().shape({
   username: yup.string().min(6, "Username Must be 6 Character").required('Username is Required'),
@@ -23,29 +25,12 @@ const schema = yup.object().shape({
 
 function Register() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
-  const [input, setInput] = useState({ username: '', email: '', password: '' });
   const router = useRouter();
+  const [roleFromParams, setRoleFromParams] = useState('buyer'); // ✅ Fix by using state
   const { setAuthfield } = GlobalDetails();
   const [loading, setLoading] = useState(false);
-  const [roleFromParams, setRoleFromParams] = useState('buyer'); // ✅ Fix by using state
+  const [googleLoading, setgoogleLoading] = useState(false);
 
-  // ✅ Fetch role safely inside useEffect
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const role = params.get('role');
-      if (role) setRoleFromParams(role);
-    }
-  }, []);
-  console.log("_________________>>>>>RolefORMSSS SPARAMSSS SSS",roleFromParams)
-
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const OnSubmitHandler = async (data) => {
     const { email, password, username } = data;
@@ -64,7 +49,7 @@ function Register() {
       }
 
       // Email check
-      const { data: existingEmail } = await supabaseRole
+      const { data: existingEmail } = await supabase
         .from('profiles')
         .select('*')
         .eq('email', email)
@@ -127,24 +112,48 @@ function Register() {
           <div className="mt-4">
             <form className='flex-col gap-1 flex' onSubmit={handleSubmit(OnSubmitHandler)}>
               <input {...register('username')} type="text" required name="username"
-                value={input.username} placeholder="Enter Your Username" onChange={handleInput}
+                placeholder="Enter Your Username"
                 className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
               <p>{errors.username?.message}</p>
 
               <input {...register('email')} required type="email" name="email"
-                value={input.email} placeholder="Enter Your Email" onChange={handleInput}
+                placeholder="Enter Your Email"
                 className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
               <p>{errors.email?.message}</p>
 
-              <input {...register('password')} type="password" value={input.password}
-                placeholder="Enter Your Password" onChange={handleInput}
+              <input {...register('password')} type="password"
+                placeholder="Enter Your Password"
                 className="w-full px-4 py-3 sm:py-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
               <p>{errors.password?.message}</p>
 
               <button type="submit" className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique">
                 {loading ? <CSpinner /> : 'Create Account'}
               </button>
+              <div className="mt-4 text-center">
+                <p className="text-black text-md">Or Login with</p>
+                <div className="flex flex-col items-center justify-center gap-4 mt-2">
+
+                  <button onClick={() => signInWithGoogle(setgoogleLoading)}
+                    disabled={googleLoading}
+                    type="button"
+                    className="w-full px-3 py-2 flex items-center gap-2 justify-center rounded-[8px] text-[16px] text-black bg-gray-200 x my-[10px]"
+                  >
+                    {googleLoading ? (
+                      <CSpinner color="text-black" size="sm" />
+                    ) : (
+                      <FcGoogle size={20} style={{ marginRight: "2px" }} />
+                    )}
+                    {googleLoading ? "" : "Sign In with Google"}
+                  </button>
+                  {/* <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
+                              <BsFacebook size={20} className="text-blue-500" />
+                              Facebook
+                            </button> */}
+                </div>
+              </div>
+
             </form>
+
           </div>
         </div>
       </div>

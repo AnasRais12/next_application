@@ -1,6 +1,5 @@
 'use client';
 import Login from '@/components/authCompoonent/Login';
-import React, { useEffect, useState } from 'react';
 
 function page() {
   return (
