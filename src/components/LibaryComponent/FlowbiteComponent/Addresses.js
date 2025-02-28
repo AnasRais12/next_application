@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import * as yup from "yup";
 import useSession from "@/utils/UserExist/GetSession";
 import CSpinner from "@/components/CSpinner";
+import Swal from "sweetalert2";
 
 const schema = yup.object().shape({
     full_name: yup.string().required("Full name is required"),
@@ -22,7 +23,7 @@ const schema = yup.object().shape({
     country: yup.string().required("Country is required"),
 });
 
-const AddressForm = () => {
+const AddressForm = ({setUserAddresssExist}) => {
     const [loading, setloading] = useState(false)
     const session = useSession()
     console.log(session?.user?.email)
@@ -43,11 +44,20 @@ const AddressForm = () => {
                 }
             ])
             if (error) {
-                console.error("Error inserting data:", error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error?.message
+                })
             } else {
+                Swal.fire({
+                    icon: 'success',
+                    text: 'User Address Added Successfully'
+                })
+                setUserAddresssExist(true)
             }
         } catch (err) {
-            alert("Something went wrong!");
+            console.error("Something went wrong!",err);
         }
         finally {
             setloading(false)

@@ -8,19 +8,18 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 const UserQuery = () => {
     const { setUser } = GlobalDetails()
-    const session = useSession(); // Session fetch karega
-    console.log("----------------> Sesssion", session)
+    const session = useSession(); 
     const router = useRouter()
-    const [speicifcUser, setspeicifcUser] = useState(null);
+    const [userDetails, setuserDetails] = useState(null);
 
     // Fetching user details on session change
     useEffect(() => {
         const fetchUser = async () => {
             if (!session?.user?.email) return; // Agar email na ho toh return kar do
             const { data, error } = await supabase
-                .from("profiles")
+                .from("addresses")
                 .select("*")
-                .eq("id", session.user.id)
+                .eq("user_id", session.user.id)
                 .maybeSingle(); // Ek hi row return karega
 
             if (error) {
@@ -29,7 +28,7 @@ const UserQuery = () => {
             }
 
 
-            setspeicifcUser(data);
+            setuserDetails(data);
         };
 
         fetchUser();
@@ -37,14 +36,14 @@ const UserQuery = () => {
 
     // Function to update user details (e.g., name or password)
     const updateUserDetails = async (updatedFields) => {
-        if (!speicifcUser?.id) return; // Check if user exists
+        if (!userDetails?.id) return; // Check if user exists
 
         try {
             // Step 1: Update the user in the database
             const { data, error } = await supabase
-                .from("profiles")
+                .from("addresses")
                 .update(updatedFields) // Pass the fields to update (name, phone_number, etc.)
-                .eq("id", speicifcUser.id).select(); // Match the user by their unique id
+                .eq("id", userDetails?.id).select(); // Match the user by their unique id
 
             if (error) {
                 console.error("Error updating user:", error.message);
@@ -52,8 +51,8 @@ const UserQuery = () => {
             }
 
             // Step 2: If the update is successful, re-fetch the user data
-            if (data && data.length > 0) {
-                setspeicifcUser(data[0]);
+            if (data.length > 0) {
+                setuserDetails(data[0]);
             } else {
                 console.error("No user updated or user not found.");
             }
@@ -130,7 +129,7 @@ const UserQuery = () => {
     }
 
 
-    return { speicifcUser, updateUserDetails, deleteUser, logoutUser };
+    return { userDetails, updateUserDetails, deleteUser, logoutUser };
 };
 
 export default UserQuery;

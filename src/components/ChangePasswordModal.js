@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import UserQuery from "@/DbQuery/UserQuery";
+import UserQuery from "@/DbQuery/UserDetailQuery";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { supabase } from "@/lib/supabase";

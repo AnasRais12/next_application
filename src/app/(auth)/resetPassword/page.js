@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 import { useRouter } from 'next/navigation';
 import { RxCross2 } from "react-icons/rx";
 import { ImCross } from 'react-icons/im';
-import UserQuery from '@/DbQuery/UserQuery';
+import UserQuery from '@/DbQuery/UserDetailQuery';
 import { supabase } from '@/lib/supabase';
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form';
