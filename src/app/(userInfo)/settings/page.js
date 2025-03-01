@@ -17,11 +17,13 @@ const SettingsPage = () => {
   const [Logoutloading, setLogoutloading] = useState(false);
   const [phoneModal, setPhoneModal] = useState(false);
   const [changepasswordModal, setchangepasswordModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const { user } = GlobalDetails()
   const { userDetails, updateUserDetails, deleteUser, logoutUser } = UserQuery();
-  console.log("user! is here", user)
+  console.log("user! is here", userDetails)
 
   const handleNameChange = async () => {
     if (newName) {
@@ -65,7 +67,7 @@ const SettingsPage = () => {
 
   return (
     <>
-      <div className="lg:flex-row flex-col h-fit  py-10  flex lg:gap-0 lg:px-0 md:px-5 px-2 lg:mt-0 mt-12 bg-gray-50">
+      <div className="lg:flex-row flex-col h-fit  py-10  flex lg:gap-0 lg:px-0 md:px-5 px-3 lg:mt-0 mt-12 bg-gray-50">
         {/* Mobile Menu Button */}
         {changepasswordModal ? <ChangePassword setchangepasswordModal={setchangepasswordModal} /> : ''}
         {changeNameModal || phoneModal ?
@@ -86,17 +88,17 @@ const SettingsPage = () => {
 
           /> : ''}
         <button
-          className="lg:hidden px-2 py-2 h-fit -ml-2 bg-[orange] mb-4 justify-start w-fit items-start  flex  text-white rounded-lg shadow-lg"
+          className="lg:hidden px-2 py-2 h-fit  bg-[orange] mb-4 justify-start w-fit items-start  flex  text-white rounded-lg shadow-lg"
         >
           <FiMenu onClick={() => setIsMenuOpen(true)} />
         </button>
         {/* Sidebar */}
         <aside
-          className={`w-72  bg-gradient-to-b from-orange-700 to-orange-700 mt-14 text-white sm:p-6 p-3 shadow-lg fixed inset-y-0 left-0 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 lg:relative lg:block rounded-r-lg`}
+          className={`w-72  bg-gradient-to-b from-orange-700 to-orange-700 z-50 lg:mt-14 mt-16 text-white sm:p-6 p-3 shadow-lg fixed inset-y-0 left-0 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 lg:relative lg:block rounded-r-lg`}
         >
 
           <button
-            className="lg:hidden absolute top-4 right-4 text-white text-[30px]"
+            className="lg:hidden absolute sm:top-4 top-5 right-4 text-white text-[30px]"
             onClick={() => setIsMenuOpen(false)}
           >
             <FiX />
@@ -139,7 +141,7 @@ const SettingsPage = () => {
                 <p className="text-gray-900">{user?.user_metadata?.full_name || userDetails?.full_name}</p>
 
               </div>
-              {userDetails ? <FaEdit onClick={() => setChangeNameModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" />
+              {user ? <FaEdit onClick={() => setChangeNameModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" />
                 : ''}
             </div>
 
@@ -151,14 +153,14 @@ const SettingsPage = () => {
 
               </div>
 
-              {userDetails ? <FaEdit onClick={() => setPhoneModal(true)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+              {user ? <FaEdit onClick={() => setPhoneModal(true)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
             </div>
             <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
               <div className="  flex  flex-col gap-1 ">
                 <h2 className="font-semibold whitespace-normal text-gray-700">Street</h2>
                 <p className="text-gray-500">{userDetails?.address}</p>
               </div>
-              {userDetails ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+              {user ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
             </div>
             <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
               <div className="  flex  flex-col gap-1 ">
@@ -166,7 +168,7 @@ const SettingsPage = () => {
                 <p className="text-black">{userDetails?.country}</p>
               </div>
 
-              {userDetails ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+              {user ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
             </div>
             <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
               <div className="  flex  flex-col gap-1 ">
@@ -175,7 +177,7 @@ const SettingsPage = () => {
 
               </div>
 
-              {userDetails ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+              {user ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
             </div>
 
             <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
@@ -184,7 +186,7 @@ const SettingsPage = () => {
                 <p className="text-gray-500">{userDetails?.zip_code}</p>
               </div>
 
-              {userDetails ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+              {user ? <FaEdit onClick={() => setchangepasswordModal(true)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
             </div>
           </div>
           {/* Delete User */}

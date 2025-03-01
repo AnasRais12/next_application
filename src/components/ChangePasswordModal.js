@@ -20,7 +20,7 @@ const passwordSchema = yup.object().shape({
 
 function ChangePassword({ setchangepasswordModal }) {
   const { user } = GlobalDetails()
-  const { speicifcUser, updateUserDetails } = UserQuery()
+  const { updateUserDetails } = UserQuery()
 
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(passwordSchema) });
@@ -38,21 +38,24 @@ function ChangePassword({ setchangepasswordModal }) {
 
       if (signInError) {
         Swal.fire({ icon: "error", text: "Current Password is incorrect!" });
+        return;
       }
-      console.log('asasassssssssssssasasasas')
-
-      // Step 2: Update Password
-      const { data: ChangePassword, error: updateError } = await supabaseRole.auth.updateUser({
-        password: newPassword,
-      });
-      console.dir('mai hoooo yahan ')
-      console.log('mai hoooo yahan ')
+      else {
+        const { data: ChangePassword, error: updateError } = await supabaseRole.auth.updateUser({
+          password: newPassword,
+        });
 
 
-     
-        Swal.fire({ icon: "success", text: "Password changed successfully!" });
-        setchangepasswordModal(false);
-        console.log("asasasas",data)
+        if (ChangePassword) {
+          Swal.fire({ icon: "success", text: "Password changed successfully!" });
+          setchangepasswordModal(false);
+          console.log("asasasas", data)
+        }
+      }
+
+
+
+
 
 
 
@@ -66,7 +69,7 @@ function ChangePassword({ setchangepasswordModal }) {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center `}>
+        className={`fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center `}>
         <div className="max-w-md  w-[90%] p-6 bg-white shadow-lg rounded-lg">
           <div className="flex justify-between px-2">
             <h2 className="text-xl font-bold mb-4">Change Password</h2>

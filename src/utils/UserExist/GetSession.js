@@ -25,7 +25,7 @@ const useSession = () => {
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("id, role")
-          .eq("id", user.id)
+          .eq("id", session?.user.id)
           .maybeSingle();
 
         if (profileError) {
@@ -33,23 +33,23 @@ const useSession = () => {
         }
 
         // 🔹 If profile exists but role is empty, update it
-        if (profile && !profile.role) {
-          const { error: updateError } = await supabase
-            .from("profiles")
-            .update({ role: "buyer" })
-            .eq("id", user.id);
+        // if (profile && !profile.role) {
+        //   const { error: updateError } = await supabase
+        //     .from("profiles")
+        //     .update({ role: "buyer" })
+        //     .eq("id", user.id);
 
-          if (updateError) {
-            console.error("Profile Update Error:", updateError.message);
-          } else {
-          }
-        }
+        //   if (updateError) {
+        //     console.error("Profile Update Error:", updateError.message);
+        //   } else {
+        //   }
+        // }
 
         // 🔹 If profile doesn't exist, create it
         if (!profile) {
           const { error: insertError, } = await supabase
             .from("profiles")
-            .insert([{ id: user.id, email: user?.email, role: "buyer" ,name: user?.user_metadata?.full_name  }]);
+            .insert([{ id: session?.user.id, email: user?.email, role: "buyer" ,name: user?.user_metadata?.full_name  }]);
 
           if (insertError) {
             console.error("Profile Insert Error:", insertError.message);
