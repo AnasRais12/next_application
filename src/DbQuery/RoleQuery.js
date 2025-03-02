@@ -22,7 +22,7 @@ const UserRoleQuery = () => {
             }
 
 
-            profileData(data);
+            setprofileData(data);
         };
 
         fetchUser();
@@ -55,7 +55,7 @@ const UserRoleQuery = () => {
     //     }
     // };
 
-    return { speicifcUser, };
+    return { profileData, };
 };
 
 export default UserRoleQuery;

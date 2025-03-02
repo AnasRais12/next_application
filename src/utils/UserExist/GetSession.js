@@ -24,7 +24,7 @@ const useSession = () => {
         // 🔹 Check if profile exists and role is empty
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("id, role")
+          .select("*")
           .eq("id", session?.user.id)
           .maybeSingle();
 
