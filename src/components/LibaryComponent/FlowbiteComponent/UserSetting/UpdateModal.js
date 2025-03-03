@@ -7,7 +7,7 @@ const UpdateModal = ({ modalData, setModalData, closeModal, handleSave,loading }
         <div className="bg-white rounded-lg w-[95%] max-w-md p-3 md:p-6">
           {modalData.label === 'country' || modalData.label === 'city' ? (
             <>
-              <label className="block text-sm mb-2 font-normal">{modalData.label}</label>
+              <label className="block text-sm mb-2 font-normal capitalize">{modalData.label}:</label>
               <select
                 value={modalData.value}
                 
@@ -40,6 +40,8 @@ const UpdateModal = ({ modalData, setModalData, closeModal, handleSave,loading }
               </select>
             </>
           ) : (
+            <>
+            <label className="block text-sm mb-2 font-normal capitalize">{modalData.label}:</label>
             <input
               type={modalData.type}
               value={modalData.value}
@@ -49,6 +51,7 @@ const UpdateModal = ({ modalData, setModalData, closeModal, handleSave,loading }
               className="w-full p-2 border-2 focus:border-orange-600 border-[#ccc] rounded-md mb-2 sm:mb-4"
               placeholder={`Enter ${modalData.label}`}
             />
+            </>
           )}
           <div className="flex sm:flex-row sm:gap-2 gap-2 flex-col justify-end">
             <button onClick={closeModal} className="bg-orange-600 px-3 text-white sm:py-2 py-1 rounded-lg hover:text-gray-700">

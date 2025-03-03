@@ -102,7 +102,7 @@ const UserSetting = ({ userAddressInfo, userAddressLoading }) => {
                                     </div>
                                     <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
                                         <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold whitespace-normal text-gray-700">Street</h2>
+                                            <h2 className="font-semibold whitespace-normal text-gray-700">Address</h2>
                                             <p className="text-gray-500">{userDetails?.address}</p>
                                         </div>
                                         {user ? <FaEdit onClick={() => handleEdit('address', 'address', 'text', userDetails?.address || 'address', handleStreet)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
