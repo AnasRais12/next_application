@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "@/lib/supabase";
 import * as yup from "yup";
 import useSession from "@/utils/UserExist/GetSession";
+import { useRouter } from "next/navigation";
 import CSpinner from "@/components/CSpinner";
 import UserRoleQuery from "@/DbQuery/RoleQuery";
 import Swal from "sweetalert2";
@@ -28,6 +29,7 @@ const schema = yup.object().shape({
 const AddressForm = ({ setUserAddresssExist, margin_auto }) => {
     const { register, handleSubmit, formState: { errors }, } = useForm({ resolver: yupResolver(schema), });
     const [loading, setloading] = useState(false)
+    const router = useRouter()
     const {user} = GlobalDetails()
     const {profileData} = UserRoleQuery()
     const session = useSession()
@@ -61,6 +63,7 @@ const AddressForm = ({ setUserAddresssExist, margin_auto }) => {
                     text: 'User Address Added Successfully'
                 })
                 setUserAddresssExist(true)
+                
             }
         } catch (err) {
             console.error("Something went wrong!", err);

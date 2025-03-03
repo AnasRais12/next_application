@@ -24,7 +24,7 @@ console.log("wishListState",wishListState)
 
 
   return (
-    <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-50">
+    <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-[9999]">
       <div className="  px-6 md:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3">
           {/* Logo */}

@@ -11,6 +11,8 @@ const UserQuery = () => {
     const session = useSession(); 
     const router = useRouter()
     const [userDetails, setuserDetails] = useState(null);
+    const [loadingDetail, setLoadingDetail] = useState(null);
+
 
     // Fetching user details on session change
     useEffect(() => {
@@ -37,22 +39,14 @@ const UserQuery = () => {
 
     // Function to update user details (e.g., name or password)
     const updateUserDetails = async (updatedFields) => {
-        console.log('yahan takk ki agaya hu ')
-        console.log('updatedFields',updatedFields)
-
         if (!session?.user?.id) return; // Check if user exists
-        console.log('yahan takk ki agaya hu ')
 
         try {
-            console.log('hello worldddddddd')
             // Step 1: Update the user in the database
             const { data, error } = await supabase
                 .from("addresses")
                 .update(updatedFields) // Pass the fields to update (name, phone_number, etc.)
                 .eq("user_id", session?.user?.id).select(); // Match the user by their unique id
-
-        console.log('neeche agaya hu  ',data)
-
 
             if (error) {
                 console.error("Error updating user:", error.message);
@@ -72,7 +66,6 @@ const UserQuery = () => {
 
     // function delete user //
     const deleteUser = async () => {
-        console.log("sessionidssss", session?.user?.id)
         try {
             // Step 1: Always delete from Supabase Auth using session.user.id
             const { data: deleteData, error: authError } = await supabaseRole.auth.admin.deleteUser(session?.user?.id);

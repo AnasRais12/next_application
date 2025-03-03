@@ -9,7 +9,6 @@ import CustomSpinner from '@/components/Spinner';
 
 function page() {
   const session = useSession()
-  console.log(session)
   useFetchWishlist(session?.user?.id);
   useFetchCartlist(session?.user?.id);
   const  {cartListLoading} = useFetchCartlist(session?.user?.id)
