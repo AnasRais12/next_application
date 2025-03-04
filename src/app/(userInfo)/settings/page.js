@@ -12,11 +12,11 @@ import useSession from "@/utils/UserExist/GetSession";
 const page = () => {
   const session = useSession()
   useFetchWishlist(session?.user?.id)
-  const {userAddressLoading,userAddressInfo} =useFetchAddress(session?.user?.id)
+  const {userAddressLoading,userAddressInfo,isUserAddress} =useFetchAddress(session?.user?.id)
   useFetchCartlist(session?.user?.id)
   return (
     <>
-      <UserSetting  userAddressLoading={userAddressLoading} userAddressInfo={userAddressInfo} />
+      <UserSetting   userAddressLoading={userAddressLoading} userAddressInfo={userAddressInfo}  />
       
     </>
 

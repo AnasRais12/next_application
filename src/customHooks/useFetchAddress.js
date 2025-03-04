@@ -7,6 +7,8 @@ export const useFetchAddress = (userId) => {
     const dispatch = useDispatch();
     const userAddressInfo = getAddress();
     const [userAddressLoading, SetuserAddressLoading] = useState(false)
+    const [isUserAddress, setIsUserAddress] = useState(false)
+
     useEffect(() => {
         if (!userId) return;
         const fetchWishlist = async () => {
@@ -19,7 +21,10 @@ export const useFetchAddress = (userId) => {
                 if (error) {
                     console.error("Error fetching wishlist", error);
                 } else {
-                    dispatch(setUserAddress(data));
+                    if(data.length > 0){
+                        dispatch(setUserAddress(data));
+                    }
+                   
                     console.log("CArt data from backend:", data);
                 }
             } catch (err) {
@@ -32,6 +37,6 @@ export const useFetchAddress = (userId) => {
         fetchWishlist();
     }, [userId, dispatch]);
 
-    return { userAddressLoading,userAddressInfo };
+    return { userAddressLoading,userAddressInfo, };
 
 };

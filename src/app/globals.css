@@ -3,18 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --swiper-navigation-color: #7de143; /* Custom Color */
-  --swiper-navigation-size: 18px;
-}
-@layer utilities {
-  :focus {
-    --tw-ring-color: rgb(
-      113 212 66 / var(--tw-ring-opacity, 1)
-    ) !important; /* Green Ring Color */
-    border-color: #7de143 !important; /* Green Border */
-  }
-}
 .swiper-button-prev,
 .swiper-button-next {
   position: absolute;

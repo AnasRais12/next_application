@@ -1,9 +1,10 @@
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import React, { useState } from 'react'
+import CSpinner from '@/components/CSpinner';
 import { FiMenu, FiX } from 'react-icons/fi';
 
-function UserSideBar() {
+function UserSideBar({setchangepasswordModal}) {
     const { userDetails,  deleteUser, logoutUser } = UserQuery();
     const { user } = GlobalDetails()
         const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +31,6 @@ function UserSideBar() {
 
         }
     }
-    // logout of user
     const userlogout = async () => {
         try {
             setLogoutloading(true)
@@ -66,7 +66,7 @@ function UserSideBar() {
                     <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full  flex items-center justify-center text-xl font-bold">
                         {user?.email?.charAt(0)?.toUpperCase()}
                     </div>
-                    <h2 className="mt-2 font-semibold text-lg">{user?.user_metadata?.full_name || userDetails?.full_name}</h2>
+                    <h2 className="mt-2 font-semibold text-lg">{ userDetails?.full_name || user?.user_metadata?.full_name  }</h2>
                     <p className="text-sm text-gray-300">{user?.email}</p>
                 </div>
                 <nav className=" ">

@@ -10,6 +10,7 @@ import CSpinner from "@/components/CSpinner";
 import UserRoleQuery from "@/DbQuery/RoleQuery";
 import Swal from "sweetalert2";
 import { GlobalDetails } from "@/context/globalprovider/globalProvider";
+import CustomSpinner from "@/components/Spinner";
 
 const schema = yup.object().shape({
     full_name: yup.string().required("Full name is required"),
@@ -26,12 +27,13 @@ const schema = yup.object().shape({
     country: yup.string().required("Country is required"),
 });
 
-const AddressForm = ({ setUserAddresssExist, margin_auto }) => {
+const AddressForm = ({ setUserAddresssExist, setIsAddressExist, isAddressExist }) => {
     const { register, handleSubmit, formState: { errors }, } = useForm({ resolver: yupResolver(schema), });
     const [loading, setloading] = useState(false)
+    const [isReloading, setIsReloading] = useState(false);
     const router = useRouter()
-    const {user} = GlobalDetails()
-    const {profileData} = UserRoleQuery()
+    const { user } = GlobalDetails()
+    const { profileData } = UserRoleQuery()
     const session = useSession()
     console.log(profileData)
     console.log(user)
@@ -40,7 +42,7 @@ const AddressForm = ({ setUserAddresssExist, margin_auto }) => {
     const onSubmit = async (data) => {
         try {
             setloading(true)
-            const { error } = await supabase.from('addresses').insert([
+            const { addresData,error } = await supabase.from('addresses').insert([
                 {
                     user_id: session?.user?.id, // Isko replace karna hoga actual user ID se
                     full_name: data.full_name,
@@ -61,9 +63,13 @@ const AddressForm = ({ setUserAddresssExist, margin_auto }) => {
                 Swal.fire({
                     icon: 'success',
                     text: 'User Address Added Successfully'
-                })
-                setUserAddresssExist(true)
-                
+                }).then((res) => {
+                    if(res.isConfirmed)
+                        setIsReloading(true); // Show spinner
+                        window.location.reload();
+                   
+                });
+
             }
         } catch (err) {
             console.error("Something went wrong!", err);
@@ -71,7 +77,12 @@ const AddressForm = ({ setUserAddresssExist, margin_auto }) => {
         finally {
             setloading(false)
         }
+
+     
     };
+    if(isReloading){
+        return <CustomSpinner/>
+    }
 
     return (
         <>

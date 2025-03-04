@@ -12,21 +12,23 @@ import CSpinner from "@/components/CSpinner";
 import AddressForm from "@/components/LibaryComponent/FlowbiteComponent/Addresses";
 import UserSideBar from "./UserSideBar";
 
-const UserSetting = ({ userAddressInfo, userAddressLoading }) => {
-    const { userDetails, updateUserDetails,} = UserQuery();
+const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
+    const { userDetails, updateUserDetails, } = UserQuery();
     const { user } = GlobalDetails()
     const [changepasswordModal, setchangepasswordModal] = useState(false);
+    const [isAddressExist, setIsAddressExist] = useState(false);
     const [loading, setLoading] = useState(false);
     const [modalData, setModalData] = useState({ isOpen: false, field: "", label: "", type: "", value: "", onSave: null, });
-    const handleEdit = (field, label, type, value, onSave) => { setModalData({ isOpen: true, field, label, type, value, onSave, }); };
 
+
+    // functionss 
+    const handleEdit = (field, label, type, value, onSave) => { setModalData({ isOpen: true, field, label, type, value, onSave, }); };
     const handleNameChange = () => handleUpdate("full_name", modalData.value);
     const handlePhone = () => handleUpdate("phone_number", modalData.value);
     const handleStreet = () => handleUpdate("address", modalData.value);
     const handleZip = () => handleUpdate("zip_code", modalData.value);
     const handleCountry = () => handleUpdate("country", modalData.value);
     const handleCity = () => handleUpdate("city", modalData.value);
-
     const handleUpdate = async (field, value) => {
         try {
             setLoading(true)
@@ -41,15 +43,23 @@ const UserSetting = ({ userAddressInfo, userAddressLoading }) => {
             console.error(`Error updating ${field}:`, error);
             return "Failed";
         }
-        finally{
+        finally {
             setLoading(false)
             closeModal()
         }
     };
-
     const closeModal = () => {
         setModalData({ isOpen: false, field: "", label: "", type: "", value: "", onSave: null, });
     };
+
+    useEffect(() => {
+        if (!userDetails) {
+            setIsAddressExist(false)
+        }
+        else   {
+            setIsAddressExist(true)
+        }
+    }, [userDetails])
 
     if (userAddressLoading) {
         return <CustomSpinner />
@@ -66,83 +76,87 @@ const UserSetting = ({ userAddressInfo, userAddressLoading }) => {
                     handleSave={handleUpdate}
 
                 />
-                <UserSideBar />
+                <UserSideBar setchangepasswordModal={setchangepasswordModal} />
                 <main className="flex flex-col w-full  items-start   lg:mt-10  lg:px-3 lg:py-6">
                     <h1 className="text-xl font-semibold mb-2  text-gray-800">Peronal Information</h1>
                     <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>
                     {/*  user Details*/}
-                    {userAddressInfo.length > 0 ?
-                            <>
-                                <div  className="grid grid-cols-1 mb-4 place-content-center items-center w-full pt-4 lg:grid-cols-2 gap-6">
-                                    <div className="  flex  flex-col gap-1 bg-white px-2  py-2 rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  ">
-                                        <h2 className="font-semibold  text-gray-700">Email:</h2>
-                                        <p className="text-gray-900  ">{user?.email}</p>
+                    {isAddressExist ?
+                        <>
+                            <div className="grid grid-cols-1 mb-4 place-content-center items-center w-full pt-4 lg:grid-cols-2 gap-6">
+                                <div className="  flex  flex-col gap-1 bg-white px-2  py-2 rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  ">
+                                    <h2 className="font-semibold  text-gray-700">Email:</h2>
+                                    <p className="text-gray-900  ">{user?.email}</p>
 
 
-                                    </div>
-                                    <div className="flex px-3 sm:px-5 py-2 bg-white rounded-lg shadow-lg border-2 border-l-4 border-[#ccc] justify-between  ">
-                                        <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold text-gray-700">Name: </h2>
-                                            <p className="text-gray-900">{user?.user_metadata?.full_name || userDetails?.full_name}</p>
-
-                                        </div>
-                                        {!user?.user_metadata?.full_name ? <FaEdit onClick={() => handleEdit("full_name", "Name", "text", user?.user_metadata?.full_name || userDetails?.full_name, handleNameChange)} className="text-[20px] sm:text-[25px] text-green-500" />
-                                            : ''}
-                                    </div>
-
-
-                                    <div className="flex px-3 sm:px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  justify-between  ">
-                                        <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold text-gray-700">Phone</h2>
-                                            <p className="text-black">{user?.user_metadata?.phone_number || userDetails?.phone_number || 'Not Set'}</p>
-
-                                        </div>
-
-                                        {user ? <FaEdit onClick={() => handleEdit("phone_number", "Phone Number", "number", user?.user_metadata?.phone_number || userDetails?.phone_number, handlePhone)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
-                                    </div>
-                                    <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
-                                        <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold whitespace-normal text-gray-700">Address</h2>
-                                            <p className="text-gray-500">{userDetails?.address}</p>
-                                        </div>
-                                        {user ? <FaEdit onClick={() => handleEdit('address', 'address', 'text', userDetails?.address || 'address', handleStreet)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
-                                    </div>
-                                    <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
-                                        <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold whitespace-normal text-gray-700">Country</h2>
-                                            <p className="text-black">{userDetails?.country}</p>
-                                        </div>
-
-                                        {user ? <FaEdit onClick={() => handleEdit("country", "country", "text", userDetails?.country, handleCountry)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
-                                    </div>
-                                    <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
-                                        <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold whitespace-normal text-gray-700">City</h2>
-                                            <p className="text-black">{userDetails?.city}</p>
-
-                                        </div>
-
-                                        {user ? <FaEdit onClick={() => handleEdit("city", "city", "", userDetails?.city, handleCity)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
-                                    </div>
-
-                                    <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
-                                        <div className="  flex  flex-col gap-1 ">
-                                            <h2 className="font-semibold whitespace-normal text-gray-700">Zip Code</h2>
-                                            <p className="text-gray-500">{userDetails?.zip_code}</p>
-                                        </div>
-
-                                        {user ? <FaEdit onClick={() => handleEdit('zip_code', 'Zip Code', 'number', userDetails?.zip_code || 'addrzip_codeess', handleZip)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
-                                    </div>
                                 </div>
-                            </>
-                        : (
+                                <div className="flex px-3 sm:px-5 py-2 bg-white rounded-lg shadow-lg border-2 border-l-4 border-[#ccc] justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold text-gray-700">Name: </h2>
+                                        <p className="text-gray-900">{user?.user_metadata?.full_name || userDetails?.full_name}</p>
 
-                            <div className="w-full flex justify-start">
-                                <div className=" w-full  border sm:border-2 bg-white p-4 sm:p-6 shadow-md rounded-lg">
+                                    </div>
+                                    {!user?.user_metadata?.full_name ? <FaEdit onClick={() => handleEdit("full_name", "Name", "text", user?.user_metadata?.full_name || userDetails?.full_name, handleNameChange)} className="text-[20px] sm:text-[25px] text-green-500" />
+                                        : ''}
+                                </div>
 
-                                    <AddressForm />
+
+                                <div className="flex px-3 sm:px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc]  justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold text-gray-700">Phone</h2>
+                                        <p className="text-black">{user?.user_metadata?.phone_number || userDetails?.phone_number || 'Not Set'}</p>
+
+                                    </div>
+
+                                    {user ? <FaEdit onClick={() => handleEdit("phone_number", "Phone Number", "number", user?.user_metadata?.phone_number || userDetails?.phone_number, handlePhone)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                </div>
+                                <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold whitespace-normal text-gray-700">Address</h2>
+                                        <p className="text-gray-500">{userDetails?.address}</p>
+                                    </div>
+                                    {user ? <FaEdit onClick={() => handleEdit('address', 'address', 'text', userDetails?.address || 'address', handleStreet)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+                                </div>
+                                <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold whitespace-normal text-gray-700">Country</h2>
+                                        <p className="text-black">{userDetails?.country}</p>
+                                    </div>
+
+                                    {user ? <FaEdit onClick={() => handleEdit("country", "country", "text", userDetails?.country, handleCountry)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                </div>
+                                <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold whitespace-normal text-gray-700">City</h2>
+                                        <p className="text-black">{userDetails?.city}</p>
+
+                                    </div>
+
+                                    {user ? <FaEdit onClick={() => handleEdit("city", "city", "", userDetails?.city, handleCity)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                </div>
+
+                                <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold whitespace-normal text-gray-700">Zip Code</h2>
+                                        <p className="text-gray-500">{userDetails?.zip_code}</p>
+                                    </div>
+
+                                    {user ? <FaEdit onClick={() => handleEdit('zip_code', 'Zip Code', 'number', userDetails?.zip_code || 'addrzip_codeess', handleZip)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
                                 </div>
                             </div>
+                        </>
+                        : (
+                           <>
+                           {!userAddressInfo || userAddressInfo.length === 0 &&
+                            <div className="w-full flex justify-start">
+                            <div className=" w-full  border sm:border-2 bg-white p-4 sm:p-6 shadow-md rounded-lg">
+
+                                <AddressForm setIsAddressExist={setIsAddressExist} isAddressExist={isAddressExist} />
+                            </div>
+                        </div>
+                            }
+                           
+                            </>
                         )}
 
 
