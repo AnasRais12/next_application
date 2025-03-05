@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useFetchAddress } from '@/customHooks/useFetchAddress'
+import { useFetchCartlist } from '@/customHooks/useFetchCartList'
 import AddressForm from '@/components/LibaryComponent/FlowbiteComponent/Addresses'
 import useSession from '@/utils/UserExist/GetSession'
 import UserQuery from '@/DbQuery/UserDetailQuery'
@@ -10,8 +11,9 @@ function page() {
   const session = useSession()
   const { userDetails } = UserQuery()
   const [userAddresssExist, setUserAddresssExist] = useState(false)
-  const { userAddressInfo, userAddressLoading } = useFetchAddress(session?.user?.id)
-
+  const {  userAddressLoading,userAddressInfo } = useFetchAddress(session?.user?.id)
+  useFetchCartlist(session?.user?.id)
+  
   useEffect(() => {
     if (!userDetails) {
       setUserAddresssExist(false)
