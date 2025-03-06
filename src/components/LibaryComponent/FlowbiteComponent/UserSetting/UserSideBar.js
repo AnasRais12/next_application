@@ -4,11 +4,12 @@ import React, { useState } from 'react'
 import CSpinner from '@/components/CSpinner';
 import { FiMenu, FiX } from 'react-icons/fi';
 
-function UserSideBar({setchangepasswordModal}) {
+function UserSideBar({setchangepasswordModal,setOrderHistory}) {
     const { userDetails,  deleteUser, logoutUser } = UserQuery();
     const { user } = GlobalDetails()
         const [isMenuOpen, setIsMenuOpen] = useState(false);
      const [Logoutloading, setLogoutloading] = useState(false);
+
          const [deleteModal, setDeleteModal] = useState(false);
     const [Deleteloading, setDeleteloading] = useState(false);
 
@@ -73,7 +74,7 @@ function UserSideBar({setchangepasswordModal}) {
                     <ul className="space-y-3 ">
                         <li className="text-white font-semibold">Personal Information</li>
                         <li className="text-gray-300 hover:text-orange-400  rounded-md py-2 px-2 mr-2 border-2 cursor-pointer transition-colors">Billing & Payments</li>
-                        <li className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Order History</li>
+                        <li onClick={()=> setOrderHistory(true)} className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Order History</li>
                         {user?.user_metadata?.provider_id ? null : <li onClick={OpenPasswordModal} className="text-gray-300 cursor-pointer hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">Change Password</li>}
                         <li onClick={userlogout} className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors">{Logoutloading ? <CSpinner /> : 'Logout'}</li>
                         <li  onClick={() => setDeleteModal(true)}  className="text-gray-300 hover:text-white hover:border-[red] cursor-pointe rounded-md border-2 py-2 px-2 mr-2 transition-colors hover:bg-[red]">Delete</li>

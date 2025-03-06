@@ -16,22 +16,32 @@ import CSpinner from '@/components/CSpinner';
 function E_commerceCard() {
     const session = useSession()
     const dispatch = useDispatch()
+    const [productLoading, setProductLoading] = useState(false)
     const [loadingItems, setLoadingItems] = useState({}); // Individual loading state
     const wishlistItems = getWishList()
     const allProducts = Object.values(CardsData).flat();
     const router = useRouter()
     const handleShopNow = (id) => {
-        router.push(`/product/${id}`)
+        setProductLoading(true)
+        try {
+            router.push(`/product/${id}`)
+        } catch (error) {
+            console.log(error)
+        }
+        finally {
+            setProductLoading(false)
+
+        }
     }
     console.log("session!", session)
     const handleAddToWishlist = async (wishListProduct) => {
         if (!session?.user?.id) {
-          Swal.fire({
-            text: 'Please login to add items to wishlist',
-            icon: 'info',
-            confirmButtonText: 'Ok'
-          })
-          return ;
+            Swal.fire({
+                text: 'Please login to add items to wishlist',
+                icon: 'info',
+                confirmButtonText: 'Ok'
+            })
+            return;
         }
         try {
             const userId = session?.user?.id;
@@ -118,7 +128,7 @@ function E_commerceCard() {
                                         onClick={() => handleShopNow(items.product_id)}
                                         className="text-white bg-unique hover:bg-unique focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:px-5 px-3 sm:py-2.5 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     >
-                                        Shop Now
+                                    {productLoading? <CSpinner/> : 'Shop Now' }
                                     </button>
                                 </div>
                             </div>

@@ -11,9 +11,11 @@ import CustomSpinner from "@/components/Spinner";
 import CSpinner from "@/components/CSpinner";
 import AddressForm from "@/components/LibaryComponent/FlowbiteComponent/Addresses";
 import UserSideBar from "./UserSideBar";
+import OrderHistory from "../OrderHistory";
 
 const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
     const { userDetails, updateUserDetails, } = UserQuery();
+     const [orderHistory, setOrderHistory] = useState(false);
     const { user } = GlobalDetails()
     const [changepasswordModal, setchangepasswordModal] = useState(false);
     const [isAddressExist, setIsAddressExist] = useState(false);
@@ -61,9 +63,13 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
         }
     }, [userDetails])
 
+    if(orderHistory){
+        return <OrderHistory/>
+    }
     if (userAddressLoading) {
         return <CustomSpinner />
     }
+
     return (
         <>
             <div className="lg:flex-row flex-col h-fit  py-10  flex lg:gap-0 lg:px-0 md:px-5 px-3 lg:mt-0 mt-12 bg-gray-50">
@@ -76,7 +82,7 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
                     handleSave={handleUpdate}
 
                 />
-                <UserSideBar setchangepasswordModal={setchangepasswordModal} />
+                <UserSideBar setchangepasswordModal={setchangepasswordModal} setOrderHistory={setOrderHistory} />
                 <main className="flex flex-col w-full  items-start   lg:mt-10  lg:px-3 lg:py-6">
                     <h1 className="text-xl font-semibold mb-2  text-gray-800">Peronal Information</h1>
                     <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>

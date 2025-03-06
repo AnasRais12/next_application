@@ -87,3 +87,29 @@ export const deleteCartItem = async (id, supabase, session, dispatch, RemoveFrom
         setCrossButtonLoading((prev) => ({ ...prev, [id]: false })); // 🔄 Button loading state OFF
     }
 };
+
+
+
+export const deleteAllCartItem = async (supabase, session,RemoveAllFromCart,dispatch ) => {
+    if (!session?.user?.id) {
+        toast.error("User not logged in");
+        return;
+    }
+
+    try {
+
+        const { error } = await supabase
+        .from("cart")
+        .delete()
+        .eq("user_id", session?.user?.id); 
+       
+        dispatch(RemoveAllFromCart())
+        if (error) {
+            console.error("Error deleting cart item from database:", error);
+            return;
+        }
+
+    } catch (err) {
+        console.error("An error occurred while removing the item:", err);
+    } 
+};

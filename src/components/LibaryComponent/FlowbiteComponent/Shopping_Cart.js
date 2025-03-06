@@ -23,11 +23,9 @@ function Shopping_Cart() {
   const cart = getCart()
  
  
-
   const proceedToCheckout = () => {
     router.push('/checkout')
   }
-
 
 
   return (
