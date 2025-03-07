@@ -39,7 +39,7 @@ export default function ConfirmOrder() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 sm:mx-0 mx-2 rounded-lg shadow-lg text-center">
+      <div className="bg-white w-[95%] sm:w-[80%] p-6 sm:mx-0 mx-2 rounded-lg shadow-lg text-center">
         <BsCheckCircle className="w-16 h-16 text-orange-500 mx-auto" />
         <h1 className="text-2xl font-semibold mt-4">Order Confirmed</h1>
         <p className="mt-4 text-lg capitalize">

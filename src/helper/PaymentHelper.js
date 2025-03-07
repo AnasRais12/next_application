@@ -35,8 +35,14 @@ export const handleCardPayment = async (supabase, session, cart, paymentMethod, 
                     user_email: session?.user?.email,
                     total_amount: cart.reduce((sum, item) => sum + item.product_price * item.quantity, 0),
                     payment_method: paymentMethod,
-                    status: "pending",
-                    address: userDetails?.address
+                    status: "Pending",
+                    address: userDetails?.address,
+                    items: cart.map(item => ({
+                        product_id: item.product_id,
+                        product_name: item.product_name,
+                        product_price: item.product_price,
+                        quantity: item.quantity
+                      }))
                 },
             ], { returning: "representation" }); // 🔥 Yahan return value le rahe hain
 

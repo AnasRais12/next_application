@@ -75,43 +75,13 @@ const OrderHistory = () => {
       return matchesSearch && matchesStatus;
     })
 
-  const StatusBadge = ({ status,payment }) => {
-    const getStatusColor = (status,payment) => {
-      switch (status) {
-        case "Delivered":
-          return "bg-green-100 text-green-800";
-        case "Processing":
-          return "bg-yellow-100 text-yellow-800";
-        case "Shipped":
-          return "bg-blue-100 text-blue-800";
-        default:
-          return "bg-gray-100 text-gray-800";
-      }
-      switch (payment) {
-        case "Delivered":
-          return "bg-green-100 text-green-800";
-        case "Processing":
-          return "bg-yellow-100 text-yellow-800";
-        case "Shipped":
-          return "bg-blue-100 text-blue-800";
-        default:
-          return "bg-gray-100 text-gray-800";
-      }
-    };
-
-    return (
-      <span className={`px-3 py-1 rounded-full  text-sm font-medium ${getStatusColor(status)}`}>
-        {status}
-      </span>
-    );
-  };
   const OrderDetailsModal = ({ order, onClose }) => {
     if (!order) return null;
      console.log("ye rahaa orderrrrss ",order)
     return (
 
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg w-full max-w-2xl">
+      <div className="fixed inset-0 bg-black z-[9999]  bg-opacity-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg  w-full max-w-2xl">
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-semibold">Order Details</h3>
@@ -150,10 +120,9 @@ const OrderHistory = () => {
                   <p className="font-medium">${order.total_amount.toFixed(2)}</p>
                 </div>
               </div>
-              <div className="mt-6">
-                <h4 className="font-medium mb-2">Items</h4>
-                <div className="border rounded-lg overflow-hidden">
-                  {/* <table className="w-full">
+              <div className="mt-6 pl-[-6px]">
+                <div className="border rounded-lg overflow-x-auto">
+                  <table className="w-full ">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Item</th>
@@ -161,16 +130,16 @@ const OrderHistory = () => {
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Price</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {order.map((item, index) => (
+                    <tbody className="divide-y text-center w-full  bg-gray-100">
+                      {order.items.map((item, index) => (
                         <tr key={index}>
-                          <td className="px-4 py-2">{item.status}</td>
-                          <td className="px-4 py-2">{item.payment_method}</td>
-                          <td className="px-4 py-2">${item.total_amount.toFixed(2)}</td>
+                          <td className="px-2 border-r-2 py-1 text-left w-full text-[12px]">{item.product_name}</td>
+                          <td className="px-2 py-2 border-r-2 ">{item.quantity}</td>
+                          <td className="px-2 py-2 border-r-2 ">${item.product_price.toFixed(2)}</td>
                         </tr>
                       ))}
                     </tbody>
-                  </table> */}
+                  </table>
                 </div>
               </div>
             </div>
