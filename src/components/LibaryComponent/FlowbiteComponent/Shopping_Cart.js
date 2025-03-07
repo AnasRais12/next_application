@@ -20,13 +20,15 @@ function Shopping_Cart() {
   const router = useRouter()
   const [crossButtonLoading, setCrossButtonLoading] = useState({});
   const dispatch = useDispatch()
+  const [subTotal, setSubTotal] = useState(0);
   const cart = getCart()
- 
- 
-  const proceedToCheckout = () => {
-    router.push('/checkout')
-  }
 
+  
+    useEffect(() => {
+    setSubTotal(calculateTotalproduct_price(cart));
+    }, [cart]);
+    const Total = subTotal + 99
+ 
 
   return (
     
@@ -113,11 +115,9 @@ function Shopping_Cart() {
 
               </div>
                          {/* Order Summary!  */}
-                   <OrderSummary heading={'Order Summary'} proceedToCheckout={proceedToCheckout}/>
-              {/* <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+                   {/* <OrderSummary heading={'Order Summary'} proceedToCheckout={proceedToCheckout}/> */}
+              <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
                 <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-                  <p className="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
-
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <dl className="flex items-center justify-between gap-4">
@@ -141,7 +141,7 @@ function Shopping_Cart() {
                   </div>
 
                   <button
-                    onClick={proceedToCheckout} className="flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-unique focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                    onClick={()=> router.push('/checkout')} className="flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-unique focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                    Proceed to Checkout
                   </button>
 
@@ -155,7 +155,7 @@ function Shopping_Cart() {
                     </p>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </section>

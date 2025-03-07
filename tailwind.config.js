@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+        screens: {
+          'xs': {'max': '300px'}, 
+          'custom': {'min': '301px', 'max': '639px'}, // 301px - 639px
+        },
       fontFamily: {
         poppins: ["Poppins-Bold", "sans-serif"],
       },

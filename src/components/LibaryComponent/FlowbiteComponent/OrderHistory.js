@@ -1,5 +1,9 @@
+import { useFetchOrderlist } from "@/customHooks/useFetchOrderHisotry";
 import { useState, useEffect } from "react";
+import useSession from "@/utils/UserExist/GetSession";
+import { RxCross2 } from "react-icons/rx";
 import { FiSearch, FiFilter, FiDownload, FiPrinter } from "react-icons/fi";
+import CustomSpinner from "@/components/Spinner";
 
 const mockOrders = [
   {
@@ -37,12 +41,14 @@ const mockOrders = [
 ];
 
 const OrderHistory = () => {
+
+  const session = useSession()
+  const { orderHistoryDetail, orderHistoryLoading } = useFetchOrderlist(session?.user?.id)
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" });
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -59,34 +65,29 @@ const OrderHistory = () => {
     fetchOrders();
   }, []);
 
-  const handleSort = (key) => {
-    setSortConfig(prevConfig => ({
-      key,
-      direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc"
-    }));
-  };
 
-  const filteredOrders = orders
+
+  const filteredOrders = orderHistoryDetail
     .filter(order => {
-      const matchesSearch = order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = order.order_id
+        .toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStatus = selectedStatus === "All" || order.status === selectedStatus;
       return matchesSearch && matchesStatus;
     })
-    .sort((a, b) => {
-      if (sortConfig.key === "date") {
-        return sortConfig.direction === "asc" 
-          ? a.date.getTime() - b.date.getTime()
-          : b.date.getTime() - a.date.getTime();
-      }
-      if (sortConfig.key === "total") {
-        return sortConfig.direction === "asc" ? a.total - b.total : b.total - a.total;
-      }
-      return 0;
-    });
 
-  const StatusBadge = ({ status }) => {
-    const getStatusColor = (status) => {
+  const StatusBadge = ({ status,payment }) => {
+    const getStatusColor = (status,payment) => {
       switch (status) {
+        case "Delivered":
+          return "bg-green-100 text-green-800";
+        case "Processing":
+          return "bg-yellow-100 text-yellow-800";
+        case "Shipped":
+          return "bg-blue-100 text-blue-800";
+        default:
+          return "bg-gray-100 text-gray-800";
+      }
+      switch (payment) {
         case "Delivered":
           return "bg-green-100 text-green-800";
         case "Processing":
@@ -99,16 +100,16 @@ const OrderHistory = () => {
     };
 
     return (
-      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(status)}`}>
+      <span className={`px-3 py-1 rounded-full  text-sm font-medium ${getStatusColor(status)}`}>
         {status}
       </span>
     );
   };
-
   const OrderDetailsModal = ({ order, onClose }) => {
     if (!order) return null;
-
+     console.log("ye rahaa orderrrrss ",order)
     return (
+
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg w-full max-w-2xl">
           <div className="p-6">
@@ -116,33 +117,43 @@ const OrderHistory = () => {
               <h3 className="text-xl font-semibold">Order Details</h3>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-red-700"
               >
-                ×
+               <RxCross2 className="text-[22px]"/>
               </button>
             </div>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-600">Order Number</p>
-                  <p className="font-medium">{order.orderNumber}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex sm:flex-col sm:justify-start justify-between flex-row">
+                  <p className="text-gray-600 sm:w-fit w-[60%]">Order Number</p>
+                  <p className="font-medium  sm:text-start text-end">{order.order_id}</p>
                 </div>
-                <div>
+                <div className="flex sm:flex-col sm:justify-start justify-between flex-row">
                   <p className="text-gray-600">Date</p>
+                  <p className="sm:w-fit w-[70%] sm:text-[16px] text-[14px] text-end">
+                  {new Date(order?.created_at).toLocaleString('en-US', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                            </p>
                 </div>
-                <div>
-                  <p className="text-gray-600">Status</p>
-                  <StatusBadge status={order.status} />
+                <div className="flex sm:flex-col  sm:justify-start justify-between flex-row">
+                  <p className="text-gray-600 capitalize">Status</p>
+                  {order.status} 
                 </div>
-                <div>
+                <div className="flex sm:flex-col sm:justify-start justify-between flex-row">
                   <p className="text-gray-600">Total</p>
-                  <p className="font-medium">${order.total.toFixed(2)}</p>
+                  <p className="font-medium">${order.total_amount.toFixed(2)}</p>
                 </div>
               </div>
               <div className="mt-6">
                 <h4 className="font-medium mb-2">Items</h4>
                 <div className="border rounded-lg overflow-hidden">
-                  <table className="w-full">
+                  {/* <table className="w-full">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Item</th>
@@ -151,21 +162,21 @@ const OrderHistory = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {order.items.map((item, index) => (
+                      {order.map((item, index) => (
                         <tr key={index}>
-                          <td className="px-4 py-2">{item.name}</td>
-                          <td className="px-4 py-2">{item.quantity}</td>
-                          <td className="px-4 py-2">${item.price.toFixed(2)}</td>
+                          <td className="px-4 py-2">{item.status}</td>
+                          <td className="px-4 py-2">{item.payment_method}</td>
+                          <td className="px-4 py-2">${item.total_amount.toFixed(2)}</td>
                         </tr>
                       ))}
                     </tbody>
-                  </table>
+                  </table> */}
                 </div>
               </div>
             </div>
-            <div className="mt-6 flex justify-end space-x-3">
+            <div className="sm:mt-6 custom:mt-6 xs:mt-2 custom:space-x-3 custom:flex-row flex sm:flex-row xs:flex-col justify-end sm:space-x-3 xs:space-y-2">
               <button
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 flex items-center"
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-200 flex items-center"
                 onClick={() => window.print()}
               >
                 <FiPrinter className="mr-2" /> Print
@@ -185,7 +196,7 @@ const OrderHistory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 p-4">
+      <div className="min-h-screen  p-4">
         <div className="max-w-7xl mx-auto">
           <div className="animate-pulse space-y-4">
             <div className="h-12 bg-gray-200 rounded w-1/4"></div>
@@ -201,113 +212,145 @@ const OrderHistory = () => {
     );
   }
 
+  if (orderHistoryLoading) {
+    return <CustomSpinner />
+  }
+  console.log(orderHistoryDetail, "OrderHistoryDetail")
   return (
-    <div className="min-h-screen bg-gray-50 my-20 p-4">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-900 mb-5">Order History</h1>
+    <>
+      {orderHistoryDetail.length > 0 ? (
+        <div className="min-h-screen bg-white my-20 p-4">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-2xl font-bold text-gray-900 mb-5">Order History</h1>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
-            <div className="relative">
-              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search orders..."
-                className="pl-10 pr-4 py-2 border rounded-md w-full md:w-64"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <select
-                  className="pl-10 pr-4 py-2 border rounded-md appearance-none bg-white"
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
-                >
-                  <option value="All">All Status</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="Processing">Processing</option>
-                  <option value="Shipped">Shipped</option>
-                </select>
+            <div className="bg-gray-50 rounded-lg shadow-lg border-t-2 p-6">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
+                <div className="relative">
+                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search orders..."
+                    className="pl-10 pr-4 py-2 border focus:outline-2 focus:outline-orange-400 shadow-md rounded-md w-full md:w-64"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="relative  shadow-md">
+                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <select
+                      className="pl-10 pr-4 py-2 border rounded-md appearance-none bg-white"
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                      <option value="All">All Status</option>
+                      {[...new Set(orderHistoryDetail.map(item => item?.status))].map((status, idx) => (
+                        <option key={idx} value={status}>{status}</option>
+                      ))}
+                    </select>
+
+                  </div>
+                </div>
               </div>
+
+              {filteredOrders.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">No orders found</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+
+                        >
+                          Date
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Order ID
+                        </th>
+                        <th
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+
+                        >
+                          Total
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Transaction
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className=" divide-y divide-gray-200">
+                      {filteredOrders.map((order) => (
+                        <tr
+                          key={order.id}
+                          className="hover:bg-gray-50 transition-colors duration-200"
+                        >
+                          <td className="px-6 py-4 text-[14px] whitespace-nowrap">
+                            {new Date(order?.created_at).toLocaleString('en-US', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {order.order_id}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            ${order.total_amount.toFixed(2)}
+                          </td>
+                          <td className={`${order.payment_method == 'card' ? ' text-green-900' : 'text-blue-600' } px-6 py-4 capitalize whitespace-nowrap`}>
+                           {order.payment_method} 
+                          </td>
+                          <td className={`${order.status == 'pending' ? ' text-yellow-800'   : 'text-red-600'} px-6 py-4 capitalize whitespace-nowrap`}>
+                            {order?.status}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <button
+                              onClick={() => setSelectedOrder(order)}
+                              className="text-gray-500 hover:text-orange-800 font-medium"
+                            >
+                              View Details
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
 
-          {filteredOrders.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500">No orders found</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                      onClick={() => handleSort("date")}
-                    >
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Order Number
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                      onClick={() => handleSort("total")}
-                    >
-                      Total
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredOrders.map((order) => (
-                    <tr
-                      key={order.id}
-                      className="hover:bg-gray-50 transition-colors duration-200"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {order.orderNumber}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        ${order.total.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <StatusBadge status={order.status} />
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={() => setSelectedOrder(order)}
-                          className="text-blue-600 hover:text-blue-800 font-medium"
-                        >
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          {selectedOrder && (
+            <OrderDetailsModal
+              order={selectedOrder}
+              onClose={() => setSelectedOrder(null)}
+            />
           )}
         </div>
-      </div>
+      ) : (
+        <>
+          <div className='w-full flex-col gap-3 h-screen flex justify-center items-center'>
+            <p>You haven’t placed any orders yet. Start shopping and track your orders here!</p>
+            <button onClick={() => router.push('/home')} className='py-3 px-6 border-unique border-2 hover:border-gray-50 hover:bg-unique hover:text-white text-unique'>Shop Now</button>
 
-      {selectedOrder && (
-        <OrderDetailsModal
-          order={selectedOrder}
-          onClose={() => setSelectedOrder(null)}
-        />
+          </div>
+        </>
       )}
-    </div>
+    </>
+
   );
 };
 
