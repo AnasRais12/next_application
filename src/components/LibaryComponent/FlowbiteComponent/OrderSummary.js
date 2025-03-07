@@ -200,7 +200,7 @@ const OrderSummary = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const cart = getCart()
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState("Credit Card");
 
   const [cardLoading, setcardLoading] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
@@ -261,8 +261,8 @@ const OrderSummary = () => {
      <h2 className="text-xl text-left font-semibold mb-6">Payment Method</h2>
      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
        {[
-         { id: "card", icon: FaCreditCard, label: "Credit Card" },
-         { id: "delivery", icon: MdLocalShipping, label: "Cash on Delivery" }
+         { id: "Credit Card", icon: FaCreditCard, label: "Credit Card" },
+         { id: "Cash on Delivery", icon: MdLocalShipping, label: "Cash on Delivery" }
        ].map((method) => (
          <div
            key={method.id}
@@ -280,7 +280,7 @@ const OrderSummary = () => {
    </div>
 
    <div className="flex items-center justify-between">
-     {paymentMethod === 'card' ? (
+     {paymentMethod === 'Credit Card' ? (
        <button onClick={() => handleCardPayment(
          supabase,
          session,
