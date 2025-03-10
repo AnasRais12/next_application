@@ -44,10 +44,6 @@ export async function POST(req) {
         .eq("order_id", orderId)
         .select(); // ✅ Order ID aur Status le raha hai
 
-    if (updateError) {
-        await logWebhookError("supabase_update_failed", updateError.message);
-        return NextResponse.json({ error: "supabase_update_failed" }, { status: 500 });
-    }
 
     // ✅ Pehle yeh check karo ki orderId aur status properly aa raha hai
     console.log("Updated Order:", updateData);
