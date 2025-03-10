@@ -37,7 +37,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Order ID not found" }, { status: 405 });
     }
 
-    const {dataResponse, error } = await supabase
+    const { error } = await supabase
       .from("orders")
       .update({ status: "completed" })
       .eq("order_id", orderId)
@@ -45,11 +45,7 @@ export async function POST(req) {
 
     if (error) {
       await logWebhookError("supabase_update_failed", error.message);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-    else{
-      await logWebhookError("supabase_update_failed", dataResponse.message,orderId);
-
+      return NextResponse.json({ error: "supabase_update_failed" }, { status: 500 });
     }
   }
 
