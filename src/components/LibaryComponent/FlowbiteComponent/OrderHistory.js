@@ -279,7 +279,7 @@ const OrderHistory = () => {
                           <td className="px-6 py-4 whitespace-nowrap">
                             ${order.total_amount.toFixed(2)}
                           </td>
-                          <td className={`${order.payment_method == 'card' ? ' text-green-900' : 'text-blue-600' } px-6 py-4 capitalize whitespace-nowrap`}>
+                          <td className={`${order.payment_method == 'Credit Card' ? ' text-green-400' : 'text-blue-600' } px-6 py-4 capitalize whitespace-nowrap`}>
                            {order.payment_method} 
                           </td>
                           <td className={`${order.status == 'pending' ? ' text-yellow-800'   : 'text-red-600'} px-6 py-4 capitalize whitespace-nowrap`}>
