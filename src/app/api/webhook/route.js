@@ -18,7 +18,7 @@ export async function POST(req) {
   let event;
 
   try {
-    const rawBody = await getRawBody(req.body); // ✅ Next.js me raw body lena zaroori hai
+    const rawBody = await req.text() 
     event = stripe.webhooks.constructEvent(rawBody, sig, "whsec_H6IJW6nLXtYZOir8P00eHmFPShnpMc0P");
   } catch (error) {
     await logWebhookError("signature_verification_failed", error.message);
