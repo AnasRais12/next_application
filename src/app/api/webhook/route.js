@@ -41,6 +41,7 @@ export async function POST(req) {
       .from("orders")
       .update({ status: "completed" })
       .eq("order_id", orderId);
+      select(); // ✅ Data bhi check karna hai
 
     if (error) {
       await logWebhookError("supabase_update_failed", error.message);
