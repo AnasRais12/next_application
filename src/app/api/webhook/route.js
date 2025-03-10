@@ -33,35 +33,43 @@ export async function POST(req) {
     const orderId = session.metadata?.orderId;
 
     if (!orderId) {
-      await logWebhookError("missing_order_id", "Order ID not found in session metadata");
-      return NextResponse.json({ error: "Order ID not found" }, { status: 405 });
+        await logWebhookError("missing_order_id", "Order ID not found in session metadata");
+        return NextResponse.json({ error: "Order ID not found" }, { status: 405 });
     }
 
-    const { error } = await supabase
-      .from("orders")
-      .update({ status: "completed" })
-      .eq("order_id", orderId)
-      .select(); 
+    // ✅ Pehle Order Status Update Karo
+    const { data: updateData, error: updateError } = await supabase
+        .from("orders")
+        .update({ status: "completed" })
+        .eq("order_id", orderId)
+        .select("order_id, status"); // ✅ Order ID aur Status le raha hai
 
-    if (error) {
-      await logWebhookError("supabase_update_failed", error.message);
-      return NextResponse.json({ error: "supabase_update_failed" }, { status: 500 });
+    if (updateError) {
+        await logWebhookError("supabase_update_failed", updateError.message);
+        return NextResponse.json({ error: "supabase_update_failed" }, { status: 500 });
     }
-  }
 
-  return NextResponse.json({ received: true });
+    // ✅ Pehle yeh check karo ki orderId aur status properly aa raha hai
+    console.log("Updated Order:", updateData);
+
+    // ✅ Webhook Event ko Logs Table me Save Karo
+    const { data: logData, error: logError } = await supabase
+        .from("webhooks_logs")
+        .insert([
+            {
+                order_id: orderId,  // ✅ Ensure order_id is included
+                event_type: "checkout.session.completed",
+                received_at: new Date().toISOString(),
+                status: "completed",  // ✅ Ensure status is included
+            }
+        ])
+        .select("*");
+
+    if (logError) {
+        await logWebhookError("webhook_log_failed", logError.message);
+        return NextResponse.json({ error: "webhook_log_failed" }, { status: 500 });
+    }
+
+    return NextResponse.json({ received: true, logs: logData });
 }
-
-// ✅ Helper function: Store webhook events in database
-async function logWebhookEvent(eventType, eventData) {
-  await supabase.from("webhook_logs").insert([
-    { event_type: eventType, event_data: eventData },
-  ]);
-}
-
-// ✅ Helper function: Store errors in database
-async function logWebhookError(errorType, errorMessage) {
-  await supabase.from("webhook_logs").insert([
-    { event_type: errorType, event_data: { error: errorMessage } },
-  ]);
 }
