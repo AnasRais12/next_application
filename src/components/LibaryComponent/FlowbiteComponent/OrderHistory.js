@@ -77,7 +77,7 @@ const OrderHistory = () => {
 
   const OrderDetailsModal = ({ order, onClose }) => {
     if (!order) return null;
-     console.log("ye rahaa orderrrrss ",order)
+    console.log("ye rahaa orderrrrss ", order)
     return (
 
       <div className="fixed inset-0 bg-black z-[9999]  bg-opacity-50 flex items-center justify-center p-4">
@@ -89,7 +89,7 @@ const OrderHistory = () => {
                 onClick={onClose}
                 className="text-gray-500 hover:text-red-700"
               >
-               <RxCross2 className="text-[22px]"/>
+                <RxCross2 className="text-[22px]" />
               </button>
             </div>
             <div className="space-y-4">
@@ -101,19 +101,19 @@ const OrderHistory = () => {
                 <div className="flex sm:flex-col sm:justify-start justify-between flex-row">
                   <p className="text-gray-600">Date</p>
                   <p className="sm:w-fit w-[70%] sm:text-[16px] text-[14px] text-end">
-                  {new Date(order?.created_at).toLocaleString('en-US', {
-                              day: '2-digit',
-                              month: 'short',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              hour12: true
-                            })}
-                            </p>
+                    {new Date(order?.created_at).toLocaleString('en-US', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true
+                    })}
+                  </p>
                 </div>
                 <div className="flex sm:flex-col  sm:justify-start justify-between flex-row">
                   <p className="text-gray-600 capitalize">Status</p>
-                  {order.status} 
+                  {order.status}
                 </div>
                 <div className="flex sm:flex-col sm:justify-start justify-between flex-row">
                   <p className="text-gray-600">Total</p>
@@ -279,12 +279,16 @@ const OrderHistory = () => {
                           <td className="px-6 py-4 whitespace-nowrap">
                             ${order.total_amount.toFixed(2)}
                           </td>
-                          <td className={`${order.payment_method == 'Credit Card' ? ' text-green-400' : 'text-blue-600' } px-6 py-4 capitalize whitespace-nowrap`}>
-                           {order.payment_method} 
+                          <td className={`${order.payment_method == 'Credit Card' ? ' text-green-400' : 'text-blue-600'} px-6 py-4 capitalize whitespace-nowrap`}>
+                            {order.payment_method}
                           </td>
-                          <td className={`${order.status == 'pending' ? ' text-yellow-800'   : 'text-red-600'} px-6 py-4 capitalize whitespace-nowrap`}>
-                            {order?.status}
+                          <td
+                            className={`${order.status === 'Pending' ? 'text-yellow-800'
+                              : order.status === 'completed' ? 'text-green-600'
+                                : 'text-red-600'} px-6 py-4 capitalize whitespace-nowrap`}>
+                            {order.status}
                           </td>
+
                           <td className="px-6 py-4 whitespace-nowrap">
                             <button
                               onClick={() => setSelectedOrder(order)}
