@@ -42,7 +42,7 @@ export async function POST(req) {
         .from("orders")
         .update({ status: "completed" })
         .eq("order_id", orderId)
-        .select("order_id, status"); // ✅ Order ID aur Status le raha hai
+        .select(); // ✅ Order ID aur Status le raha hai
 
     if (updateError) {
         await logWebhookError("supabase_update_failed", updateError.message);
