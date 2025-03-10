@@ -24,8 +24,8 @@ export async function POST(request) {
       })),
       customer_email:userEmail,
       
-      success_url: `http://localhost:3000/home`,
-      cancel_url: `http://localhost:3000/checkout`,
+      success_url: `https://next-application-pi.vercel.app/home`,
+      cancel_url: `https://next-application-pi.vercel.app/checkout`,
     });
 
     // Return JSON response using NextResponse

@@ -136,45 +136,45 @@ export const handleDelievery = async (supabase, session, cart, paymentMethod, us
 // Checking Payment SUCESSFULLY?? // 
 
 
-import Stripe from 'stripe';
+// import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export default async function handler(req, res) {
-    const sig = req.headers['stripe-signature'];
+// export default async function handler(req, res) {
+//     const sig = req.headers['stripe-signature'];
 
-    let event;
+//     let event;
 
-    try {
-        event = stripe.webhooks.constructEvent(
-            req.body,
-            sig,
-            process.env.STRIPE_WEBHOOK_SECRET // Webhook Secret Key
-        );
-    } catch (err) {
-        console.error("Webhook Error:", err);
-        return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
+//     try {
+//         event = stripe.webhooks.constructEvent(
+//             req.body,
+//             sig,
+//             process.env.STRIPE_WEBHOOK_SECRET // Webhook Secret Key
+//         );
+//     } catch (err) {
+//         console.error("Webhook Error:", err);
+//         return res.status(400).send(`Webhook Error: ${err.message}`);
+//     }
 
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object;
+//     if (event.type === 'checkout.session.completed') {
+//         const session = event.data.object;
 
-        // ✅ Order ko stripe session se dhoondh ke update karna
-        const { data, error } = await supabase
-            .from("orders")
-            .update({ status: "Completed" }) // ✅ Status update
-            .eq("user_email", session.customer_details.email); // ✅ User ki email match karo
+//         // ✅ Order ko stripe session se dhoondh ke update karna
+//         const { data, error } = await supabase
+//             .from("orders")
+//             .update({ status: "Completed" }) // ✅ Status update
+//             .eq("user_email", session.customer_details.email); // ✅ User ki email match karo
 
-        if (error) {
-            console.error("Error updating order:", error);
-            return res.status(500).json({ error: "Order update failed!" });
-        }
+//         if (error) {
+//             console.error("Error updating order:", error);
+//             return res.status(500).json({ error: "Order update failed!" });
+//         }
 
-        console.log("Order status updated successfully!");
-    }
+//         console.log("Order status updated successfully!");
+//     }
 
-    res.json({ received: true });
-}
+//     res.json({ received: true });
+// }
 
 
 
