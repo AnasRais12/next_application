@@ -20,7 +20,6 @@ export async function POST(req) {
     const rawBody = await req.text() 
     event = stripe.webhooks.constructEvent(rawBody, sig, "whsec_H6IJW6nLXtYZOir8P00eHmFPShnpMc0P");
   } catch (error) {
-    await logWebhookError("signature_verification_failed", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
