@@ -19,7 +19,7 @@ export async function POST(req) {
 
   try {
     const rawBody = await getRawBody(req.body); // ✅ Next.js me raw body lena zaroori hai
-    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(rawBody, sig, "whsec_H6IJW6nLXtYZOir8P00eHmFPShnpMc0P");
   } catch (error) {
     await logWebhookError("signature_verification_failed", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
@@ -34,7 +34,7 @@ export async function POST(req) {
 
     if (!orderId) {
       await logWebhookError("missing_order_id", "Order ID not found in session metadata");
-      return NextResponse.json({ error: "Order ID not found" }, { status: 400 });
+      return NextResponse.json({ error: "Order ID not found" }, { status: 405 });
     }
 
     const { error } = await supabase
