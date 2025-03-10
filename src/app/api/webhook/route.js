@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { supabase } from "@/lib/supabase";
 import getRawBody from "raw-body";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe('sk_test_51PbO7KDIVPFWPszsv2w8ELOstNQxHCAxistnKNGGqq5Kbd0tTgZRDhUD7B6dDYZK10ysgD76oW3X1X049KAPnDjT00ObGcQ5Xe');
 
 export const config = {
   api: {
