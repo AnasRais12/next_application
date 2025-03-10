@@ -33,7 +33,8 @@ export async function POST(req, res) {
       
       // 🎯 Supabase Database Update Here
       const orderId = session.metadata.orderId;
-      if (!orderId) return res.status(400).json({ error: "Order ID not found" });
+     
+      if (!orderId) return  NextResponse.json({ error: "Order ID not found"  }, { status: 400 });
 
       // 🟢 Supabase me Order Status Update
       const { error } = await supabase
@@ -41,10 +42,10 @@ export async function POST(req, res) {
         .update({ status: "completed" })
         .eq("order_id", orderId);
   
-      if (error) return res.status(400).json({ error: error.message });
+      if (error) return  NextResponse.json({ error: error.message }, { status: 400 });
   
       console.log(`✅ Order ${orderId} marked as completed`);
     }
   
-    res.json({ received: true });
+    NextResponse.json({ received: true });
   }
