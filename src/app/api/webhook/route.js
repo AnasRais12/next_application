@@ -38,34 +38,13 @@ export async function POST(req) {
     }
 
     // ✅ Pehle Order Status Update Karo
-    const { data: updateData, error: updateError } = await supabase
-        .from("orders")
-        .update({ status: "completed" })
-        .eq("order_id", orderId)
-        .select(); // ✅ Order ID aur Status le raha hai
+    // const { data: updateData, error: updateError } = await supabase
+    //     .from("orders")
+    //     .update({ status: "completed" })
+    //     .eq("order_id", orderId)
+    //     .select(); // ✅ Order ID aur Status le raha hai
+    console.log("Updated Order:", orderId);
 
-
-    // ✅ Pehle yeh check karo ki orderId aur status properly aa raha hai
-    console.log("Updated Order:", updateData);
-
-    // ✅ Webhook Event ko Logs Table me Save Karo
-    const { data: logData, error: logError } = await supabase
-        .from("webhooks_logs")
-        .insert([
-            {
-                order_id: orderId,  // ✅ Ensure order_id is included
-                event_type: "checkout.session.completed",
-                received_at: new Date().toISOString(),
-                status: "completed",  // ✅ Ensure status is included
-            }
-        ])
-        .select("*");
-
-    if (logError) {
-        await logWebhookError("webhook_log_failed", logError.message);
-        return NextResponse.json({ error: "webhook_log_failed" }, { status: 500 });
-    }
-
-    return NextResponse.json({ received: true, logs: logData });
+    return NextResponse.json({ received: true,  });
 }
 }
