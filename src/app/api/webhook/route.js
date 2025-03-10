@@ -1,7 +1,6 @@
 import Stripe from "stripe";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
-import getRawBody from "raw-body";
 
 const stripe = new Stripe("sk_test_51PbO7KDIVPFWPszsv2w8ELOstNQxHCAxistnKNGGqq5Kbd0tTgZRDhUD7B6dDYZK10ysgD76oW3X1X049KAPnDjT00ObGcQ5Xe", {
   apiVersion: "2024-06-20",
@@ -24,9 +23,6 @@ export async function POST(req) {
     await logWebhookError("signature_verification_failed", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
-
-  // ✅ Store Webhook Event in Database for Debugging
-  await logWebhookEvent(event.type, event.data);
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
