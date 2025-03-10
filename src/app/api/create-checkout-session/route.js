@@ -6,7 +6,7 @@ export async function POST(request) {
   try {
   
     // Extract Data from Request
-    const { products, currency,  userEmail, } = await request.json();
+    const { products, currency,  userEmail,orderId } = await request.json();
 
     // Create Stripe Checkout Session
     
@@ -26,6 +26,7 @@ export async function POST(request) {
       
       success_url: `https://next-application-pi.vercel.app/home`,
       cancel_url: `https://next-application-pi.vercel.app/checkout`,
+      metadata: { orderId: orderId}
     });
 
     // Return JSON response using NextResponse

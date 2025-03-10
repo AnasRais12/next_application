@@ -1,4 +1,4 @@
-export const CreateStripeSession = async (cart, session, loadStripe) => {
+export const CreateStripeSession = async (cart, session, loadStripe,orderId) => {
     try {
 
         const res = await fetch("/api/create-checkout-session", {
@@ -11,7 +11,8 @@ export const CreateStripeSession = async (cart, session, loadStripe) => {
                     quantity: item.quantity || 1,
                 })),
                 currency: "usd",
-                userEmail: session?.user?.email
+                userEmail: session?.user?.email,
+                orderId: orderId
             }),
         });
         const data = await res.json();
@@ -46,19 +47,34 @@ export const handleCardPayment = async (supabase, session, cart, paymentMethod, 
                 },
             ], { returning: "representation" }); // 🔥 Yahan return value le rahe hain
 
-        if (error) {
-            console.error("Order Insert Error:", error);
-            return;
-        }
-        else {
-            await CreateStripeSession(cart, session, loadStripe);
-            deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
-            Swal.fire({
-                icon: 'success',
-                title: 'Order Confirmed!',
-                text: 'Your order has been confirmed successfully!'
-            });
-        }
+            if (error) {
+                console.error("Order Insert Error:", error);
+                return;
+            }
+            const { data: lastOrder, error: fetchError } = await supabase
+                .from("orders")
+                .select("order_id")
+                .eq("user_id", session?.user?.id)
+                .order("created_at", { ascending: false }) // ✅ Last order
+                .limit(1)
+                .single();
+    
+            if (fetchError) {
+                console.log("Fetch ERROR", fetchError?.message)
+            }
+            else {
+                const orderId = lastOrder?.order_id?.replace("#", ""); // 🔥 "#" hata diya
+    
+                await CreateStripeSession(cart, session, loadStripe,orderId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Confirmed!',
+                    text: 'Your order has been confirmed successfully!'
+                });
+                deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
+    
+            }
+    
 
 
     } catch (error) {
