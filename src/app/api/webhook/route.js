@@ -31,14 +31,16 @@ export async function POST(req) {
         await logWebhookError("missing_order_id", "Order ID not found in session metadata");
         return NextResponse.json({ error: "Order ID not found" }, { status: 405 });
     }
-
-    // ✅ Pehle Order Status Update Karo
-    // const { data: updateData, error: updateError } = await supabase
-    //     .from("orders")
-    //     .update({ status: "completed" })
-    //     .eq("order_id", orderId)
-    //     .select(); // ✅ Order ID aur Status le raha hai
+    const { data: updateData, error: updateError } = await supabase
+        .from("orders")
+        .update({ status: "completed" })
+        .eq("order_id", `#${orderId}`)
+        .select(); // ✅ Order ID aur Status le raha hai
     console.log("Updated Order:", orderId);
+    if(updateError){
+    console.log("Updated Error:", orderId);
+
+    }
 
     return NextResponse.json({ received: true,  });
 }
