@@ -2,7 +2,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { FaStar, FaSearch, FaTimes } from "react-icons/fa";
 import { BsToggleOn, BsToggleOff } from "react-icons/bs";
-import { FaHeart } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import { FaFilter, FaHeart } from "react-icons/fa6";
+import useSession from "@/utils/UserExist/GetSession";
+import { useDispatch } from "react-redux";
+import { supabase } from "@/lib/supabase";
+import { addtoWishList } from "@/app/store/features/wishList/WishList";
+import { toast } from "react-toastify";
+import { getWishList } from "@/utils/reduxGlobalStates/ReduxStates";
+import Swal from "sweetalert2";
 
 const products = [
     {
@@ -42,6 +50,10 @@ const categories = ["Electronics", "Fashion", "Home", "Sports"];
 const brands = ["SoundMaster", "TechVision", "LuxStyle", "SportsPro"];
 
 const ProductFilter = () => {
+       const session = useSession()
+       const router = useRouter()
+       const wishlistItems = getWishList()
+        const dispatch = useDispatch()
     const [filters, setFilters] = useState({
         categories: [],
         priceRange: [0, 1000],
@@ -50,8 +62,8 @@ const ProductFilter = () => {
         showInStock: false,
         searchQuery: ""
     });
-
-    const [isFilterVisible, setIsFilterVisible] = useState(true);
+     const [loadingItems, setLoadingItems] = useState({}); // Individual loading state
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
@@ -93,11 +105,78 @@ const ProductFilter = () => {
         });
     };
 
+    const handleShopNow = (id) => {
+        try {
+            router.push(`/product/${id}`)
+        } catch (error) {
+            console.log(error)
+        }
+       
+    }
+
+      const handleAddToWishlist = async (wishListProduct) => {
+        console.log(wishListProduct,"-____-")
+            if (!session?.user?.id) {
+                Swal.fire({
+                    text: 'Please login to add items to wishlist',
+                    icon: 'info',
+                    confirmButtonText: 'Ok'
+                })
+                return;
+            }
+            try {
+                const userId = session?.user?.id;
+                setLoadingItems((prev) => ({ ...prev, [wishListProduct.product_id]: true })); // S
+                const { data, error } = await supabase
+                    .from('wishlist')
+                    .insert([
+                        {
+                            user_id: userId, // Ensure user is logged in
+                            product_id: wishListProduct?.id,
+                            product_name: wishListProduct?.name,
+                            product_price: wishListProduct?.price,
+                            product_image: wishListProduct?.image,
+                            // Optionally, include description or quantity if needed
+                        }
+                    ]);
+    
+                if (error) {
+                    console.error("Error saving wishlist item to database:", error);
+                    toast.error("Failed to save wishlist item");
+                } else {
+                    const productWishlist = {
+                        product_id: wishListProduct?.product_id,
+                        image: wishListProduct?.image,
+                        product_name: wishListProduct?.product_name,
+                        desc: wishListProduct?.desc,
+                        product_price: wishListProduct?.product_price,
+                    }
+                    dispatch(addtoWishList(productWishlist));
+                    toast.success('Added to Wishlist');
+    
+                }
+            } catch (error) {
+                toast.warning(error.toString());
+    
+            }
+            finally {
+                setLoadingItems((prev) => ({ ...prev, [wishListProduct.product_id]: false }));
+            }
+    
+    
+        };
+
     return (
-        <div className="max-w-7xl mx-auto mt-16 p-4">
-            <div className="flex flex-col md:flex-row gap-6">
+        <div className=" mx-auto  mt-20 p-4">
+            <div className="flex  gap-6">
                 {/* Filter Section */}
-                <div className={`w-full md:w-1/4 bg-white p-4 rounded-lg shadow-lg ${isFilterVisible ? "" : "hidden md:block"}`}>
+                  <button
+                        className="md:hidden flex  gap-2 bg-blue-600 text-white px-4 py-2 rounded"
+                        onClick={()=> setIsFilterVisible(!isFilterVisible)}
+                      >
+                        <FaFilter /> 
+                      </button>
+                <div className={`w-full md:w-[30%] lg:w-[25%] mr   p-4 rounded-lg shadow-lg ${isFilterVisible ? "block" : "hidden md:block"}`}>
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold">Filters</h2>
                         <button
@@ -183,8 +262,8 @@ const ProductFilter = () => {
 
                     {/* Rating Filter */}
                     <div className="mb-6">
-                        <h3 className="font-semibold mb-3">Minimum Rating</h3>
-                        <div className="flex gap-2">
+                        <h3 className="font-semibold mb-2">Minimum Rating</h3>
+                        <div className="flex flex-wrap ">
                             {[0, 1, 2, 3, 4, 5].map(rating => (
                                 <button
                                     key={rating}
@@ -212,11 +291,11 @@ const ProductFilter = () => {
 
                 {/* Product Grid */}
                 <div className="w-full md:w-3/4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map(product => (
-                                <div key={product.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                                    <img
+                                <div  key={product.id} className="bg-white hover:border-b-2 hover:duration-300 hover:shadow-lg shadow-lg rounded-lg overflow-hidden">
+                                    <img  onClick={()=>handleShopNow(product?.id)}
                                         src={product.image}
                                         alt={product.name}
                                         className="w-full h-48 object-cover"
@@ -224,20 +303,22 @@ const ProductFilter = () => {
                                             e.target.src = "https://images.unsplash.com/photo-1560393464-5c69a73c5770";
                                         }}
                                     />
-                                    <div className="flex flex-col  p-4">
+                                    <div  className=" cursor-pointer flex flex-col   p-4">
                                     <div className="flex justify-between border-b-2 mb-2  items-center">
-                                        <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                                        <h3 className="font-semibold text-lg mb-2">
+                                        {product.name.length > 20 ? product.name.slice(0, 20) + "..." : product.name}
+                                        </h3>
                                         <button
-                                                // onClick={() => handleAddToWishlist(items)}
+                                                onClick={() => handleAddToWishlist(product)}
                                                 // disabled={isInWishlist}
                                                 className=
-                                                "text-[18px] text-gray-300 cursor-not-allowed"
+                                                "text-[25px] text-gray-300 hover:text-orange-500"
                                             >
                                                 <FaHeart />
                                                 {/* {loadingItems[items.product_id] ? <CSpinner /> : } */}
                                             </button>
                                         </div>
-                                        <div className="flex justify-between items-center mb-2">
+                                        <div onClick={()=>handleShopNow(product?.id)} className="flex justify-between items-center mb-2">
                                             <span className="text-blue-600 font-bold">${product.price}</span>
                                             <div className="flex items-center">
                                                 <FaStar className="text-yellow-500 mr-1" />

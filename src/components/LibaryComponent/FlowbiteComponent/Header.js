@@ -67,7 +67,7 @@ export default function HeroSection() {
         <h1 className="sm:text-4xl text-3xl md:text-4xl xl:text-6xl font-bold text-gray-900">{categories[index].title}</h1>
         <p className="text-gray-500 text-md sm:text-2xl">{categories[index].subtitle}</p>
 
-        <motion.button onClick={()=> router.push('/shop/category')}
+        <motion.button onClick={()=> router.push('/category')}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="mt-4 px-8 w-fit sm:w-[50%] py-3 bg-orange-600 text-1xl text-white rounded-lg hover:bg-orange-600 transition"
