@@ -16,6 +16,7 @@ import UserQuery from '@/DbQuery/UserDetailQuery';
 import CSpinner from '@/components/CSpinner';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import OpenLayersMap from '@/components/Map';
 
 const OrderSummary = () => {
   const session = useSession()
@@ -144,6 +145,10 @@ const OrderSummary = () => {
      )}
 
 
+   </div>
+
+   <div>
+    <OpenLayersMap/>
    </div>
  </div>
 </div>
