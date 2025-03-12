@@ -69,7 +69,7 @@ function ChangePassword({ setchangepasswordModal }) {
   return (
     <>
       <div
-        className={`fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center `}>
+        className={`fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center `}>
         <div className="max-w-md  w-[90%] p-6 bg-white shadow-lg rounded-lg">
           <div className="flex justify-between px-2">
             <h2 className="text-xl font-bold mb-4">Change Password</h2>

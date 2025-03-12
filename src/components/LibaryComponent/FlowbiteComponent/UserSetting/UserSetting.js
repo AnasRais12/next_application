@@ -12,6 +12,7 @@ import CSpinner from "@/components/CSpinner";
 import AddressForm from "@/components/LibaryComponent/FlowbiteComponent/Addresses";
 import UserSideBar from "./UserSideBar";
 import OrderHistory from "../OrderHistory";
+import AddressUpdate from "../../MaterialUi Compomnent/AddressUpdate";
 
 const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
     const { userDetails, updateUserDetails, } = UserQuery();
@@ -21,7 +22,13 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
     const [isAddressExist, setIsAddressExist] = useState(false);
     const [loading, setLoading] = useState(false);
     const [modalData, setModalData] = useState({ isOpen: false, field: "", label: "", type: "", value: "", onSave: null, });
+    const [isEditing, setIsEditing] = useState(false);  // Editing mode track karega
+   
 
+    const handleEditClick = () => {
+        setIsEditing(true);
+       
+    };
 
     // functionss 
     const handleEdit = (field, label, type, value, onSave) => { setModalData({ isOpen: true, field, label, type, value, onSave, }); };
@@ -73,6 +80,7 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
     return (
         <>
             <div className="lg:flex-row flex-col h-fit  py-10  flex lg:gap-0 lg:px-0 md:px-5 px-3 lg:mt-0 mt-12 bg-gray-50">
+                {isEditing ? <AddressUpdate setIsEditing={setIsEditing} userDetails={userDetails} /> : ''}
                 {changepasswordModal ? <ChangePassword setchangepasswordModal={setchangepasswordModal} /> : ''}
                 <UpdateModal
                     modalData={modalData}
@@ -102,8 +110,9 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
                                         <p className="text-gray-900">{user?.user_metadata?.full_name || userDetails?.full_name}</p>
 
                                     </div>
-                                    {!user?.user_metadata?.full_name ? <FaEdit onClick={() => handleEdit("full_name", "Name", "text", user?.user_metadata?.full_name || userDetails?.full_name, handleNameChange)} className="text-[20px] sm:text-[25px] text-green-500" />
-                                        : ''}
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                    {/* {!user?.user_metadata?.full_name ? <FaEdit onClick={() => handleEdit("full_name", "Name", "text", user?.user_metadata?.full_name || userDetails?.full_name, handleNameChange)} className="text-[20px] sm:text-[25px] text-green-500" />
+                                        : ''} */}
                                 </div>
 
 
@@ -113,23 +122,27 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
                                         <p className="text-black">{user?.user_metadata?.phone_number || userDetails?.phone_number || 'Not Set'}</p>
 
                                     </div>
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
 
-                                    {user ? <FaEdit onClick={() => handleEdit("phone_number", "Phone Number", "number", user?.user_metadata?.phone_number || userDetails?.phone_number, handlePhone)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                    {/* {user ? <FaEdit onClick={() => handleEditClick("phone_number", "Phone Number", "number", user?.user_metadata?.phone_number || userDetails?.phone_number, handlePhone)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''} */}
                                 </div>
                                 <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
                                     <div className="  flex  flex-col gap-1 ">
                                         <h2 className="font-semibold whitespace-normal text-gray-700">Address</h2>
                                         <p className="text-gray-500">{userDetails?.address}</p>
                                     </div>
-                                    {user ? <FaEdit onClick={() => handleEdit('address', 'address', 'text', userDetails?.address || 'address', handleStreet)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+
+                                    {/* {user ? <FaEdit onClick={() => handleEditClick('address', 'address', 'text', userDetails?.address || 'address', handleStreet)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''} */}
                                 </div>
                                 <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
                                     <div className="  flex  flex-col gap-1 ">
                                         <h2 className="font-semibold whitespace-normal text-gray-700">Country</h2>
                                         <p className="text-black">{userDetails?.country}</p>
                                     </div>
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
 
-                                    {user ? <FaEdit onClick={() => handleEdit("country", "country", "text", userDetails?.country, handleCountry)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                    {/* {user ? <FaEdit onClick={() => handleEditClick("country", "country", "text", userDetails?.country, handleCountry)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''} */}
                                 </div>
                                 <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
                                     <div className="  flex  flex-col gap-1 ">
@@ -137,8 +150,18 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
                                         <p className="text-black">{userDetails?.city}</p>
 
                                     </div>
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
 
-                                    {user ? <FaEdit onClick={() => handleEdit("city", "city", "", userDetails?.city, handleCity)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+                                    {/* {user ? <FaEdit onClick={() => handleEdit("city", "city", "", userDetails?.city, handleCity)} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''} */}
+                                </div>
+                                <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
+                                    <div className="  flex  flex-col gap-1 ">
+                                        <h2 className="font-semibold whitespace-normal text-gray-700">Area</h2>
+                                        <p className="text-gray-500">{userDetails?.area}</p>
+                                    </div>
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
+
+                                    {/* {user ? <FaEdit onClick={() => handleEdit('zip_code', 'Zip Code', 'number', userDetails?.zip_code || 'addrzip_codeess', handleZip)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''} */}
                                 </div>
 
                                 <div className="flex  px-5 py-2 bg-white rounded-lg shadow-lg border-l-4 border-2 border-[#ccc] justify-between  ">
@@ -146,8 +169,9 @@ const UserSetting = ({  userAddressLoading,userAddressInfo, }) => {
                                         <h2 className="font-semibold whitespace-normal text-gray-700">Zip Code</h2>
                                         <p className="text-gray-500">{userDetails?.zip_code}</p>
                                     </div>
+                                    {user ? <FaEdit onClick={handleEditClick} className="sm:text-[25px] text-[20px]  text-green-500" /> : ''}
 
-                                    {user ? <FaEdit onClick={() => handleEdit('zip_code', 'Zip Code', 'number', userDetails?.zip_code || 'addrzip_codeess', handleZip)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''}
+                                    {/* {user ? <FaEdit onClick={() => handleEdit('zip_code', 'Zip Code', 'number', userDetails?.zip_code || 'addrzip_codeess', handleZip)} className=" text-[20px] sm:text-[25px] text-green-500" /> : ''} */}
                                 </div>
                             </div>
                         </>
