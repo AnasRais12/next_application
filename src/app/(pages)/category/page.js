@@ -168,15 +168,11 @@ const ProductFilter = () => {
 
     return (
         <div className=" mx-auto  mt-20 p-4">
-            <div className="flex  gap-6">
-                {/* Filter Section */}
-                  <button
-                        className="md:hidden flex  gap-2 bg-blue-600 text-white px-4 py-2 rounded"
-                        onClick={()=> setIsFilterVisible(!isFilterVisible)}
-                      >
-                        <FaFilter /> 
-                      </button>
-                <div className={`w-full md:w-[30%] lg:w-[25%] mr   p-4 rounded-lg shadow-lg ${isFilterVisible ? "block" : "hidden md:block"}`}>
+            <div className="flex lg:flex-row flex-col  gap-6">
+                {/* Filter Sectio */}
+                 
+                 
+                <div className={`w-full   lg:w-[25%]   p-4 rounded-lg shadow-lg ${isFilterVisible ? "lg:block block " :  "hidden lg:block"}`}>
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold">Filters</h2>
                         <button
@@ -288,7 +284,10 @@ const ProductFilter = () => {
                         </button>
                     </div>
                 </div>
+               <button onClick={()=> setIsFilterVisible(!isFilterVisible)} className="px-4 bg-[red] py-4 lg:hidden block">
 
+                <FaFilter/>
+               </button>
                 {/* Product Grid */}
                 <div className="w-full md:w-3/4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
