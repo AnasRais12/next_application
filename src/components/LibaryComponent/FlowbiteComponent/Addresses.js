@@ -11,6 +11,7 @@ import UserRoleQuery from "@/DbQuery/RoleQuery";
 import useSession from "@/utils/UserExist/GetSession";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import CSpinner from "@/components/CSpinner";
 
 const USERNAME = "anasbaig"; // 🔹 Apna GeoNames username yahan replace karein
 
@@ -39,11 +40,11 @@ const AddressForm = () => {
     const [cities, setCities] = useState([]);
     const [areas, setAreas] = useState([]);
     const [CityName, setCityName] = useState();
+    const [state, setState] = useState();
+
+    const [countryCode, setCountryCode] = useState();
+
     const [CountryName, setCountryName] = useState();
-
-
-
-
     const selectedCountry = watch("country");
     const selectedCity = watch("city");
 
@@ -76,10 +77,13 @@ const AddressForm = () => {
                 const selectedCityData = cities?.find(city => city?.geonameId == selectedCity);
                 // database ke liyay name alag se nikal rahah u 
                 if (selectedCityData) { 
+                    console.log(selectedCityData,"_____________________________!!!!!>>>>>>Selected")
                   setSelectedCityLat(selectedCityData?.lat);
                   setSelectedCityLng(selectedCityData?.lng);
                   setCityName(selectedCityData?.name)
                   setCountryName(selectedCityData?.countryName)
+                  setCountryCode(selectedCityData?.countryCode)
+                  setState(selectedCityData?.adminName1)
 
                 }
 
@@ -103,7 +107,9 @@ const AddressForm = () => {
                     country: CountryName,
                     lat: selectedCityLat ,
                     long: selectedCityLng ,
-                    area: data.area
+                    area: data.area,
+                    state: state,
+                    phone_code: countryCode
                 }
             ])
             if (error) {
@@ -113,6 +119,8 @@ const AddressForm = () => {
                     text: error?.message
                 })
             } else {
+
+
                 Swal.fire({
                     icon: 'success',
                     text: 'User Address Added Successfully'
@@ -152,6 +160,15 @@ const AddressForm = () => {
                         className="w-full border-2 border-[#f1f0f0] focus:outline-2 focus:outline-orange-400 p-2 rounded"
                     />
                     <p className="text-red-500">{errors.full_name?.message}</p>
+                </div>
+
+                  {/* Phone Number */}
+                  <div>
+                    <label className="block text-sm mb-2 font-normal">Phone Number</label>
+                    <input {...register("phone_number")} type="text"
+                        placeholder="Enter your No:"
+                     className="w-full border-2 p-2 rounded" />
+                    {errors.phone_number && <p className="text-red-500 text-sm">{errors.phone_number.message}</p>}
                 </div>
 
                 {/* Country Dropdown */}
@@ -199,27 +216,24 @@ const AddressForm = () => {
                 {/* Address Field */}
                 <div>
                     <label className="block text-sm mb-2 font-normal">House No:</label>
-                    <input {...register("address")} type="text" className="w-full border-2 p-2 rounded" />
+                    <input {...register("address")} type="text"
+                       placeholder="Enter Your  House no:"
+                     className="w-full border-2 p-2 rounded" />
                     {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
                 </div>
 
                 {/* Zip Code */}
                 <div>
                     <label className="block text-sm mb-2 font-normal">Zip Code</label>
-                    <input {...register("zip_code")} type="text" className="w-full border-2 p-2 rounded" />
+                    <input {...register("zip_code")} type="text"
+                     placeholder="Enter Zip Code"
+                     className="w-full border-2 p-2 rounded" />
                     {errors.zip_code && <p className="text-red-500 text-sm">{errors.zip_code.message}</p>}
                 </div>
 
-                {/* Phone Number */}
-                <div>
-                    <label className="block text-sm mb-2 font-normal">Phone Number</label>
-                    <input {...register("phone_number")} type="text" className="w-full border-2 p-2 rounded" />
-                    {errors.phone_number && <p className="text-red-500 text-sm">{errors.phone_number.message}</p>}
-                </div>
-
                 {/* Submit Button */}
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded" disabled={loading}>
-                    {loading ? "Saving..." : "Submit"}
+                <button type="submit" className="bg-unique w-full text-white px-4 py-2 rounded" disabled={loading}>
+                    {loading ? <CSpinner/> : "Submit"}
                 </button>
             </form>
         </>
