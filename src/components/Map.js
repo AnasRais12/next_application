@@ -17,7 +17,8 @@ import IconStyle from "ol/style/Icon";
 import Style from "ol/style/Style";
 import Stroke from "ol/style/Stroke";
 
-const OrderMap = () => {
+const OrderMap = ({heights, lang, long }) => {
+  console.log(Number(lang),Number(long))
     const dotIconSVG = renderToStaticMarkup(
         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <circle cx="10" cy="10" r="5" fill="red" stroke="white" strokeWidth="2" />
@@ -29,7 +30,7 @@ const OrderMap = () => {
     if (mapRef.current) return;
 
     const warehouseCoords = [67.0723, 24.9263];
-    const customerCoords = [67.0313, 24.9131];
+    const customerCoords = [Number(long), Number(lang)];
 
     const warehousePoint = new Feature({
       geometry: new Point(fromLonLat(warehouseCoords)),
@@ -85,7 +86,7 @@ const OrderMap = () => {
     });
   }, []);
 
-  return <div id="order-map" className="h-36 cursor-grab w-full" />;
+  return <div id="order-map" className={`${heights? "h-[50vh]" : 'h-36'} cursor-grab w-full` }/>;
 };
 
 export default dynamic(() => Promise.resolve(OrderMap), { ssr: false });
