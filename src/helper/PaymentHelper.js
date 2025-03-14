@@ -1,4 +1,4 @@
-export const CreateStripeSession = async (cart, session, loadStripe,orderId) => {
+export const CreateStripeSession = async (cart, session, loadStripe, orderId) => {
     try {
 
         const res = await fetch("/api/create-checkout-session", {
@@ -43,38 +43,38 @@ export const handleCardPayment = async (supabase, session, cart, paymentMethod, 
                         product_name: item.product_name,
                         product_price: item.product_price,
                         quantity: item.quantity
-                      }))
+                    }))
                 },
             ], { returning: "representation" }); // 🔥 Yahan return value le rahe hain
 
-            if (error) {
-                console.error("Order Insert Error:", error);
-                return;
-            }
-            const { data: lastOrder, error: fetchError } = await supabase
-                .from("orders")
-                .select("order_id")
-                .eq("user_id", session?.user?.id)
-                .order("created_at", { ascending: false }) // ✅ Last order
-                .limit(1)
-                .single();
-    
-            if (fetchError) {
-                console.log("Fetch ERROR", fetchError?.message)
-            }
-            else {
-                const orderId = lastOrder?.order_id?.replace("#", ""); // 🔥 "#" hata diya
-    
-                await CreateStripeSession(cart, session, loadStripe,orderId);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Confirmed!',
-                    text: 'Your order has been confirmed successfully!'
-                });
-                deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
-    
-            }
-    
+        if (error) {
+            console.error("Order Insert Error:", error);
+            return;
+        }
+        const { data: lastOrder, error: fetchError } = await supabase
+            .from("orders")
+            .select("order_id")
+            .eq("user_id", session?.user?.id)
+            .order("created_at", { ascending: false }) // ✅ Last order
+            .limit(1)
+            .single();
+
+        if (fetchError) {
+            console.log("Fetch ERROR", fetchError?.message)
+        }
+        else {
+            const orderId = lastOrder?.order_id?.replace("#", ""); // 🔥 "#" hata diya
+
+            await CreateStripeSession(cart, session, loadStripe, orderId);
+            Swal.fire({
+                icon: 'success',
+                title: 'Order Confirmed!',
+                text: 'Your order has been confirmed successfully!'
+            });
+            deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
+
+        }
+
 
 
     } catch (error) {
@@ -107,7 +107,7 @@ export const handleDelievery = async (supabase, session, cart, paymentMethod, us
                         product_name: item.product_name,
                         product_price: item.product_price,
                         quantity: item.quantity
-                      }))
+                    }))
                 },
             ], { returning: "representation" }); // 🔥 Yahan return value le rahe hain
 
@@ -127,17 +127,40 @@ export const handleDelievery = async (supabase, session, cart, paymentMethod, us
             console.log("Fetch ERROR", fetchError?.message)
         }
         else {
-            const orderId = lastOrder?.order_id?.replace("#", ""); // 🔥 "#" hata diya
+            const orderId = lastOrder?.order_id?.replace("#", "");
+            const generatetrackingNumber = 'TRK-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+            if (orderId) {
+                const { error: trackingError } = await supabase
+                    .from("order_tracking")
+                    .insert([
+                        {
+                            order_id: orderId,
+                            tracking_number: generatetrackingNumber,
+                            latitude: userDetails?.lat,
+                            longitude: userDetails?.long,
+                            tracking_status: "Pending",
+                        },
+                    ], { returning: "representation" });
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Order Confirmed!',
-                text: `Your order has been confirmed successfully! Order ID: ${orderId}`
-            });
-            deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
+                if (trackingError) {
+                    console.log("trackingError ERROR", trackingError?.message)
+                }
+                else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Confirmed!',
+                        text: `Your order has been confirmed successfully! Order ID: ${orderId}`
+                    });
+                    deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
 
-            router.push(`/confirm/${orderId}`);
+                    router.push(`/confirm/${orderId}`);
+                }
+            }
         }
+
+
+
+
 
 
     } catch (error) {
@@ -149,7 +172,7 @@ export const handleDelievery = async (supabase, session, cart, paymentMethod, us
 
 
 
-// Checking Payment SUCESSFULLY?? // 
+// Checking Payment SUCESSFULLY?? //
 
 
 // import Stripe from 'stripe';

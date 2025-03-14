@@ -1,72 +1,78 @@
-import { supabase } from '@/lib/supabase';
-import axios from 'axios';
+// import axios from 'axios';
 
-export const createAddress = async (addressData, addressId) => {
-  try {
-    // 🛑 Step 1: Pehle check karo ke `addresses_id` exist karti hai ya nahi
-    const { data: existingAddress, error: fetchError } = await supabase
-      .from('shiping_address')
-      .select('addresses_id')
-      .eq('addresses_id', addressId)
-      .maybeSingle(); // Single record check karega
+// export const createAddress = async (addressData, parcelData,senderaddress,fromaddress) => {
+//   try {
+//     // 🚀 Step 1: Pehle Shippo API se address create karo
+//     const addressResponse = await axios.post(
+//       'https://api.goshippo.com/addresses/',
+//       addressData,
+//       {
+//         headers: {
+//           'Authorization': `ShippoToken shippo_test_a97b9f8528a5ef7f01b17fe542157d5d780d0201`,
+//           'Content-Type': 'application/json',
+//         }
+//       }
+//     );
 
-    if (fetchError) {
-      console.error("Error checking existing address:", fetchError);
-      return null;
-    }
+//     const address = addressResponse.data;
+//     console.log("✅ Address Created Successfully:", address);
 
-    if (existingAddress) {
-      console.log("Address already exists, skipping insertion.");
-      return null // Agar exist karti hai to insert nahi karega
-    }
+//     if (!address.object_id) {
+//       console.error("❌ Address creation failed, cannot proceed with shipment.");
+//       return null;
+//     }
 
-    // 🚀 Step 2: Agar exist nahi karti to Shippo API se address create karo
-    const response = await axios.post(
-      'https://api.goshippo.com/addresses/',
-      addressData,
-      {
-        headers: {
-          'Authorization': `ShippoToken shippo_test_a97b9f8528a5ef7f01b17fe542157d5d780d0201`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
+//     // 🚀 Step 2: Ab shipment create karo using the created address
+//     const shipmentData = {
+//       address_from: senderaddress,
+//       address_to: fromaddress, // Dono same rakh raha hoon, tum change kar sakte ho
+//       parcels: [parcelData]
+//     };
 
-    console.log("Address Created:", response.data);
+//     const shipmentResponse = await axios.post(
+//       'https://api.goshippo.com/shipments/',
+//       shipmentData,
+//       {
+//         headers: {
+//           'Authorization': `ShippoToken shippo_test_a97b9f8528a5ef7f01b17fe542157d5d780d0201`,
+//           'Content-Type': 'application/json',
+//         }
+//       }
+//     );
 
-    if (response.data) {
-      const shippoResponse = response.data;
-      console.log(shippoResponse, "shippoResponse");
+//     console.log("✅ Shipment Created Successfully:", shipmentResponse.data);
 
-      // 🚀 Step 3: Ab insert karo, kyunki address pehle exist nahi karta
-      const { data, error } = await supabase
-        .from('shiping_address')
-        .insert([
-          {
-            addresses_id: addressId,
-            object_id: shippoResponse.object_id, // Shippo se jo ID mili hai
-            name: shippoResponse.name,
-            street1: shippoResponse.street1,
-            city: shippoResponse.city,
-            state: shippoResponse.state,
-            zip: shippoResponse.zip,
-            country: shippoResponse.country,
-            phone: shippoResponse.phone,
-            email: shippoResponse.email,
-            is_residential: shippoResponse.is_residential
-          }
-        ]);
+//     return shipmentResponse.data; // Shipment ka response return kar raha hai
 
-      if (error) {
-        console.log("Supabase Error:", error);
-      } else {
-        console.log("Data Inserted Successfully:", data);
-      }
+//   } catch (error) {
+//     console.error("❌ Error in address or shipment creation:", error);
+//     return null;
+//   }
+// };
 
-      return data;
-    }
-  } catch (error) {
-    console.error("Error creating address:", error);
-    return null;
-  }
-};
+
+// export const purchaseLabel = async (rateObjectId) => {
+//   try {
+//     const transactionResponse = await axios.post(
+//       'https://api.goshippo.com/transactions/',
+//       {
+//         rate: rateObjectId,  // Yahan wo rate.object_id pass karo jo shipment create response se mila
+//       },
+//       {
+//         headers: {
+//           'Authorization': `ShippoToken shippo_test_a97b9f8528a5ef7f01b17fe542157d5d780d0201`,
+//           'Content-Type': 'application/json',
+//         }
+//       }
+//     );
+
+//     console.log("✅ Label Purchased Successfully:", transactionResponse.data);
+    
+//     // Label URL ko return kar raha hoon jisse download kar sako
+//     return transactionResponse.data.label_url;
+
+//   } catch (error) {
+//     console.error("❌ Error purchasing label:", error);
+//     return null;
+//   }
+// };

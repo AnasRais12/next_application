@@ -24,6 +24,8 @@ function page() {
 
   }, [userDetails])
 
+
+  console.log(userDetails,"_____________----___________________-----________________----")
   if (userAddressLoading) {
     return <CustomSpinner />
   }

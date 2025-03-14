@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-export const useFetchAddress = (userId) => {
+export const useFetchTracking = (ID) => {
     const [shipingAddressLoading, setShipingAddressLoading] = useState(false)
+    const [trackingId, settrackingId] = useState([]); //
+
     useEffect(() => {
-        if (!userId) return;
-        const fetchWishlist = async () => {
+        console.log(ID,"milrahi hai ia ")
+        if (!ID) return;
+        const orderId = ID?.replace("#", "");
+        console.log(orderId,"----->>>> ye rahi iddd bhaeeeeeee")
+        const trackingList = async () => {
             try {
                 setShipingAddressLoading(true)
                 const { data, error } = await supabase
-                    .from("shiping_address")
+                    .from("order_tracking")
                     .select("*")
-                    .eq("addresses_id", userId);
+                    .eq("order_id", orderId);
                 if (error) {
                     console.error("Error fetching wishlist", error);
                 } else {
                     if (data.length > 0) {
+                        settrackingId(data)
                         console.log("CArt data from backend:", data);
 
                     }
@@ -28,9 +34,9 @@ export const useFetchAddress = (userId) => {
                 setShipingAddressLoading(false)
             }
         };
-        fetchWishlist();
-    }, [userId]);
+        trackingList();
+    }, [ID]);
 
-    return { shipingAddressLoading, };
+    return { shipingAddressLoading,trackingId };
 
 };
