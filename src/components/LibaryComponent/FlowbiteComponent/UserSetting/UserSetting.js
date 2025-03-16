@@ -15,7 +15,7 @@ import { GoArrowLeft } from "react-icons/go";
 const UserSetting = ({ userAddressLoading, userAddressInfo, }) => {
     const { userDetails, } = UserQuery();
     const [orderHistory, setOrderHistory] = useState(false);
-    const { user } = GlobalDetails()
+    const { user,settingModal,setSettingModal } = GlobalDetails()
     const router = useRouter()
     const [changepasswordModal, setchangepasswordModal] = useState(false);
     const [isAddressExist, setIsAddressExist] = useState(false);
@@ -37,15 +37,16 @@ const UserSetting = ({ userAddressLoading, userAddressInfo, }) => {
     if (userAddressLoading) {
         return <CustomSpinner />
     }
-    if (orderHistory) {
+    if (settingModal) {
         return <OrderHistory />
     }
+
     return (
         <>
             <div className="lg:flex-row flex-col h-fit  py-10  flex lg:gap-0 lg:px-0 md:px-5 px-3 lg:mt-0 mt-12 bg-gray-50">
                 {isEditing ? <AddressUpdate setIsEditing={setIsEditing} userDetails={userDetails} /> : ''}
                 {changepasswordModal ? <ChangePassword setchangepasswordModal={setchangepasswordModal} /> : ''}
-                <UserSideBar setchangepasswordModal={setchangepasswordModal} setOrderHistory={setOrderHistory} />
+                <UserSideBar setchangepasswordModal={setchangepasswordModal} setSettingModal={setSettingModal}  />
                 <main className="flex flex-col w-full  items-start   lg:mt-10  lg:px-3 lg:py-6">
                     <div className="flex sm:flex-row flex-col-reverse sm:gap-0 gap-1 justify-between items-start w-full pr-6 ">
                         <div>

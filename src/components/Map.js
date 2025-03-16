@@ -9,6 +9,7 @@ import OSM from "ol/source/OSM";
 import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import { renderToStaticMarkup } from "react-dom/server";
+import { getLength } from "ol/sphere";
 import Point from "ol/geom/Point";
 import LineString from "ol/geom/LineString";
 import VectorLayer from "ol/layer/Vector";
@@ -17,7 +18,7 @@ import IconStyle from "ol/style/Icon";
 import Style from "ol/style/Style";
 import Stroke from "ol/style/Stroke";
 
-const OrderMap = ({heights, lang, long }) => {
+const OrderMap = ({heights, lang, long,setDistance }) => {
   console.log(Number(lang),Number(long))
     const dotIconSVG = renderToStaticMarkup(
         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -32,6 +33,10 @@ const OrderMap = ({heights, lang, long }) => {
     const warehouseCoords = [67.0723, 24.9263];
     const customerCoords = [Number(long), Number(lang)];
 
+    const distance = getLength(new LineString([fromLonLat(warehouseCoords), fromLonLat(customerCoords)]));
+    const distanceInKm = (distance / 1000).toFixed(2); 
+    setDistance(distanceInKm)
+    
     const warehousePoint = new Feature({
       geometry: new Point(fromLonLat(warehouseCoords)),
     });
@@ -82,6 +87,7 @@ const OrderMap = ({heights, lang, long }) => {
       view: new View({
         center: fromLonLat(customerCoords),
         zoom: 14,
+        
       }),
     });
   }, []);

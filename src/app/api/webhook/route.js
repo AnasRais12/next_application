@@ -33,7 +33,7 @@ export async function POST(req) {
     }
     const {  error: updateError } = await supabase
         .from("orders")
-        .update({ status: "Completed" })
+        .update({ payment_status: "Completed" })
         .eq("order_id", `#${orderId}`)
         .select(); // ✅ Order ID aur Status le raha hai
     console.log("Updated Order:", orderId);

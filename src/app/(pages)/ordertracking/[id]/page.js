@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 function page() {
     const params = useParams()
     const router = useRouter()
+    const [distance,setDistance] = useState()
     console.log(params, "--->>")
     const { shipingAddressLoading, trackingId } = useFetchTracking(params?.id)
     if (shipingAddressLoading) return <CustomSpinner />
@@ -16,7 +17,7 @@ function page() {
         return { ...acc, ...obj };
     }, {});
 
-    console.log(trackingId, "___>>> kia hai ")
+    console.log(distance, "___>>> distance kia hai ")
 
     return (
         <>
@@ -80,8 +81,16 @@ function page() {
                                         {Tracking?.tracking_status}
                                     </span>
                                 </div>
+                                {/* KM */}
+                                {distance && (
+  <div className="flex items-center justify-between">
+  <span className="text-gray-700 font-medium">KM:</span>
+  <span className="text-gray-800">{`${distance}km`}</span>
+</div>
+                                )}
+                              
                                 <div className='pt-6'>
-                                    <Map heights={"h-[70vh"} lang={trackingId[0]?.latitude} long={trackingId[0]?.longitude} />
+                                    <Map heights={"h-[70vh"} lang={trackingId[0]?.latitude} long={trackingId[0]?.longitude} setDistance={setDistance} />
                                 </div>
                             </div>
                         </div>

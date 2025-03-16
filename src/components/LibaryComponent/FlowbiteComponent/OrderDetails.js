@@ -74,7 +74,7 @@ export const OrderDetailsModal = ({ order, onClose }) => {
                         </div>
                     </div>
 
-                    {order?.status === "Completed" ? (
+                    {order?.payment_status === "Completed" ? (
                         <div className="sm:mt-6 custom:mt-6 xs:mt-2 custom:space-x-3 custom:flex-row flex sm:flex-row xs:flex-col justify-end sm:space-x-3 xs:space-y-2">
                             <button
                                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-200 flex items-center"

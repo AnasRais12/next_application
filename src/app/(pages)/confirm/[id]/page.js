@@ -4,15 +4,18 @@ import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { BsCheckCircle } from 'react-icons/bs';
 import UserQuery from '@/DbQuery/UserDetailQuery';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { supabase } from '@/lib/supabase';
 import CustomSpinner from '@/components/Spinner';
 
 export default function ConfirmOrder() {
   const { userDetails } = UserQuery();
+  const {setSettingModal}  = GlobalDetails()
   const params = useParams();
   const router = useRouter();
   const [validOrder, setValidOrder] = useState(false);
 
+  console.log(setSettingModal,"____>>")
   useEffect(() => {
     const checkOrder = async () => {
       const { data: lastOrder, error } = await supabase
@@ -35,6 +38,11 @@ export default function ConfirmOrder() {
     }
   }, [params?.id, userDetails?.user_id, router]);
 
+
+  const TrackOrder = () => {
+    router.push(`/ordertracking/${params?.id}`)
+  }
+
   if (!validOrder)  return <CustomSpinner/>; 
 
   return (
@@ -56,7 +64,7 @@ export default function ConfirmOrder() {
           Back to Home
         </button>
         <button
-          onClick={() => router.push(`/ordertracking/${params?.id}`)}
+          onClick={() => TrackOrder()}
           className=" px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
         >
           Track Your Order

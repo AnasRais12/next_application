@@ -51,11 +51,11 @@ const OrderHistory = () => {
   return (
     <>
       {orderHistoryDetail.length > 0 ? (
-        <div className="min-h-screen bg-white my-20 p-4">
-          <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen bg-white mt-20 mb-8 p-4  " >
+          <div className="w-[90%] mx-auto">
             <h1 className="text-2xl font-bold text-gray-900 mb-5">Order History</h1>
 
-            <div className="bg-gray-50 rounded-lg shadow-lg border-t-2 p-6">
+            <div className="xrounded-lg shadow-lg border-t-2 p-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
                 <div className="relative">
                   <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -92,33 +92,33 @@ const OrderHistory = () => {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead>
+                    <thead className="border-2">
                       <tr className="bg-gray-50">
                         <th
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                          className="px-3 border-r-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
 
                         >
                           Date
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 border-r-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Order ID
                         </th>
                         <th
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                          className="px-3 border-r-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
 
                         >
                           Total
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 border-r-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Transaction
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 border-r-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Payment
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 border-r-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 border-r-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -129,7 +129,7 @@ const OrderHistory = () => {
                           key={order.id}
                           className="hover:bg-gray-50 transition-colors duration-200"
                         >
-                          <td className="px-6 py-4 text-[14px] whitespace-nowrap">
+                          <td className=" px-3 py-4 border-l-2 border-r-2 text-[14px] whitespace-nowrap">
                             {new Date(order?.created_at).toLocaleString('en-US', {
                               day: '2-digit',
                               month: 'short',
@@ -139,30 +139,30 @@ const OrderHistory = () => {
                               hour12: true
                             })}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-3 border-l-2 border-r-2 py-4 whitespace-nowrap">
                             {order.order_id}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-3 border-l-2 border-r-2 py-4 whitespace-nowrap">
                             ${order.total_amount.toFixed(2)}
                           </td>
-                          <td className={`${order.payment_method == 'Credit Card' ? ' text-green-400' : 'text-blue-600'} px-6 py-4 capitalize whitespace-nowrap`}>
+                          <td className={`${order.payment_method == 'Credit Card' ? ' text-green-400' : 'text-blue-600'} px-3 border-l-2 border-r-2 py-4 capitalize whitespace-nowrap`}>
                             {order.payment_method}
                           </td>
                           <td
                             className={`${order.payment_status === 'Pending' ? 'text-yellow-800'
                               : order.status === 'completed' ? 'text-green-600'
-                                : 'text-red-600'} px-6 py-4 capitalize whitespace-nowrap`}>
+                                : 'text-red-600'} px-3 border-l-2 border-r-2 py-4 capitalize whitespace-nowrap`}>
                             {order.payment_status}
                           </td>
                           <td
                             className={`${order.status === 'Pending' ? 'text-yellow-800'
                               : order.status === 'completed' ? 'text-green-600'
-                                : 'text-red-600'} px-6 py-4 capitalize whitespace-nowrap`}>
+                                : 'text-red-600'} px-3 border-l-2 border-r-2 py-4 capitalize whitespace-nowrap`}>
                             {order.status}
                           </td>
                           
 
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-3 border-l-2 border-r-2 py-4 whitespace-nowrap">
                             <button
                               onClick={() => setSelectedOrder(order)}
                               className="text-gray-500 hover:text-orange-800 font-medium"
