@@ -48,9 +48,9 @@ const AddressForm = () => {
     const selectedCountry = watch("country");
     const selectedCity = watch("city");
 
-    const CountryUrl = `http://api.geonames.org/countryInfoJSON?username=${USERNAME}`
-    const AreaUrl = `http://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
-    const CityUrl = `http://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`
+    const CountryUrl = `https://api.geonames.org/countryInfoJSON?username=${USERNAME}`
+    const AreaUrl = `https://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
+    const CityUrl = `https://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`
 
     // 🌍 Fetch Countries
     useEffect(() => {
