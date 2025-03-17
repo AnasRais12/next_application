@@ -48,21 +48,25 @@ const AddressForm = () => {
     const selectedCountry = watch("country");
     const selectedCity = watch("city");
 
-    const CountryUrl = `https://api.geonames.org/countryInfoJSON?username=${USERNAME}`
-    const AreaUrl = `https://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
-    const CityUrl = `https://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`
+    const CountryUrl = `http://api.geonames.org/countryInfoJSON?username=${USERNAME}`
+    const CityUrl = `http://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`
+    const AreaUrl = `http://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
+
 
     // 🌍 Fetch Countries
     useEffect(() => {
-        axios.get("/api/fetchCountry")
-            .then((res) => setCountries(res.data.geonames))
-            .catch(() => setError("Failed to load countries"));
+        axios.get("/api/fetchCountry?type=country")
+        // axios.get(CountryUrl)
+        .then(res => setCountries(res.data.geonames))
+        .catch(() => setError("Failed to load countries"));
+          
     }, []);
 
     // 🏙 Fetch Cities
     useEffect(() => {
         if (!selectedCountry) return;
-        axios.get(CityUrl)
+        // axios.get(CityUrl)
+        axios.get(`/api/fetchCountry?type=city&country=${selectedCountry}`)
             .then((res) => {
                 setCities(res.data.geonames)
             
