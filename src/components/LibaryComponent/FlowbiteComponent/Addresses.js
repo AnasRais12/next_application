@@ -48,9 +48,13 @@ const AddressForm = () => {
     const selectedCountry = watch("country");
     const selectedCity = watch("city");
 
+    const CountryUrl = `http://api.geonames.org/countryInfoJSON?username=${USERNAME}`
+    const AreaUrl = `http://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
+    const CityUrl = `http://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`
+
     // 🌍 Fetch Countries
     useEffect(() => {
-        axios.get(`http://api.geonames.org/countryInfoJSON?username=${USERNAME}`)
+        axios.get(CountryUrl)
             .then((res) => setCountries(res.data.geonames))
             .catch(() => setError("Failed to load countries"));
     }, []);
@@ -58,7 +62,7 @@ const AddressForm = () => {
     // 🏙 Fetch Cities
     useEffect(() => {
         if (!selectedCountry) return;
-        axios.get(`http://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`)
+        axios.get(CityUrl)
             .then((res) => {
                 setCities(res.data.geonames)
             
@@ -71,7 +75,7 @@ const AddressForm = () => {
         console.log("Fetching areas for city:", selectedCity);
         if (!selectedCity) return;
         console.log("Fetching areas for city: neeche wala s", selectedCity);
-        axios.get(`http://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`)
+        axios.get(AreaUrl)
             .then((res) => {
                 setAreas(res.data.geonames)
                 const selectedCityData = cities?.find(city => city?.geonameId == selectedCity);
