@@ -54,7 +54,7 @@ const AddressForm = () => {
 
     // 🌍 Fetch Countries
     useEffect(() => {
-        axios.get(CountryUrl)
+        axios.get("/api/fetchCountry")
             .then((res) => setCountries(res.data.geonames))
             .catch(() => setError("Failed to load countries"));
     }, []);
