@@ -5,6 +5,8 @@ const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) =>  {
   const [user, setUser] = useState(null);
   const [settingModal, setSettingModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+
   const [authField, setAuthfield] = useState({username:'',email:''});
   useEffect(() => {
     if (typeof window !== "undefined") { 
