@@ -53,11 +53,11 @@ const UserSetting = ({ userAddressLoading, userAddressInfo, }) => {
                             <h1 className="text-xl font-semibold mb-2  text-gray-800">Peronal Information</h1>
                             <p className="text-gray-600 mb-6">Manage your personal information, including phone numbers and email address.</p>
                         </div>
-                        <button onClick={() => router.push('/home')} className="text-[25px] hover:text-[red] hidden md:block">
+                        <button onClick={() => router.push('/home')} className="text-[25px] hover:text-[red] hidden sm:block">
                             <RxCross2 />
                         </button>
                         {/* ⬅️ Arrow icon (sm screens par dikhega) */}
-                        <button onClick={() => router.push('/home')} className="text-[25px] hover:text-[red] sm:block md:hidden">
+                        <button onClick={() => router.push('/home')} className="text-[25px] hover:text-[red] block sm:hidden">
                             <GoArrowLeft />
                         </button>
 

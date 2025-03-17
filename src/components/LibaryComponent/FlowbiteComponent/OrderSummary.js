@@ -146,9 +146,7 @@ const OrderSummary = () => {
 
    </div>
 
-   <div>
-    <OpenLayersMap/>
-   </div>
+ 
  </div>
 </div>
 ) : (

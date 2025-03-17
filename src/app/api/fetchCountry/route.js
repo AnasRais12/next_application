@@ -16,32 +16,22 @@ export async function GET(req) {
       console.log(selectedcountry,"Contry")
       console.log(type,"type1")
     } 
-    else if(type == "city" && country){
+    else if(type == "city" && selectedcountry){
         console.log(selectedcountry,"Contry22 ")
         console.log(type,"type2")
         url = `http://api.geonames.org/searchJSON?country=${selectedcountry}&featureClass=P&maxRows=10&username=anasbaig`;
     }
+     else if (type == "area" && city) {
+     console.log(city,"____City is here! ")
+    //  url = http://api.geonames.org/childrenJSON?geonameId=${city}}&username=anasbaig
+      url = `http://api.geonames.org/childrenJSON?geonameId=${city}&username=anasbaig`
+    } 
 
-    // if(type == "city" && country){
-    //     console.log(country,"Contry")
-    //     console.log(type,"type1")
-    //     url = `http://api.geonames.org/searchJSON?country=${country}&featureClass=P&maxRows=10&username=anasbaig`;
-    // }
-    // else{
-    //     return NextResponse.json({ error: "Error Fetch City request" }, { status: 402 });
-    // }
-    // else if (type == "city" && country) {
-    //     console.log(country,"_____>>")
-    //          https://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}
-    //   url = `http://api.geonames.org/searchJSON?country=${country}&featureClass=P&maxRows=10&username=anasbaig`;
-    // } 
-    // else if (type == "area" && city) {
-    //   url = `http://api.geonames.org/searchJSON?name_equals=${city}&featureClass=A&maxRows=10&username=anasbaig`;
-    //   http://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
-    // } 
-    // else {
-    //   return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-    // }
+  
+
+    else {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
 
     const response = await fetch(url);
     const data = await response.json();

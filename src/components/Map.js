@@ -21,7 +21,7 @@ import Stroke from "ol/style/Stroke";
 const OrderMap = ({heights, lang, long,setDistance }) => {
   console.log(Number(lang),Number(long))
     const dotIconSVG = renderToStaticMarkup(
-        <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg width="50" height="50" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <circle cx="10" cy="10" r="5" fill="red" stroke="white" strokeWidth="2" />
         </svg>
       );

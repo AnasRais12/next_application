@@ -35,6 +35,7 @@ const AddressForm = () => {
     const [selectedCityLat, setSelectedCityLat] = useState(null);
     const [selectedCityLng, setSelectedCityLng] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [countryLoading, setCountryLoading] = useState(false);
     const [error, setError] = useState(null);
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
@@ -48,17 +49,16 @@ const AddressForm = () => {
     const selectedCountry = watch("country");
     const selectedCity = watch("city");
 
-    const CountryUrl = `http://api.geonames.org/countryInfoJSON?username=${USERNAME}`
-    const CityUrl = `http://api.geonames.org/searchJSON?country=${selectedCountry}&featureClass=P&maxRows=10&username=${USERNAME}`
-    const AreaUrl = `http://api.geonames.org/childrenJSON?geonameId=${selectedCity}&username=${USERNAME}`
+   
 
 
     // 🌍 Fetch Countries
     useEffect(() => {
+        setCountryLoading(true)
         axios.get("/api/fetchCountry?type=country")
         // axios.get(CountryUrl)
-        .then(res => setCountries(res.data.geonames))
-        .catch(() => setError("Failed to load countries"));
+        .then(res => setCountries(res.data.geonames) && setCountryLoading(false) )
+        .catch(() => setError("Failed to load countries")).finally(()=> setCountryLoading(false));
           
     }, []);
 
@@ -66,6 +66,7 @@ const AddressForm = () => {
     useEffect(() => {
         if (!selectedCountry) return;
         // axios.get(CityUrl)
+        console.log(selectedCountry,"__>>>>>")
         axios.get(`/api/fetchCountry?type=city&country=${selectedCountry}`)
             .then((res) => {
                 setCities(res.data.geonames)
@@ -79,13 +80,12 @@ const AddressForm = () => {
         console.log("Fetching areas for city:", selectedCity);
         if (!selectedCity) return;
         console.log("Fetching areas for city: neeche wala s", selectedCity);
-        axios.get(AreaUrl)
+        axios.get( `/api/fetchCountry?type=area&city=${selectedCity}`)
             .then((res) => {
                 setAreas(res.data.geonames)
                 const selectedCityData = cities?.find(city => city?.geonameId == selectedCity);
                 // database ke liyay name alag se nikal rahah u 
                 if (selectedCityData) { 
-                    console.log(selectedCityData,"_____________________________!!!!!>>>>>>Selected")
                   setSelectedCityLat(selectedCityData?.lat);
                   setSelectedCityLng(selectedCityData?.lng);
                   setCityName(selectedCityData?.name)
@@ -149,7 +149,7 @@ const AddressForm = () => {
     };
 
 
-    if (isReloading) {
+    if (isReloading || countryLoading) {
         return <CustomSpinner />
     }
 
