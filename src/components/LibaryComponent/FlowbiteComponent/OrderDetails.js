@@ -1,10 +1,13 @@
 import Map from "@/components/Map";
 import { FiDownload, FiPrinter } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { useRouter } from "next/navigation";
 
 export const OrderDetailsModal = ({ order, onClose }) => {
+    const router = useRouter()
     if (!order) return null;
     console.log("ye rahaa orderrrrss ", order)
+    const orderId =  order?.order_id?.replace("#", "")
     return (
 
         <div className="fixed inset-0 bg-black z-[9999]  bg-opacity-50 flex items-center justify-center p-4">
@@ -71,7 +74,7 @@ export const OrderDetailsModal = ({ order, onClose }) => {
                         </div>
                     </div>
 
-                    {order?.status === "Completed" ? (
+                    {order?.payment_status === "Completed" ? (
                         <div className="sm:mt-6 custom:mt-6 xs:mt-2 custom:space-x-3 custom:flex-row flex sm:flex-row xs:flex-col justify-end sm:space-x-3 xs:space-y-2">
                             <button
                                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-200 flex items-center"
@@ -88,22 +91,20 @@ export const OrderDetailsModal = ({ order, onClose }) => {
                         </div>
                     ) : (
                         <>
-                            <div>
-                                <Map />
-                            </div>
+                            
                             <div className="sm:mt-6 custom:mt-6 xs:mt-2 custom:space-x-3 custom:flex-row flex sm:flex-row xs:flex-col justify-end items-center w-fill  sm:space-x-3 xs:space-y-2">
-
+                            <button
+                                    className="px-4 py-2 text-sm font-medium text-white xs:w-full bg-orange-600 rounded-md hover:bg-blue-700 "
+                                    onClick={()=>router.push(`/ordertracking/${orderId}`)}
+                                >
+                                    Track Order
+                                </button>
                                 <button
                                     className="px-4 py-2 text-sm w-fit xs:w-full font-medium text-white bg-[red] rounded-md hover:bg-[red] "
                                 >
                                     Cancel Order
                                 </button>
-                                <button
-                                    className="px-4 py-2 text-sm font-medium text-white xs:w-full bg-blue-600 rounded-md hover:bg-blue-700 "
-                                    onClick={() => alert("Download started")}
-                                >
-                                    Download
-                                </button>
+                              
 
                             </div>
                         </>

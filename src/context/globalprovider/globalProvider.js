@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) =>  {
   const [user, setUser] = useState(null);
+  const [settingModal, setSettingModal] = useState(false);
   const [authField, setAuthfield] = useState({username:'',email:''});
   useEffect(() => {
     if (typeof window !== "undefined") { 
@@ -15,8 +16,8 @@ export const GlobalProvider = ({ children }) =>  {
   }, []);
   return (
     <>
-      <GlobalContext.Provider value={{user,setUser,setAuthfield,authField }}>
-        {children}
+      <GlobalContext.Provider value={{user,setUser,setAuthfield,authField,setSettingModal,settingModal }}>
+        {children},
       </GlobalContext.Provider>
     </>
   );

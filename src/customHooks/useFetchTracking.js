@@ -7,15 +7,13 @@ export const useFetchTracking = (ID) => {
     useEffect(() => {
         console.log(ID,"milrahi hai ia ")
         if (!ID) return;
-        const orderId = ID?.replace("#", "");
-        console.log(orderId,"----->>>> ye rahi iddd bhaeeeeeee")
         const trackingList = async () => {
             try {
                 setShipingAddressLoading(true)
                 const { data, error } = await supabase
                     .from("order_tracking")
                     .select("*")
-                    .eq("order_id", orderId);
+                    .eq("order_id", ID);
                 if (error) {
                     console.error("Error fetching wishlist", error);
                 } else {

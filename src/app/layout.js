@@ -8,7 +8,6 @@ import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar'
 import './globals.css';
 import { GlobalProvider } from '@/context/globalprovider/globalProvider';
 import { usePathname } from 'next/navigation';
-import { SessionProvider, useSession } from 'next-auth/react';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 
@@ -44,14 +43,11 @@ export default function RootLayout({ children }) {
       >
         <Provider store={store}>
           <GlobalProvider>
-            <SessionProvider>
-            
               {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
               {children}
               <ToastContainer autoClose={1000} />
               {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />}
 
-            </SessionProvider>
           </GlobalProvider>
         </Provider>
       </body>
