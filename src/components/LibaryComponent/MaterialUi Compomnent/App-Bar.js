@@ -66,7 +66,7 @@ console.log("wishListState",wishListState)
 
                 {user ? (
                   <span className="text-lg text-center font-normal">
-                    {user.email.slice(0, 1).toUpperCase()}
+                    {user?.email.slice(0, 1).toUpperCase()}
                   </span>
                 ) : (
                   <FiUser className="sm:text-[30px] text-[25px]" />
