@@ -6,11 +6,8 @@ import axios from "axios";
 import * as yup from "yup";
 import Swal from "sweetalert2";
 import { RxCross2 } from "react-icons/rx";
-
 import UserQuery from "@/DbQuery/UserDetailQuery";
 import CSpinner from "@/components/CSpinner";
-import CustomSpinner from "@/components/Spinner";
-const USERNAME = "anasbaig"; // 🔹 Apna GeoNames username yahan replace karein
 
 const schema = yup.object().shape({
     full_name: yup.string().required("Full name is required"),

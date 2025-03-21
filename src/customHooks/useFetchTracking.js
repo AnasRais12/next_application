@@ -13,7 +13,7 @@ export const useFetchTracking = (ID) => {
                 const { data, error } = await supabase
                     .from("order_tracking")
                     .select("*")
-                    .eq("order_id", ID);
+                    .eq("order_id", `#${ID}`);
                 if (error) {
                     console.error("Error fetching wishlist", error);
                 } else {

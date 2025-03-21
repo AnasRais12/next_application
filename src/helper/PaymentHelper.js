@@ -51,6 +51,7 @@ export const handleCardPayment = async (supabase, session, cart, paymentMethod, 
             console.error("Order Insert Error:", error);
             return;
         }
+
         const { data: lastOrder, error: fetchError } = await supabase
             .from("orders")
             .select("order_id")
@@ -59,41 +60,42 @@ export const handleCardPayment = async (supabase, session, cart, paymentMethod, 
             .limit(1)
             .single();
 
-            if (fetchError) {
-                console.log("Fetch ERROR", fetchError?.message)
-            }
-            else {
-                const orderId = lastOrder?.order_id?.replace("#", "");
-                const generatetrackingNumber = 'TRK-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-                if (orderId) {
-                    const { error: trackingError } = await supabase
-                        .from("order_tracking")
-                        .insert([
-                            {
-                                order_id: orderId,
-                                tracking_number: generatetrackingNumber,
-                                latitude: userDetails?.lat,
-                                longitude: userDetails?.long,
-                                tracking_status: "Pending",
-                            },
-                        ], { returning: "representation" });
-    
-                    if (trackingError) {
-                        console.log("trackingError ERROR", trackingError?.message)
-                    }
-                    else {
+        if (fetchError) {
+            console.log("Fetch ERROR", fetchError?.message)
+        }
+        else {
+            const orderId = lastOrder?.order_id?.replace("#", "");
+            const generatetrackingNumber = 'TRK-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+            if (orderId) {
+                const { error: trackingError } = await supabase
+                    .from("order_tracking")
+                    .insert([
+                        {
+                            order_id: `#${orderId}`,
+                            tracking_number: generatetrackingNumber,
+                            latitude: userDetails?.lat,
+                            longitude: userDetails?.long,
+                            tracking_status: "Pending",
+                            tracking_time: Math.floor(Math.random() * 20) + 1 // 1 se 20 tak ka random number
+                        },
+                    ], { returning: "representation" });
 
-                        await CreateStripeSession(cart, session, loadStripe, orderId);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Order Confirmed!',
-                            text: `Your order has been confirmed successfully! Order ID: ${orderId}`
-                        });
-                        deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
-    
-                    }
+                if (trackingError) {
+                    console.log("trackingError ERROR", trackingError?.message)
+                }
+                else {
+
+                    await CreateStripeSession(cart, session, loadStripe, orderId);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Confirmed!',
+                        text: `Your order has been confirmed successfully! Order ID: ${orderId}`
+                    });
+                    deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch)
+
                 }
             }
+        }
 
 
 
@@ -154,11 +156,12 @@ export const handleDelievery = async (supabase, session, cart, paymentMethod, us
                     .from("order_tracking")
                     .insert([
                         {
-                            order_id: orderId,
+                            order_id: `#${orderId}`,
                             tracking_number: generatetrackingNumber,
                             latitude: userDetails?.lat,
                             longitude: userDetails?.long,
                             tracking_status: "Pending",
+                            tracking_time: Math.floor(Math.random() * 20) + 1 // 1 se 20 tak ka random number
                         },
                     ], { returning: "representation" });
 
