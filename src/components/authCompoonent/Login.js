@@ -1,37 +1,48 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import * as yup from 'yup'
-import { BsFacebook } from "react-icons/bs";
+import * as yup from 'yup';
+import { BsFacebook } from 'react-icons/bs';
 import { signInWithFacebook, signInWithGoogle } from '@/lib/Auth';
 import { useForm } from 'react-hook-form';
 import { RxCross2 } from 'react-icons/rx';
-import { yupResolver } from '@hookform/resolvers/yup'
+import { yupResolver } from '@hookform/resolvers/yup';
 import Cookies from 'js-cookie';
 import { supabase } from '@/lib/supabase';
 import Swal from 'sweetalert2';
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from 'react-icons/fc';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
 
 //scheman//
 const LoginSchema = yup.object().shape({
-  email: yup.string().matches(  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email format').required(),
-  password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is Required') })
+  email: yup
+    .string()
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      'Invalid email format'
+    )
+    .required(),
+  password: yup
+    .string()
+    .min(5, 'Password must be at least 5 characters')
+    .required('Password is Required'),
+});
 
-
-function Login({background,position}) {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(LoginSchema)})
-  const { setUser } = GlobalDetails()
-  const router = useRouter()
-  const [credentialLoading, setCredentialLoading] = useState(false); 
-  const [googleLoading, setgoogleLoading] = useState(false); 
-
-
-
+function Login({ background, position }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({ resolver: yupResolver(LoginSchema) });
+  const { setUser } = GlobalDetails();
+  const router = useRouter();
+  const [credentialLoading, setCredentialLoading] = useState(false);
+  const [googleLoading, setgoogleLoading] = useState(false);
 
   const moveToRegister = () => {
-    router.push('signup')
+    router.push('signup');
   };
   const moveToForgetAccount = () => {
     router.push('/forgetaccount');
@@ -39,7 +50,7 @@ function Login({background,position}) {
   const handleLoginSumbit = async (data) => {
     const { email, password } = data;
 
-    setCredentialLoading(true)
+    setCredentialLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -48,11 +59,11 @@ function Login({background,position}) {
       if (error) {
         Swal.fire({
           icon: 'error',
-          text: `${error.message === 'Email not confirmed' ? 'Email not verified' : error.message}`
+          text: `${error.message === 'Email not confirmed' ? 'Email not verified' : error.message}`,
         });
       } else {
         const user = data.user;
-        console.log("Data is Here ", data)
+        console.log('Data is Here ', data);
 
         if (!user) {
           console.error('Login failed: Email not verified.');
@@ -63,28 +74,38 @@ function Login({background,position}) {
         } else {
           // console.log('User logged in successfully:', user);
           if (data.session || data.user) {
-            Cookies.set('sb-access-token', data.session.access_token, { expires: 7, secure: true });
-            Cookies.set('sb-refresh-token', data.session.refresh_token, { expires: 7, secure: true });
+            Cookies.set('sb-access-token', data.session.access_token, {
+              expires: 7,
+              secure: true,
+            });
+            Cookies.set('sb-refresh-token', data.session.refresh_token, {
+              expires: 7,
+              secure: true,
+            });
             localStorage.setItem('sb-user', JSON.stringify(data.user));
-            setUser(data?.user)
+            setUser(data?.user);
           }
 
           const { data: Profile, error } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", data?.user?.id)
-            .maybeSingle().select(); 
+            .from('profiles')
+            .select('*')
+            .eq('id', data?.user?.id)
+            .maybeSingle()
+            .select();
           if (Profile) {
-            Cookies.set('sb-user-role', Profile?.role, { expires: 7, secure: true, path: '/' });
-           
+            Cookies.set('sb-user-role', Profile?.role, {
+              expires: 7,
+              secure: true,
+              path: '/',
+            });
+
             if (Profile?.role === 'buyer') {
               Swal.fire({
                 icon: 'success',
                 text: `User Login Sucessfully`,
               });
-              router.push('/home')
-            }
-            else {
+              router.push('/home');
+            } else {
               Swal.fire({
                 icon: 'error',
                 text: `Invalid role! Please contact support `,
@@ -93,24 +114,22 @@ function Login({background,position}) {
           }
         }
       }
-
     } catch (error) {
       Swal.fire({
         icon: 'error',
         text: error?.message,
       });
-    }
-    finally {
-      setCredentialLoading(false)
-      reset()
+    } finally {
+      setCredentialLoading(false);
+      reset();
     }
   };
 
-
   return (
     <>
-
-      <div className={`${position} ${background} inset-0 flex items-center justify-center z-5`}>
+      <div
+        className={`${position} ${background} inset-0 flex items-center justify-center z-5`}
+      >
         <div className="bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2  relative">
           {/* <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-700" onClick={onClose}>
           <IoClose size={24} />
@@ -122,7 +141,9 @@ function Login({background,position}) {
             E<span></span>
           </div> */}
             <h2 className="text-2xl font-bold mt-2">Welcome Back</h2>
-            <p className="text-gray-500 text-sm">Please login to your account</p>
+            <p className="text-gray-500 text-sm">
+              Please login to your account
+            </p>
           </div>
 
           {/* Login Form */}
@@ -145,44 +166,45 @@ function Login({background,position}) {
                 <p onClick={moveToForgetAccount}>Forgot password?</p>
               </div>
 
-              <button type="submit"
+              <button
+                type="submit"
                 disabled={credentialLoading}
-                className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique">
-                {credentialLoading ? (
-                  <CSpinner />
-                ) : (
-                  "Login In")}
+                className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique"
+              >
+                {credentialLoading ? <CSpinner /> : 'Login In'}
               </button>
             </form>
-
           </div>
 
           {/* Social Login */}
           <div className="mt-4 text-center">
             <p className="text-black text-md">Or Login with</p>
             <div className="flex flex-col items-center justify-center gap-4 mt-2">
-             
-              <button onClick={() => signInWithGoogle(setgoogleLoading)}
-                  disabled={googleLoading}
-                  type="button"
-                  className="w-full px-3 py-2 flex items-center gap-2 justify-center rounded-[8px] text-[16px] text-black bg-gray-200 x my-[10px]"
-                >
-                  {googleLoading ? (
-                    <CSpinner color="text-black"  size="sm"  />
-                  ) : (
-                    <FcGoogle size={20} style={{ marginRight: "10px" }} />
-                  )}
-                  {googleLoading ? "" : "Sign In with Google"}
-                </button>
+              <button
+                onClick={() => signInWithGoogle(setgoogleLoading)}
+                disabled={googleLoading}
+                type="button"
+                className="w-full px-3 py-2 flex items-center gap-2 justify-center rounded-[8px] text-[16px] text-black bg-gray-200 x my-[10px]"
+              >
+                {googleLoading ? (
+                  <CSpinner color="text-black" size="sm" />
+                ) : (
+                  <FcGoogle size={20} style={{ marginRight: '10px' }} />
+                )}
+                {googleLoading ? '' : 'Sign In with Google'}
+              </button>
               {/* <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
                 <BsFacebook size={20} className="text-blue-500" />
                 Facebook
               </button> */}
             </div>
-            <p onClick={moveToRegister} className='text-left mt-2 cursor-pointer'>Not registered? <span className='text-unique'>Create account</span></p>
-
-          
-
+            <p
+              onClick={moveToRegister}
+              className="text-left mt-2 cursor-pointer"
+            >
+              Not registered?{' '}
+              <span className="text-unique">Create account</span>
+            </p>
           </div>
         </div>
       </div>
@@ -192,23 +214,8 @@ function Login({background,position}) {
 
 export default Login;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
+{
+  /* <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
         <div className=" w-full h-full sm:max-h-fit relative sm:w-[70vw]  md:w-[60vw] lg:w-[60vw] xl:w-[50vw] py-5 rounded-md shadow-2xl ">
           <div className="sm:pt-10 pt-0 px-6 sm:px-10">
             <div
@@ -277,7 +284,8 @@ export default Login;
                   ) : (
                     <ImGithub size={25} style={{ marginRight: "10px" }} />  // Agar loading nahi hai toh GitHub icon dikhaiye
                   )}
-                  {githubLoading ? "" : "Sign In with GitHub"} {/* Button text */}
+                  {githubLoading ? "" : "Sign In with GitHub"} {/* Button text */
+}
 //         </button>
 
 //       </div>

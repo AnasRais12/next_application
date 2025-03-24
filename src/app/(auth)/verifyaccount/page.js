@@ -1,23 +1,21 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 function page() {
   const [userInfo, setUserInfo] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
     const storedData = localStorage.getItem('AuthFieldVerifyPage');
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
-        setUserInfo(parsedData); 
+        setUserInfo(parsedData);
       } catch (error) {
         console.error('Error parsing localStorage data:', error);
       }
-    } 
+    }
   }, []);
 
-  
-  
   return (
     <div className="flex items-center justify-center h-screen bg-custom-gradient ">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-[90%] sm:w-96 text-center">
@@ -38,54 +36,35 @@ function page() {
           </svg>
         </div>
 
-        <h1 className="text-2xl font-semibold mb-2">Verify your email address</h1>
-        <p className="text-1xl font-semibold text-gray-600 mb-2"> Hello <span className='text-black'>{userInfo?.username}</span>.</p>
+        <h1 className="text-2xl font-semibold mb-2">
+          Verify your email address
+        </h1>
+        <p className="text-1xl font-semibold text-gray-600 mb-2">
+          {' '}
+          Hello <span className="text-black">{userInfo?.username}</span>.
+        </p>
         <p className="text-gray-600 mb-6">
-          We have sent a verification link to <strong className='text-black'>{userInfo?.email}</strong>.
-          <br />Click on the link to complete the verification process.
-          <br />You might need to check your spam folder.
+          We have sent a verification link to{' '}
+          <strong className="text-black">{userInfo?.email}</strong>.
+          <br />
+          Click on the link to complete the verification process.
+          <br />
+          You might need to check your spam folder.
         </p>
         <div className="flex justify-center gap-4">
-          <button onClick={()=> router.push('/login')} className="bg-purple-600 w-full text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700">
+          <button
+            onClick={() => router.push('/login')}
+            className="bg-purple-600 w-full text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700"
+          >
             Sign In
           </button>
-          
         </div>
-       
       </div>
     </div>
   );
 }
 
-
- 
-export default page
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default page;
 
 // import React from 'react';
 // import { useState } from 'react';

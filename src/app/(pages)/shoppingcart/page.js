@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import Shopping_Cart from '@/components/LibaryComponent/FlowbiteComponent/Shopping_Cart';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
@@ -27,11 +27,12 @@ function Page() {
   if (loadingSession) return <CustomSpinner />;
 
   // Agar user logged in nahi hai to Login component dikhao
-  if (!session?.user?.id) return (
-    <div className='mt-12 bg-gray-50 flex-col flex gap-4 py-10 w-full'>
-         <Login />
-    </div>
-  );
+  if (!session?.user?.id)
+    return (
+      <div className="mt-12 bg-gray-50 flex-col flex gap-4 py-10 w-full">
+        <Login />
+      </div>
+    );
 
   // Agar wishlist ya cart loading hai toh spinner dikhao
   if (wishListLoading || cartListLoading) return <CustomSpinner />;

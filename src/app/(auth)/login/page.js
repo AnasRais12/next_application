@@ -2,30 +2,13 @@
 import Login from '@/components/authCompoonent/Login';
 
 function page() {
-  return (
-    <Login background= 'bg-custom-gradient ' position='fixed'/>
-  )
+  return <Login background="bg-custom-gradient " position="fixed" />;
 }
 
-export default page
+export default page;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
+{
+  /* <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
         <div className=" w-full h-full sm:max-h-fit relative sm:w-[70vw]  md:w-[60vw] lg:w-[60vw] xl:w-[50vw] py-5 rounded-md shadow-2xl ">
           <div className="sm:pt-10 pt-0 px-6 sm:px-10">
             <div
@@ -94,7 +77,8 @@ export default page
                   ) : (
                     <ImGithub size={25} style={{ marginRight: "10px" }} />  // Agar loading nahi hai toh GitHub icon dikhaiye
                   )}
-                  {githubLoading ? "" : "Sign In with GitHub"} {/* Button text */}
+                  {githubLoading ? "" : "Sign In with GitHub"} {/* Button text */
+}
 //         </button>
 
 //       </div>

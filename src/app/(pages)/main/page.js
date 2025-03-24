@@ -1,74 +1,60 @@
-// "use client";
-// import { useState } from "react";
+'use client';
+import React from 'react';
+import { useState } from 'react';
+import { FaBars } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
 
-// export default function Page() {
-//   const [trackingNumber, setTrackingNumber] = useState("");
-//   const [courier, setCourier] = useState("tcs"); // Default courier
-//   const [trackingData, setTrackingData] = useState(null);
-//   const [error, setError] = useState("");
+const HomePage = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-//   const handleTrack = async () => {
-//     setError("");
-//     setTrackingData(null);
+  return (
+    <div className="flex h-screen mt-20">
+      {/* Sidebar */}
+      <div
+        className={`bg-[red] w-64 p-4 shadow-lg fixed left-0 top-4 transform ${
+          sidebarOpen ? 'translate-x-0' : ''
+        } transition-transform md:fixed `}
+      >
+        <h2 className="text-lg font-semibold">Albert Flores</h2>
+        <p className="text-gray-500">Senior Product Designer</p>
+        <div className="mt-4 space-y-2">
+          <p className="text-gray-600">Profile Visitors: 140</p>
+          <p className="text-gray-600">Resume Viewers: 20</p>
+          <p className="text-gray-600">My Jobs: 88</p>
+        </div>
+      </div>
 
-//     if (!trackingNumber) {
-//       setError("Please enter a tracking number.");
-//       return;
-//     }
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Navbar */}
+        <nav className="bg-blue-600 p-4 text-white flex justify-between items-center">
+          <button
+            className="md:hidden text-white"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {sidebarOpen ? <IoClose size={24} /> : <FaBars size={24} />}
+          </button>
+          <h1 className="text-xl font-bold">Find Jobs</h1>
+          <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold">
+            Resume Builder
+          </button>
+        </nav>
 
-//     try {
-//       const response = await fetch(`/api/createtracking?trackingNumber=${trackingNumber}&courier=${courier}`);
-//       const data = await response.json();
+        {/* Job Listings */}
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(6)].map((_, index) => (
+            <div key={index} className="bg-white shadow-lg p-4 rounded-lg">
+              <h3 className="font-bold text-lg">UI/UX Designer</h3>
+              <p className="text-gray-500">Texas, USA (Remote)</p>
+              <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Apply Now
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-//       if (data.error) {
-//         setError("Tracking number not found.");
-//       } else {
-//         setTrackingData(data);
-//       }
-//     } catch (err) {
-//       setError("Something went wrong.");
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-md mx-auto mt-10 p-5 border rounded-lg shadow-lg">
-//       <h1 className="text-xl font-bold mb-4">Track Your Parcel 📦</h1>
-
-//       <input
-//         type="text"
-//         value={trackingNumber}
-//         onChange={(e) => setTrackingNumber(e.target.value)}
-//         placeholder="Enter Tracking Number"
-//         className="border p-2 w-full rounded-md"
-//       />
-
-//       <select
-//         value={courier}
-//         onChange={(e) => setCourier(e.target.value)}
-//         className="border p-2 w-full rounded-md mt-2"
-//       >
-//         <option value="tcs">TCS</option>
-//         <option value="dhl">DHL</option>
-//         <option value="fedex">FedEx</option>
-//       </select>
-
-//       <button
-//         onClick={handleTrack}
-//         className="mt-2 w-full bg-blue-500 text-white p-2 rounded-md"
-//       >
-//         Track Now 🚀
-//       </button>
-
-//       {error && <p className="text-red-500 mt-2">{error}</p>}
-
-//       {trackingData && (
-//         <div className="mt-5 p-3 border rounded-md">
-//           <h2 className="text-lg font-bold">Tracking Details</h2>
-//           <p><strong>Status:</strong> {trackingData.data.status}</p>
-//           <p><strong>Origin:</strong> {trackingData.data.origin}</p>
-//           <p><strong>Destination:</strong> {trackingData.data.destination}</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
+export default HomePage;

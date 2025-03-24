@@ -7,18 +7,19 @@ module.exports = {
   ],
   theme: {
     extend: {
-        screens: {
-          'xs': {'max': '300px'}, 
-          'custom': {'min': '301px', 'max': '639px'}, // 301px - 639px
-        },
+      screens: {
+        xs: { max: '300px' },
+        custom: { min: '301px', max: '639px' }, // 301px - 639px
+      },
       fontFamily: {
-        poppins: ["Poppins-Bold", "sans-serif"],
+        poppins: ['Poppins-Bold', 'sans-serif'],
       },
       backgroundImage: {
-        'custom-gradient': 'linear-gradient(to bottom, #ff416c, #7a1ea1, #1b2845)',
-      },// Replace with your image path
+        'custom-gradient':
+          'linear-gradient(to bottom, #ff416c, #7a1ea1, #1b2845)',
+      }, // Replace with your image path
       colors: {
-        unique: "#ea580c"
+        unique: '#ea580c',
       },
     },
   },

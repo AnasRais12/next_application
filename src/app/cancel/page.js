@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-function page () {
-  return (
-    <div>cancel</div>
-  )
+function page() {
+  return <div>cancel</div>;
 }
 
-export default page
+export default page;

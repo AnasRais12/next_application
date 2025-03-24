@@ -1,11 +1,11 @@
-'use client'
-import { useState } from "react";
-import { FaFilter } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
+'use client';
+import { useState } from 'react';
+import { FaFilter } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
 
 const ProductFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const toggleFilter = () => setIsOpen(!isOpen);
 
   return (
@@ -15,9 +15,9 @@ const ProductFilter = () => {
         className="md:hidden flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded"
         onClick={toggleFilter}
       >
-        <FaFilter /> 
+        <FaFilter />
       </button>
-      
+
       {/* Sidebar Filter (Desktop) */}
       <div className="hidden md:block  p-2 ">
         <FilterOptions />
@@ -59,9 +59,15 @@ const FilterOptions = () => (
     <div className="mb-4">
       <label className="font-semibold">Brand</label>
       <div className="flex flex-col mt-1">
-        <label><input type="checkbox" className="mr-2" /> Nike</label>
-        <label><input type="checkbox" className="mr-2" /> Adidas</label>
-        <label><input type="checkbox" className="mr-2" /> Apple</label>
+        <label>
+          <input type="checkbox" className="mr-2" /> Nike
+        </label>
+        <label>
+          <input type="checkbox" className="mr-2" /> Adidas
+        </label>
+        <label>
+          <input type="checkbox" className="mr-2" /> Apple
+        </label>
       </div>
     </div>
 
@@ -69,10 +75,18 @@ const FilterOptions = () => (
     <div className="mb-4">
       <label className="font-semibold">Rating</label>
       <div className="flex flex-col mt-1">
-        <label><input type="radio" name="rating" className="mr-2" /> 4 Stars & Up</label>
-        <label><input type="radio" name="rating" className="mr-2" /> 3 Stars & Up</label>
-        <label><input type="radio" name="rating" className="mr-2" /> 2 Stars & Up</label>
-        <label><input type="radio" name="rating" className="mr-2" /> 1 Star & Up</label>
+        <label>
+          <input type="radio" name="rating" className="mr-2" /> 4 Stars & Up
+        </label>
+        <label>
+          <input type="radio" name="rating" className="mr-2" /> 3 Stars & Up
+        </label>
+        <label>
+          <input type="radio" name="rating" className="mr-2" /> 2 Stars & Up
+        </label>
+        <label>
+          <input type="radio" name="rating" className="mr-2" /> 1 Star & Up
+        </label>
       </div>
     </div>
   </div>

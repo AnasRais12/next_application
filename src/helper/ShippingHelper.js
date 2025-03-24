@@ -50,7 +50,6 @@
 //   }
 // };
 
-
 // export const purchaseLabel = async (rateObjectId) => {
 //   try {
 //     const transactionResponse = await axios.post(
@@ -67,7 +66,7 @@
 //     );
 
 //     console.log("✅ Label Purchased Successfully:", transactionResponse.data);
-    
+
 //     // Label URL ko return kar raha hoon jisse download kar sako
 //     return transactionResponse.data.label_url;
 

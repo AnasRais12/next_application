@@ -3,12 +3,12 @@ import CustomSpinner from '@/components/Spinner';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 function page() {
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
-      router.push('/home')
-  }, [])
+    router.push('/home');
+  }, []);
 
-  return <CustomSpinner />
+  return <CustomSpinner />;
 }
 
 export default page;

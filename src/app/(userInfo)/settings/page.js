@@ -1,23 +1,21 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import CustomSpinner from "@/components/Spinner";
-import UserSetting from "@/components/LibaryComponent/FlowbiteComponent/UserSetting/UserSetting";
-import { useFetchAddress } from "@/customHooks/useFetchAddress";
-import { useFetchCartlist } from "@/customHooks/useFetchCartList";
-import { useFetchWishlist } from "@/customHooks/useFetchWishList";
-import { createAddress, purchaseLabel } from "@/helper/ShippingHelper";
-import { supabase } from "@/lib/supabase";
-import UserQuery from "@/DbQuery/UserDetailQuery";
-import useSession from "@/utils/UserExist/GetSession";
-
+'use client';
+import React, { useEffect, useState } from 'react';
+import CustomSpinner from '@/components/Spinner';
+import UserSetting from '@/components/LibaryComponent/FlowbiteComponent/UserSetting/UserSetting';
+import { useFetchAddress } from '@/customHooks/useFetchAddress';
+import { useFetchCartlist } from '@/customHooks/useFetchCartList';
+import { useFetchWishlist } from '@/customHooks/useFetchWishList';
+import { createAddress, purchaseLabel } from '@/helper/ShippingHelper';
+import { supabase } from '@/lib/supabase';
+import UserQuery from '@/DbQuery/UserDetailQuery';
+import useSession from '@/utils/UserExist/GetSession';
 
 const page = () => {
-  const { userDetails } = UserQuery()
-  const session = useSession()
+  const { userDetails } = UserQuery();
+  const session = useSession();
   // useEffect(() => {
   //   if (!userDetails?.id) return;
   //   const handleCreateAddress = async () => {
-
 
   //     const shippingAddress = {
   //       name: userDetails?.full_name,
@@ -59,8 +57,6 @@ const page = () => {
   //       "phone": "+1 310-555-5678",
   //       "email": "alice.johnson@example.com"
   //     }
-    
-
 
   //    const shipment = await createAddress(shippingAddress, parcelData,addressFrom,senderAddress)
   //    if (shipment && shipment.rates.length > 0) {
@@ -77,20 +73,20 @@ const page = () => {
   //   handleCreateAddress()
   // }, [userDetails])
 
-  useFetchWishlist(session?.user?.id)
-  const { userAddressLoading, userAddressInfo, isUserAddress } = useFetchAddress(session?.user?.id)
-  useFetchCartlist(session?.user?.id)
+  useFetchWishlist(session?.user?.id);
+  const { userAddressLoading, userAddressInfo, isUserAddress } =
+    useFetchAddress(session?.user?.id);
+  useFetchCartlist(session?.user?.id);
 
-  console.log(userDetails, "from setting page ")
+  console.log(userDetails, 'from setting page ');
   return (
     <>
-      <UserSetting userAddressLoading={userAddressLoading} userAddressInfo={userAddressInfo} />
-
+      <UserSetting
+        userAddressLoading={userAddressLoading}
+        userAddressInfo={userAddressInfo}
+      />
     </>
-
   );
 };
 
 export default page;
-
-
