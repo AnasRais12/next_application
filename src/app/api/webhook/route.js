@@ -33,6 +33,7 @@ export async function POST(req) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const orderId = session.metadata?.orderId;
+    console.log(orderId)
 
     if (!orderId) {
       await logWebhookError(
@@ -46,7 +47,7 @@ export async function POST(req) {
     }
     const { error: updateError } = await supabase
       .from('orders')
-      .update({ payment_status: 'Completed' })
+      .update({ payment_status: 'Paid' })
       .eq('order_id', `#${orderId}`)
       .select(); // ✅ Order ID aur Status le raha hai
     console.log('Updated Order:', orderId);

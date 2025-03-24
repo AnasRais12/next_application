@@ -1,12 +1,15 @@
-import Map from '@/components/Map';
 import { FiDownload, FiPrinter } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
+import { handleDeleteOrder } from '@/helper/ShippingHelper';
 import { useRouter } from 'next/navigation';
-
-export const OrderDetailsModal = ({ order, onClose }) => {
+import Swal from 'sweetalert2';
+import CSpinner from '@/components/CSpinner';
+import { useState } from 'react';
+export const OrderDetailsModal = ({ order, onClose ,setSelectedOrder}) => {
   const router = useRouter();
+const [orderLoading, setorderLoading] = useState(false)
+
   if (!order) return null;
-  console.log('ye rahaa orderrrrss ', order);
   const orderId = order?.order_id?.replace('#', '');
   return (
     <div className="fixed inset-0 bg-black z-[9999]  bg-opacity-50 flex items-center justify-center p-4">
@@ -89,7 +92,7 @@ export const OrderDetailsModal = ({ order, onClose }) => {
             </div>
           </div>
 
-          {order?.status === 'Completed' ? (
+          {order?.status === 'Delivered' ? (
             <div className="sm:mt-6 custom:mt-6 xs:mt-2 custom:space-x-3 custom:flex-row flex sm:flex-row xs:flex-col justify-end sm:space-x-3 xs:space-y-2">
               <button
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-200 flex items-center"
@@ -113,8 +116,8 @@ export const OrderDetailsModal = ({ order, onClose }) => {
                 >
                   Track Order
                 </button>
-                <button className="px-4 py-2 text-sm w-fit xs:w-full font-medium text-white bg-[red] rounded-md hover:bg-[red] ">
-                  Cancel Order
+                <button onClick={() => handleDeleteOrder(orderId,Swal,setorderLoading,)} className="px-4 py-2 text-sm w-fit xs:w-full font-medium text-white bg-[red] rounded-md hover:bg-[red] ">
+                  {orderLoading? <CSpinner/> : 'Cancel Order'}
                 </button>
               </div>
             </>

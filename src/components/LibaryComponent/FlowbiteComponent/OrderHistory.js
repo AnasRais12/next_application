@@ -17,6 +17,7 @@ const OrderHistory = () => {
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedOrder, setSelectedOrder] = useState(null);
 
+  // Filter Orders // 
   const filteredOrders = orderHistoryDetail.filter((order) => {
     const matchesSearch = order.order_id
       .toLowerCase()
@@ -26,28 +27,11 @@ const OrderHistory = () => {
     return matchesSearch && matchesStatus;
   });
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen  p-4">
-  //       <div className="max-w-7xl mx-auto">
-  //         <div className="animate-pulse space-y-4">
-  //           <div className="h-12 bg-gray-200 rounded w-1/4"></div>
-  //           <div className="h-8 bg-gray-200 rounded w-full"></div>
-  //           <div className="space-y-3">
-  //             {[1, 2, 3].map((i) => (
-  //               <div key={i} className="h-20 bg-gray-200 rounded"></div>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
+      // OrderHISTORY Loader// 
   if (orderHistoryLoading) {
     return <CustomSpinner />;
   }
-  console.log(orderHistoryDetail, 'OrderHistoryDetail');
   return (
     <>
       {orderHistoryDetail.length > 0 ? (
@@ -156,11 +140,11 @@ const OrderHistory = () => {
                           </td>
                           <td
                             className={`${
-                              order.payment_status === 'Pending'
-                                ? 'text-yellow-800'
-                                : order.status === 'completed'
-                                  ? 'text-green-600'
-                                  : 'text-red-600'
+                              order.payment_status === 'Unpaid'
+                                ? 'text-[red]'
+                                : order.payment_status === 'Paid'
+                                  ? 'text-[#22C55E]'
+                                  :  order.payment_status === 'Refunded'?  'text-[#F59E0B]' : 'text-red-600'
                             } px-3 border-l-2 border-r-2 py-4 capitalize whitespace-nowrap`}
                           >
                             {order.payment_status}
@@ -169,7 +153,7 @@ const OrderHistory = () => {
                             className={`${
                               order.status === 'Pending'
                                 ? 'text-yellow-800'
-                                : order.status === 'completed'
+                                : order.status === 'Delivered'
                                   ? 'text-green-600'
                                   : 'text-red-600'
                             } px-3 border-l-2 border-r-2 py-4 capitalize whitespace-nowrap`}
@@ -197,6 +181,7 @@ const OrderHistory = () => {
           {selectedOrder && (
             <OrderDetailsModal
               order={selectedOrder}
+              setSelectedOrder={setSelectedOrder}
               onClose={() => setSelectedOrder(null)}
             />
           )}

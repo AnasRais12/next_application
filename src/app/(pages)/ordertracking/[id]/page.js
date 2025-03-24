@@ -13,52 +13,21 @@ function page() {
   const { shipingAddressLoading, trackingId } = useFetchTracking(params?.id);
   const [distance, setDistance] = useState();
   const { trackingTime, orderTrackingLoading } = useOrderTracking(
-    `#${params?.id}`
+    `#${params?.id},`,trackingId
   );
 
-  //   Tracking Time Real Time Update
-  // useEffect(() => {
-  //     const fetchLatestTrackingTime = async () => {
-  //         let { data, error } = await supabase
-  //             .from("order_tracking")
-  //             .select("tracking_time")
-  //             .order("updated_at", { ascending: false })
-  //             .limit(1);
-
-  //         if (error) console.error(error);
-
-  //         else{
-  //             console.log(data, "data")
-  //             setTrackingTime(data[0]?.tracking_time);
-  //         }
-  //     };
-
-  //     if(trackingTime > 0){
-  //         fetchLatestTrackingTime();
-  //     }
-
-  //     // Realtime Subscription
-  //     const channel = supabase
-  //         .channel("tracking_updates")
-  //         .on(
-  //             "postgres_changes",
-  //             { event: "UPDATE", schema: "public", table: "order_tracking" },
-  //             fetchLatestTrackingTime
-  //         )
-  //         .subscribe();
-
-  //     return () => {
-  //         supabase.removeChannel(channel);
-  //     };
-  // }, [trackingTime]);
 
   const Tracking = trackingId.reduce((acc, obj) => {
     return { ...acc, ...obj };
   }, {});
 
-  if (shipingAddressLoading || trackingTime === null) return <CustomSpinner />;
+   if(trackingTime === 0){
+    window.location.reload()
+  }
+  if (shipingAddressLoading) return <CustomSpinner />;
 
-  console.log(trackingTime, '___>> Tracking kia hai ');
+  console.log(trackingId, '___>> Tracking kia hai ');
+  console.log(trackingTime,"-______________________-")
 
   return (
     <>
@@ -74,7 +43,7 @@ function page() {
         </div>
       ) : (
         <>
-          {Tracking?.tracking_status == 'Delivered' ? (
+          {Tracking?.tracking_status == 'Delivered' || trackingTime === 0  ? (
             <div className="text-center mt-20 text-gray-500 sm:text-xl text-md bg-white py-20 flex-col gap-3 flex justify-center items-center">
               Your order has been successfully delivered. Thank you for shopping
               with us!
@@ -135,14 +104,12 @@ function page() {
                     </div>
                   )}
                   {trackingTime && (
-                    <div>
                       <h2>
-                        Latest Tracking Time:{' '}
+                        Order Delivered In:{' '}
                         {trackingTime
-                          ? `${trackingTime} min ago`
-                          : 'Loading...'}
+                          ? `${trackingTime} min `
+                          : ''}
                       </h2>
-                    </div>
                   )}
 
                   <div className="pt-6">
