@@ -56,7 +56,7 @@ export const handleCardPayment = async (
           ),
           payment_method: paymentMethod,
           status: 'Pending',
-          payment_status:'UnPaid',
+          payment_status: 'UnPaid',
           address: userDetails?.address,
           items: cart.map((item) => ({
             product_id: item.product_id,
@@ -153,7 +153,7 @@ export const handleDelievery = async (
           ),
           payment_method: paymentMethod,
           status: 'Pending',
-          payment_status:'UnPaid',
+          payment_status: 'UnPaid',
           address: userDetails?.address,
           items: cart.map((item) => ({
             product_id: item.product_id,
@@ -196,7 +196,7 @@ export const handleDelievery = async (
                 latitude: userDetails?.lat,
                 longitude: userDetails?.long,
                 tracking_status: 'Pending',
-                tracking_time: 5 // 1 se 20 tak ka random number
+                tracking_time: 5, // 1 se 20 tak ka random number
               },
             ],
             { returning: 'representation' }

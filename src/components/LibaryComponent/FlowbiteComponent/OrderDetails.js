@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import CSpinner from '@/components/CSpinner';
 import { useState } from 'react';
-export const OrderDetailsModal = ({ order, onClose ,setSelectedOrder}) => {
+export const OrderDetailsModal = ({ order, onClose, setSelectedOrder }) => {
   const router = useRouter();
-const [orderLoading, setorderLoading] = useState(false)
+  const [orderLoading, setorderLoading] = useState(false);
 
   if (!order) return null;
   const orderId = order?.order_id?.replace('#', '');
@@ -116,8 +116,13 @@ const [orderLoading, setorderLoading] = useState(false)
                 >
                   Track Order
                 </button>
-                <button onClick={() => handleDeleteOrder(orderId,Swal,setorderLoading,)} className="px-4 py-2 text-sm w-fit xs:w-full font-medium text-white bg-[red] rounded-md hover:bg-[red] ">
-                  {orderLoading? <CSpinner/> : 'Cancel Order'}
+                <button
+                  onClick={() =>
+                    handleDeleteOrder(orderId, Swal, setorderLoading)
+                  }
+                  className="px-4 py-2 text-sm w-fit xs:w-full font-medium text-white bg-[red] rounded-md hover:bg-[red] "
+                >
+                  {orderLoading ? <CSpinner /> : 'Cancel Order'}
                 </button>
               </div>
             </>

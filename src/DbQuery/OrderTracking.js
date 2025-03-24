@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
-export const useOrderTracking = (orderId,trackingId) => {
+export const useOrderTracking = (orderId, trackingId) => {
   const [trackingTime, setTrackingTime] = useState(null);
   console.log(trackingId, '___>> Tracking kia hai meri dost hai  ');
-  console.log(orderId,"ye rhai orderId")
+  console.log(orderId, 'ye rhai orderId');
   const [orderTrackingLoading, setorderTrackingLoading] = useState(false);
 
   // ✅ Fetch Latest Tracking Time
@@ -32,7 +32,7 @@ export const useOrderTracking = (orderId,trackingId) => {
 
   // ✅ Update Tables When trackingTime === 0
   const updateTrackingStatus = async () => {
-    if (trackingTime === 0 && trackingId[0]?.tracking_status !== 'Delivered')  {
+    if (trackingTime === 0 && trackingId[0]?.tracking_status !== 'Delivered') {
       // Update orders table (status: Completed, payment_method: Completed)
       const { error: orderError } = await supabase
         .from('orders')
@@ -49,16 +49,17 @@ export const useOrderTracking = (orderId,trackingId) => {
       if (trackingError)
         console.error('Tracking Table Update Error:', trackingError);
     }
-    console.log("yaar yahan tak aya hai")
-
+    console.log('yaar yahan tak aya hai');
   };
 
   useEffect(() => {
     if (trackingTime > 0) {
       fetchLatestTrackingTime();
-    } else if (trackingTime === 0 &&  trackingId[0]?.tracking_status !== 'Delivered' ) {
+    } else if (
+      trackingTime === 0 &&
+      trackingId[0]?.tracking_status !== 'Delivered'
+    ) {
       updateTrackingStatus();
-   
     }
 
     // ✅ Realtime Subscription

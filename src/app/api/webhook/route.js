@@ -33,7 +33,7 @@ export async function POST(req) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const orderId = session.metadata?.orderId;
-    console.log(orderId)
+    console.log(orderId);
 
     if (!orderId) {
       await logWebhookError(

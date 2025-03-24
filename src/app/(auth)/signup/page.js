@@ -102,16 +102,14 @@ function Register() {
       });
 
       // Insert into 'profiles' table
-      const { error: insertError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: signUpData?.user?.id,
-            role: roleFromParams,
-            name: username,
-            email,
-          },
-        ]);
+      const { error: insertError } = await supabase.from('profiles').insert([
+        {
+          id: signUpData?.user?.id,
+          role: roleFromParams,
+          name: username,
+          email,
+        },
+      ]);
 
       if (insertError) {
         Swal.fire({ icon: 'error', text: insertError.message });

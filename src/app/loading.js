@@ -1,4 +1,4 @@
-import CustomSpinner from "@/components/Spinner";
+import CustomSpinner from '@/components/Spinner';
 export default function Loading() {
-    <CustomSpinner />
-  }
+  <CustomSpinner />;
+}

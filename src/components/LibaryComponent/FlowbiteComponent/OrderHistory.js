@@ -17,7 +17,7 @@ const OrderHistory = () => {
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Filter Orders // 
+  // Filter Orders //
   const filteredOrders = orderHistoryDetail.filter((order) => {
     const matchesSearch = order.order_id
       .toLowerCase()
@@ -27,8 +27,7 @@ const OrderHistory = () => {
     return matchesSearch && matchesStatus;
   });
 
-
-      // OrderHISTORY Loader// 
+  // OrderHISTORY Loader//
   if (orderHistoryLoading) {
     return <CustomSpinner />;
   }
@@ -144,7 +143,9 @@ const OrderHistory = () => {
                                 ? 'text-[red]'
                                 : order.payment_status === 'Paid'
                                   ? 'text-[#22C55E]'
-                                  :  order.payment_status === 'Refunded'?  'text-[#F59E0B]' : 'text-red-600'
+                                  : order.payment_status === 'Refunded'
+                                    ? 'text-[#F59E0B]'
+                                    : 'text-red-600'
                             } px-3 border-l-2 border-r-2 py-4 capitalize whitespace-nowrap`}
                           >
                             {order.payment_status}

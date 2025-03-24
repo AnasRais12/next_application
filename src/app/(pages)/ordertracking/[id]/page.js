@@ -13,21 +13,21 @@ function page() {
   const { shipingAddressLoading, trackingId } = useFetchTracking(params?.id);
   const [distance, setDistance] = useState();
   const { trackingTime, orderTrackingLoading } = useOrderTracking(
-    `#${params?.id},`,trackingId
+    `#${params?.id},`,
+    trackingId
   );
-
 
   const Tracking = trackingId.reduce((acc, obj) => {
     return { ...acc, ...obj };
   }, {});
 
-   if(trackingTime === 0){
-    window.location.reload()
+  if (trackingTime === 0) {
+    window.location.reload();
   }
   if (shipingAddressLoading) return <CustomSpinner />;
 
   console.log(trackingId, '___>> Tracking kia hai ');
-  console.log(trackingTime,"-______________________-")
+  console.log(trackingTime, '-______________________-');
 
   return (
     <>
@@ -43,7 +43,7 @@ function page() {
         </div>
       ) : (
         <>
-          {Tracking?.tracking_status == 'Delivered' || trackingTime === 0  ? (
+          {Tracking?.tracking_status == 'Delivered' || trackingTime === 0 ? (
             <div className="text-center mt-20 text-gray-500 sm:text-xl text-md bg-white py-20 flex-col gap-3 flex justify-center items-center">
               Your order has been successfully delivered. Thank you for shopping
               with us!
@@ -104,12 +104,10 @@ function page() {
                     </div>
                   )}
                   {trackingTime && (
-                      <h2>
-                        Order Delivered In:{' '}
-                        {trackingTime
-                          ? `${trackingTime} min `
-                          : ''}
-                      </h2>
+                    <h2>
+                      Order Delivered In:{' '}
+                      {trackingTime ? `${trackingTime} min ` : ''}
+                    </h2>
                   )}
 
                   <div className="pt-6">
