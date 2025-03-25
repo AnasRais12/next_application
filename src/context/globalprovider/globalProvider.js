@@ -6,6 +6,7 @@ export const GlobalProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [settingModal, setSettingModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+  const [deliveryCharges, setDeliveryCharges] = useState(0);
 
   const [authField, setAuthfield] = useState({ username: '', email: '' });
   useEffect(() => {
@@ -26,6 +27,8 @@ export const GlobalProvider = ({ children }) => {
           authField,
           setSettingModal,
           settingModal,
+          setDeliveryCharges,
+          deliveryCharges,
         }}
       >
         {children},

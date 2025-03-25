@@ -41,7 +41,8 @@ export const handleCardPayment = async (
   dispatch,
   setcardLoading,
   Swal,
-  loadStripe
+  loadStripe,
+  setShowingCardLoading
 ) => {
   try {
     setcardLoading(true);
@@ -116,6 +117,7 @@ export const handleCardPayment = async (
             text: `Your order has been confirmed successfully! Order ID: ${orderId}`,
           });
           deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch);
+          setShowingCardLoading(false);
         }
       }
     }
@@ -137,7 +139,8 @@ export const handleDelievery = async (
   dispatch,
   setdeliveryLoading,
   router,
-  Swal
+  Swal,
+  setShowingCardLoading
 ) => {
   try {
     setdeliveryLoading(true);
@@ -211,7 +214,7 @@ export const handleDelievery = async (
             text: `Your order has been confirmed successfully! Order ID: ${orderId}`,
           });
           deleteAllCartItem(supabase, session, RemoveAllFromCart, dispatch);
-
+          setShowingCardLoading(false);
           router.push(`/confirm/${orderId}`);
         }
       }

@@ -16,10 +16,14 @@ import UserQuery from '@/DbQuery/UserDetailQuery';
 import CSpinner from '@/components/CSpinner';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import { RxCross2 } from 'react-icons/rx';
+import { GoArrowLeft } from 'react-icons/go';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 
 const OrderSummary = () => {
   const session = useSession();
   const { userDetails } = UserQuery();
+  const { deliveryCharges, setDeliveryCharges } = GlobalDetails();
   const dispatch = useDispatch();
   const router = useRouter();
   const cart = getCart();
@@ -27,8 +31,8 @@ const OrderSummary = () => {
   const [cardLoading, setcardLoading] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
   const [deliveryLoading, setdeliveryLoading] = useState(false);
+  const [showingCardLoading, setShowingCardLoading] = useState(false); // ye isliyay banaya taakey jab mai payment karta hu to mujhe emply wali condition nazar aati hai ussey bachne ke liyay
   const [darkMode, setdark] = useState(false);
-  console.log('_________>.', cart);
   // const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shipping = 9.99;
   // const tax = subTotal * 0.08;
@@ -38,16 +42,31 @@ const OrderSummary = () => {
   }, [cart]);
 
   return (
-    <div className={`min-h-screen  text-gray-900`}>
+    <div className={` `}>
       <div className=" sm:mx-auto ">
         {cart?.length > 0 ? (
           <div
             className={`   rounded-xl sm:border-t-2  sm:shadow-lg overflow-hidden transition-all duration-300`}
           >
             <div className="p-2 sm:p-6 md:p-8">
-              <h1 className="text-2xl font-bold mb-6 text-left">
-                Order Summary
-              </h1>
+              <div className="flex sm:flex-row flex-col-reverse sm:gap-0 gap-1 justify-between items-start w-full pr-6 ">
+                <h1 className="text-2xl font-bold mb-6 text-left">
+                  Order Summary
+                </h1>
+                <button
+                  onClick={() => router.push('/shoppingcart')}
+                  className="text-[25px] hover:text-[red] hidden sm:block"
+                >
+                  <RxCross2 />
+                </button>
+                {/* ⬅️ Arrow icon (sm screens par dikhega) */}
+                <button
+                  onClick={() => router.push('/shoppingcart')}
+                  className="text-[25px] hover:text-[red] block sm:hidden"
+                >
+                  <GoArrowLeft />
+                </button>
+              </div>
 
               <div className="space-y-4 mb-8">
                 {cart.map((item, index) => (
@@ -79,7 +98,7 @@ const OrderSummary = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>${shipping.toFixed(2)}</span>
+                  <span>${deliveryCharges}</span>
                 </div>
                 {/* <div className="flex justify-between">
        <span>Tax</span>
@@ -139,7 +158,8 @@ const OrderSummary = () => {
                         dispatch,
                         setcardLoading,
                         Swal,
-                        loadStripe
+                        loadStripe,
+                        setShowingCardLoading
                       )
                     }
                     disabled={cardLoading}
@@ -161,7 +181,8 @@ const OrderSummary = () => {
                         dispatch,
                         setdeliveryLoading,
                         router,
-                        Swal
+                        Swal,
+                        setShowingCardLoading
                       )
                     }
                     disabled={deliveryLoading}
@@ -174,18 +195,22 @@ const OrderSummary = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full flex-col gap-3 h-fit pt-20 flex justify-center items-center">
-            <p>
-              Your cart is empty! Add some items to your order before checking
-              out.
-            </p>
-            <button
-              onClick={() => router.push('/home')}
-              className="py-3 px-6 border-unique border-2 text-unique"
-            >
-              Start Shopping
-            </button>
-          </div>
+          <>
+            {showingCardLoading && (
+              <div className="w-full flex-col gap-3 h-fit pt-20 flex justify-center items-center">
+                <p>
+                  Your cart is empty! Add some items to your order before
+                  checking out.
+                </p>
+                <button
+                  onClick={() => router.push('/home')}
+                  className="py-3 px-6 border-unique border-2 text-unique"
+                >
+                  Start Shopping
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

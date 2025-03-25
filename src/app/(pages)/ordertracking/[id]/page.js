@@ -12,22 +12,46 @@ function page() {
   const router = useRouter();
   const { shipingAddressLoading, trackingId } = useFetchTracking(params?.id);
   const [distance, setDistance] = useState();
-  const { trackingTime, orderTrackingLoading } = useOrderTracking(
-    `#${params?.id},`,
-    trackingId
-  );
+  const initialTrackingTime = trackingId?.[0]?.tracking_time ?? null;
+  const [trackingTime, setTrackingTime] = useState(initialTrackingTime);
+
+  useEffect(() => {
+    if (initialTrackingTime === 0) {
+      return;
+    }
+
+    // ✅ Realtime Subscription
+    const channel = supabase
+      .channel('tracking_updates')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'order_tracking' },
+        (payload) => {
+          console.log('Realtime Update:', payload);
+          setTrackingTime((prev) => ({
+            ...prev,
+            [payload.new.order_id]: payload.new.tracking_time,
+          }));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [trackingTime]);
 
   const Tracking = trackingId.reduce((acc, obj) => {
     return { ...acc, ...obj };
   }, {});
 
-  if (trackingTime === 0) {
+  if (trackingTime && trackingTime[Tracking?.order_id] === 0) {
     window.location.reload();
   }
   if (shipingAddressLoading) return <CustomSpinner />;
 
   console.log(trackingId, '___>> Tracking kia hai ');
-  console.log(trackingTime, '-______________________-');
+  console.log(trackingTime, 'Time-');
 
   return (
     <>
@@ -106,7 +130,9 @@ function page() {
                   {trackingTime && (
                     <h2>
                       Order Delivered In:{' '}
-                      {trackingTime ? `${trackingTime} min ` : ''}
+                      {trackingTime
+                        ? `${trackingTime[Tracking?.order_id]} min `
+                        : ''}
                     </h2>
                   )}
 

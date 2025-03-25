@@ -21,7 +21,7 @@ import {
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import CSpinner from '@/components/CSpinner';
 import OrderSummary from './OrderSummary';
-function Shopping_Cart() {
+function Shopping_Cart({ deliveryCharges }) {
   const [RemoveCart, setRemoveCart] = useState(false);
   const session = useSession();
   const router = useRouter();
@@ -29,11 +29,11 @@ function Shopping_Cart() {
   const dispatch = useDispatch();
   const [subTotal, setSubTotal] = useState(0);
   const cart = getCart();
+  const Total = subTotal + deliveryCharges;
 
   useEffect(() => {
     setSubTotal(calculateTotalproduct_price(cart));
   }, [cart]);
-  const Total = subTotal + 99;
 
   return (
     <>
@@ -216,7 +216,7 @@ function Shopping_Cart() {
                           Shipping
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-white">
-                          $99
+                          {deliveryCharges.toFixed(2) || 100}
                         </dd>
                       </dl>
                     </div>

@@ -11,6 +11,7 @@ function page() {
   const session = useSession();
   const { userDetails } = UserQuery();
   const [userAddresssExist, setUserAddresssExist] = useState(false);
+  const [addressForm, setAddressForm] = useState(false);
   const { userAddressLoading, userAddressInfo } = useFetchAddress(
     session?.user?.id
   );
@@ -19,15 +20,12 @@ function page() {
   useEffect(() => {
     if (!userDetails) {
       setUserAddresssExist(false);
+      setAddressForm(true);
     } else {
       setUserAddresssExist(true);
     }
   }, [userDetails]);
 
-  console.log(
-    userDetails,
-    '_____________----___________________-----________________----'
-  );
   if (userAddressLoading) {
     return <CustomSpinner />;
   }
@@ -39,12 +37,14 @@ function page() {
         </>
       ) : (
         <>
-          {!userDetails && (
+          {addressForm ? (
             <div className="mt-4 pt-10 sm:pt-20 mb-10 bg-gray-50">
               <div className=" w-full sm:w-[90%] md:w-[70%] mx-auto  border sm:border-2 bg-white p-4 sm:p-6 shadow-md rounded-lg">
                 <AddressForm setUserAddresssExist={setUserAddresssExist} />
               </div>
             </div>
+          ) : (
+            <CustomSpinner />
           )}
         </>
       )}
