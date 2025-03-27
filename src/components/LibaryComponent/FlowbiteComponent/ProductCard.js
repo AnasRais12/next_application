@@ -5,14 +5,10 @@ import Swal from 'sweetalert2';
 import useSession from '@/utils/UserExist/GetSession';
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { supabase } from '@/lib/supabase';
-import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
-import {
-  addToCart,
-  IncrementQunatity,
-  DecrementQuantity,
-} from '@/app/store/features/CartReducer/CartSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
+import { addToCart,} from '@/app/store/features/CartReducer/CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 const ProductCard = (props) => {
   const { data } = props;
   console.log(data, 'ye raha mera product');
@@ -59,7 +55,8 @@ const ProductCard = (props) => {
           product_name: data?.product_name,
           product_price: data?.product_price,
           product_image: data?.image,
-          quantity: quantity,
+          delivery: 20,
+          quantity: quantity
         },
       ]);
 

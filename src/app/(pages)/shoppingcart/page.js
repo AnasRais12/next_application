@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Shopping_Cart from '@/components/LibaryComponent/FlowbiteComponent/Shopping_Cart';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
+import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
 import useSession from '@/utils/UserExist/GetSession';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import Map from '@/components/Map';
@@ -12,23 +13,15 @@ import Login from '@/components/authCompoonent/Login';
 
 function Page() {
   const { userDetails } = UserQuery();
-  const { deliveryCharges, setDeliveryCharges } = GlobalDetails();
+  const { deliveryCharges, setDeliveryCharges,setDistance,distance } = GlobalDetails();
   const session = useSession();
-  const [distance, setDistance] = useState(null);
   const [loadingSession, setLoadingSession] = useState(true);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
 
-  const basedeliveryCharges = 50; // Pehle 10 km ka deliveryCharges
-  const additionaldeliveryCharges = 40; // Har extra 10 km ka deliveryCharges
-  const calculatedeliveryCharges = () => {
-    const roundedDistance = Math.ceil(distance); // Distance ko upar round karega
-    const deliveryChargesSlabs = Math.ceil(roundedDistance / 10); // Har 10 km pe naye paise add honge
-    setDeliveryCharges(deliveryChargesSlabs * additionaldeliveryCharges);
-  };
 
   useEffect(() => {
-    calculatedeliveryCharges();
+    calculatedeliveryCharges(setDeliveryCharges,distance);
   }, [distance]);
   useEffect(() => {
     if (!session?.user?.id) {
@@ -52,6 +45,7 @@ function Page() {
   if (loadingSession) return <CustomSpinner />;
   // Agar wishlist ya cart loading hai toh spinner dikhao
   if (wishListLoading || cartListLoading) return <CustomSpinner />;
+
 
   return (
     <div>

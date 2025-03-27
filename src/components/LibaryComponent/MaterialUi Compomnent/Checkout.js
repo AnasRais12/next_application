@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderSummary from '../FlowbiteComponent/OrderSummary';
+import Map from '@/components/Map';
 import useSession from '@/utils/UserExist/GetSession';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 
-const Checkout = ({ userAddresssExist }) => {
+
+const Checkout = ({ userAddresssExist,}) => {
   const session = useSession();
   useFetchCartlist(session?.user?.id);
+  
+
   return (
     <>
       <div
@@ -16,6 +20,7 @@ const Checkout = ({ userAddresssExist }) => {
           heading={'Payment Detail'}
           userAddresssExist={userAddresssExist}
         />
+   
       </div>
     </>
   );

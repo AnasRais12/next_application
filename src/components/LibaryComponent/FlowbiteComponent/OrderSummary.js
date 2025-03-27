@@ -11,7 +11,6 @@ import useSession from '@/utils/UserExist/GetSession';
 import { useDispatch } from 'react-redux';
 import { RemoveAllFromCart } from '@/app/store/features/CartReducer/CartSlice';
 import { deleteAllCartItem } from '@/helper/cartHelpers';
-import { useOrderTracking } from '@/DbQuery/OrderTracking';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import CSpinner from '@/components/CSpinner';
 import { useRouter } from 'next/navigation';
@@ -23,10 +22,10 @@ import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 const OrderSummary = () => {
   const session = useSession();
   const { userDetails } = UserQuery();
-  const { deliveryCharges, setDeliveryCharges } = GlobalDetails();
   const dispatch = useDispatch();
   const router = useRouter();
   const cart = getCart();
+  const { deliveryCharges } = GlobalDetails();
   const [paymentMethod, setPaymentMethod] = useState('Credit Card');
   const [cardLoading, setcardLoading] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
@@ -34,9 +33,8 @@ const OrderSummary = () => {
   const [showingCardLoading, setShowingCardLoading] = useState(false); // ye isliyay banaya taakey jab mai payment karta hu to mujhe emply wali condition nazar aati hai ussey bachne ke liyay
   const [darkMode, setdark] = useState(false);
   // const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shipping = 9.99;
   // const tax = subTotal * 0.08;
-  const Total = subTotal + shipping;
+     const Total = subTotal + deliveryCharges;
   useEffect(() => {
     setSubTotal(calculateTotalproduct_price(cart));
   }, [cart]);

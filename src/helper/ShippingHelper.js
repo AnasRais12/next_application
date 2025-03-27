@@ -31,26 +31,10 @@ export const handleDeleteOrder = async (orderId, Swal, setorderLoading) => {
 };
 
 // Langtitute and longtitue in km mai nikalne ka function
-
-export function calculateDistance(lat2, lon2) {
-  let lat1 = 67.0723;
-  let lon1 = 24.9263;
-  if (!lat1 || !lon1 || !lat2 || !lon2) return null;
-
-  const toRad = (value) => (value * Math.PI) / 180;
-
-  const R = 6371; // Radius of Earth in km
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return (R * c).toFixed(2); // Distance in km
-}
+  const basedeliveryCharges = 50; // Pehle 10 km ka deliveryCharges
+  const additionaldeliveryCharges = 40; // Har extra 10 km ka deliveryCharges
+  export const  calculatedeliveryCharges = (setDeliveryCharges,distance) => {
+    const roundedDistance = Math.ceil(distance); // Distance ko upar round karega
+    const deliveryChargesSlabs = Math.ceil(roundedDistance / 10); // Har 10 km pe naye paise add honge
+    setDeliveryCharges(deliveryChargesSlabs * additionaldeliveryCharges);
+  };

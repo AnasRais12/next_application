@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiShoppingCart, FiUser, FiSearch, FiHeart } from 'react-icons/fi';
 import Wishlist from '../FlowbiteComponent/WishList';
 import { useRouter } from 'next/navigation';
@@ -8,6 +8,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { motion } from 'framer-motion';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { addtoWishList } from '@/app/store/features/wishList/WishList';
+import { fetchExchangeRates } from '@/helper/CurrenyConver';
 
 export default function Navbar() {
   const router = useRouter();
@@ -15,24 +16,59 @@ export default function Navbar() {
   const cartItem = getCart();
   const wishListState = getWishList();
   const [searchBar, setSearchBar] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [wishlistModal, setWishlistModal] = useState(false);
+    const [rates, setRates] = useState({});
+    const [amount, setAmount] = useState(1);
+    const [from, setFrom] = useState("USD");
+    const [to, setTo] = useState("PKR");
+    const [convertedAmount, setConvertedAmount] = useState(null);
+    const [countries, setCountries] = useState([]);
+  
+    // Fetch exchange rates when the 'from' currency changes
+    useEffect(() => {
+      fetchExchangeRates(from).then((data) => {
+        if (data) setRates(data);
+      });
+  
+      // Fetch countries for flag selection
+      fetch("https://restcountries.com/v3.1/all")
+        .then((res) => res.json())
+        .then((data) => {
+          setCountries(data)
+        });
+    }, [from]);
+  
+    // Handle conversion logic
+    const handleConvert = () => {
+      if (rates[to]) {
+        console.log(rates,"___>>>")
+        setConvertedAmount(amount * rates[to]);
+      }
+    }
+
+    
 
   const [showModal, setShowModal] = useState(false);
-  const DropdownMenu = user ? ['Dashboard', 'Settings', 'Orders'] : ['Login'];
+  const DropdownMenu = user ? ['Dashboard', 'Settings', 'Orders','Currency '] : ['Login'];
   console.log('cartState', cartItem);
   console.log('wishListState', wishListState);
 
   return (
     <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-[9999]">
-      <div className="  px-6 md:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-3">
+      <div className=" px-4 sm:px-6 md:px-6 lg:px-8">
+        <div className="flex items-center sm:justify-start justify-between py-3">
           {/* Logo */}
-          <div className="text-[20px] md:text-[25px] font-bold text-orange-600">
-            ShopEase
+           <div className="flex-shrink-0">
+            <img
+              className="h-8 w-auto transform hover:scale-105 transition-transform duration-200"
+              src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=150&h=40"
+              alt="Company Logo"
+            />
           </div>
 
           {/* Search Bar */}
-          <div className="sm:flex hidden border-[#ccc] items-center border rounded-md mx-3 overflow-hidden w-[70%]  shadow-sm">
+          <div className="sm:flex hidden border-[#ccc] items-center border rounded-md mx-3 overflow-hidden w-[80%]  shadow-sm">
             <select className="px-1 sm:px-2 py-2  w-[25%] sm:w-[20%] text-sm border-r outline-none ">
               <option>All Categories</option>
               <option>Electronics</option>
@@ -50,13 +86,53 @@ export default function Navbar() {
           </div>
 
           {/* User Profile & Cart Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-2">
             <button
               className="sm:hidden block"
               onClick={() => setSearchBar(true)}
             >
-              <FiSearch className="sm:text-[30px] text-[22px] text-gray-700 hover:text-orange-600" />
+              <FiSearch className="sm:text-[30px] text-[27px] text-gray-700 hover:text-orange-600" />
             </button>
+
+            <div className="relative  ">
+        <div 
+          className="mt-1 flex items-center justify-between  py-1 bg-white  rounded-md shadow-sm cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <img src={countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from)?.flags.png} 
+               alt={from} 
+               className="w-6 h-4 mr-2"/>
+          <span className="ml-auto">▼</span>
+        </div>
+
+        {/* Dropdown List */}
+        {isOpen && (
+    <div className="absolute z-10 w-full bg-white rounded-md shadow-lg max-h-40 overflow-y-auto">
+      {countries.map((country) => {
+        const currencyCode = country.currencies
+          ? Object.keys(country.currencies)[0]
+          : "USD";
+        return (
+          <div
+            key={country.cca3}
+            className="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
+            onClick={() => {
+              setFrom(currencyCode); // Yahan selected currency update ho rahi hai
+              setIsOpen(false);
+            }}
+          >
+            <img
+              src={country.flags.png}
+              alt={country.name.common}
+              className="w-6 h-4 mr-2"
+            />
+            <span>{country.name.common} ({currencyCode})</span>
+          </div>
+        );
+      })}
+    </div>
+  )}
+      </div>
             {/* User Profile */}
             <div className="relative">
               <button
@@ -102,6 +178,7 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+      
             {/* Wishlist */}
             <button onClick={() => setWishlistModal(true)} className="relative">
               <FiHeart className="sm:text-[27px] text-[25px] text-gray-700 hover:text-orange-600" />
@@ -123,6 +200,10 @@ export default function Navbar() {
                 </span>
               ) : null}
             </button>
+
+            <button onClick={handleConvert} className="bg-blue-500 text-white px-4 py-2 rounded-md">
+    Convert {amount}
+  </button>
           </div>
         </div>
         {searchBar ? (

@@ -38,7 +38,7 @@ function Shopping_Cart({ deliveryCharges }) {
   return (
     <>
       {cart?.length > 0 ? (
-        <section className="bg-[white] mt-10 py-8 antialiased dark:bg-gray-900 md:py-16">
+        <section className="bg-[white] mt-10 py-8 antialiased md:py-16">
           <div className="mx-auto w-full  md:px-8 px-3  ">
             <h2 className="xl:text-[2vw] lg:text-[2.1vw] text-[25px] sm:text-[30px] font-semibold text-gray-900 dark:text-white ">
               Shopping Cart

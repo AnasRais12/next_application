@@ -5,10 +5,9 @@ const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [settingModal, setSettingModal] = useState(false);
-  const [updateModal, setUpdateModal] = useState(false);
   const [deliveryCharges, setDeliveryCharges] = useState(0);
-
-  const [authField, setAuthfield] = useState({ username: '', email: '' });
+  const [distance, setDistance] = useState(0);
+  const [authField, setAuthfield] = useState({ username: '', email: '' });  // jab user login ke bad verified page pe jaata hai to usko dikhane ke liyay 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const UserInfo = localStorage.getItem('sb-user');
@@ -29,6 +28,8 @@ export const GlobalProvider = ({ children }) => {
           settingModal,
           setDeliveryCharges,
           deliveryCharges,
+          setDistance,
+          distance
         }}
       >
         {children},

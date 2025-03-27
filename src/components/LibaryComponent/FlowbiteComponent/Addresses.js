@@ -45,6 +45,7 @@ const AddressForm = () => {
   const [isReloading, setIsReloading] = useState(false);
   const [selectedCityLat, setSelectedCityLat] = useState(null);
   const [selectedCityLng, setSelectedCityLng] = useState(null);
+    const [selectedCountryData, setSelectedCountryData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [countryLoading, setCountryLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -111,6 +112,17 @@ const AddressForm = () => {
 
       .catch(() => setError('Failed to load areas'));
   }, [selectedCity, cities]);
+
+  useEffect(() => {
+    if (selectedCountry && countries.length > 0) {
+      const countryData = countries.find(item => item?.countryCode === selectedCountry);
+      if (countryData) {
+        setSelectedCountryData(countryData); // State mein country data save kar diya
+      } else {
+        setSelectedCountryData(null);
+      }
+    }
+  }, [selectedCountry, countries]);
   const onSubmit = async (data) => {
     try {
       console.log('dataaa', data);
@@ -129,6 +141,7 @@ const AddressForm = () => {
           area: data.area,
           state: state,
           phone_code: countryCode,
+          currency_code: selectedCountryData?.currencyCode
         },
       ]);
       if (error) {

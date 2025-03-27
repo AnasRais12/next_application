@@ -7,15 +7,25 @@ import useSession from '@/utils/UserExist/GetSession';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import CustomSpinner from '@/components/Spinner';
 import Checkout from '@/components/LibaryComponent/MaterialUi Compomnent/Checkout';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
+import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
+import Map from '@/components/Map';
 function page() {
   const session = useSession();
+  useFetchCartlist(session?.user?.id);
   const { userDetails } = UserQuery();
   const [userAddresssExist, setUserAddresssExist] = useState(false);
   const [addressForm, setAddressForm] = useState(false);
-  const { userAddressLoading, userAddressInfo } = useFetchAddress(
-    session?.user?.id
-  );
-  useFetchCartlist(session?.user?.id);
+  const { userAddressLoading, userAddressInfo } = useFetchAddress(session?.user?.id );
+     const { deliveryCharges, setDeliveryCharges,setDistance,distance } = GlobalDetails();
+  
+     useEffect(() => {
+        calculatedeliveryCharges(setDeliveryCharges,distance,);
+      }, [distance]);
+  
+      console.log(deliveryCharges,"_____>> Delivery Charges")
+      console.log(distance,"_____>> Distance")
+      console.log(Number(userDetails?.long),"_____>> Detatance")
 
   useEffect(() => {
     if (!userDetails) {
@@ -33,7 +43,18 @@ function page() {
     <>
       {userAddresssExist ? (
         <>
-          <Checkout userAddresssExist={userAddresssExist} />
+             <div className='hidden'>
+        <Map 
+   setDistance={setDistance}
+   lang={userDetails?.lat}
+   long={userDetails?.long}
+   heights={'0px'}
+/>
+        </div>
+          <Checkout userAddresssExist={userAddresssExist}  />
+          
+        
+ 
         </>
       ) : (
         <>
