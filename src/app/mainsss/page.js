@@ -1,110 +1,78 @@
-"use client";
-import { useState, useEffect } from "react";
-import { fetchExchangeRates } from "@/helper/CurrenyConver";
+import React from "react";
+import { FaTrophy, FaPaintBrush, FaCrown, FaDollarSign } from "react-icons/fa";
 
-export default function CurrencyConverter() {
-  const [rates, setRates] = useState({});
-  const [amount, setAmount] = useState(1);
-  const [from, setFrom] = useState("USD");
-  const [to, setTo] = useState("PKR");
-  const [convertedAmount, setConvertedAmount] = useState(null);
-  const [countries, setCountries] = useState([]);
-
-  // Fetch exchange rates when the 'from' currency changes
-  useEffect(() => {
-    fetchExchangeRates(from).then((data) => {
-      if (data) setRates(data);
-    });
-
-    // Fetch countries for flag selection
-    fetch("https://restcountries.com/v3.1/all")
-      .then((res) => res.json())
-      .then((data) => {
-        setCountries(data)
-        console.log(data?.map(),"_________________Datataaa")
-      });
-  }, [from]);
-
-  // Handle conversion logic
-  const handleConvert = () => {
-    if (rates[to]) {
-      setConvertedAmount(amount * rates[to]);
-    }
-  };
+function Page() {
+  const features = [
+    {
+      title: "Award Winning Service",
+      description: "We provide top-notch service with excellence and quality.",
+      icon: <FaTrophy className="w-6 h-6 text-white" />,
+      bgColor: "from-green-400 to-green-600",
+      glow: "shadow-green-400",
+    },
+    {
+      title: "Amazing Designs",
+      description: "Creative and modern designs tailored to your needs.",
+      icon: <FaPaintBrush className="w-6 h-6 text-white" />,
+      bgColor: "from-orange-400 to-orange-600",
+      glow: "shadow-orange-400",
+    },
+    {
+      title: "Full Satisfaction",
+      description: "100% customer satisfaction with quality assurance.",
+      icon: <FaCrown className="w-6 h-6 text-white" />,
+      bgColor: "from-purple-400 to-purple-600",
+      glow: "shadow-purple-400",
+    },
+    {
+      title: "Lowest Prices",
+      description: "Best competitive prices with top-notch services.",
+      icon: <FaDollarSign className="w-6 h-6 text-white" />,
+      bgColor: "from-blue-400 to-blue-600",
+      glow: "shadow-blue-400",
+    },
+  ];
 
   return (
-    <div className="p-5 max-w-lg mx-auto mt-24 bg-white rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold mb-3">Currency Converter</h2>
-
-      <div className="mb-3">
-        {/* From Currency Dropdown */}
-        <label className="block text-sm font-medium text-gray-700">From Currency</label>
-        <select
-          value={from}
-          onChange={(e) => setFrom(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          {countries.map((country) => (
-            <option key={country.cca3} value={country.currencies ? Object.keys(country.currencies)[0] : "USD"}>
-            {country?.flags.png} ({country.currencies ? Object.keys(country.currencies)[0] : "USD"})
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="mb-3 flex-col gap-4">
-        {/* To Currency Dropdown */}
-        <label className="block text-sm font-medium text-gray-700">To Currency</label>
-        <div className="flex flex-col">
-        {countries.map((country) => (
-          <>
-        <select
-          value={to}
-          onChange={(e) => setTo(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          
+    <section className="relative flex justify-center  py-10 mt-24 px-6 lg:px-12 bg-gray-900 text-white">
+      {/* Container */}
+      <div className="relative  mx-auto grid lg:grid-cols-2 gap-12 items-center">
         
-            <option key={country.cca3} value={country.currencies ? Object.keys(country.currencies)[0] : "USD"}>
-              {country.name.common} ({country.currencies ? Object.keys(country.currencies)[0] : "USD"})
-            </option>
+        {/* Left Side (Text) */}
+        <div>
+          <h2 className="text-4xl text-[120px] leading-tight font-extrabold ">
+            Why Choose Us?
+          </h2>
+          <p className="text-gray-300 mt-4 text-[30px]">
+            We provide exceptional services with high quality, innovation, and guaranteed satisfaction.
+          </p>
+        </div>
 
-        </select>
-            <img src={country?.flags.png}/>
-            </>
-
-      ))}
+        {/* Right Side (Features) */}
+        <div className="grid gap-5 sm:gap-6">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-6 p-3 sm:p-5 rounded-lg shadow-xl transition-all duration-300 border border-white/20 backdrop-blur-md bg-white/10 hover:scale-105 hover:bg-white/20"
+            >
+              {/* Speech Bubble Icon */}
+              <div className="relative w-20 h-20 flex items-center justify-center rounded-full border-4  shadow-lg border-gray-300 after:content-[''] after:absolute after:top-1/2 after:right-0 after:w-4 after:h-4 after:bg-white after:border-t-4 after:border-r-4 after:border-gray-300 after:rotate-45 after:translate-x-2 after:-translate-y-1/2">
+              {feature.icon}
             </div>
 
-
-
+              {/* Text Content */}
+              <div>
+                <h3 className="text-lg font-bold">{feature.title}</h3>
+                <p className="text-sm text-gray-300">{feature.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-
-      <div className="mb-3">
-        {/* Amount Input */}
-        <label className="block text-sm font-medium text-gray-700">Amount</label>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
-      {/* Convert Button */}
-      <button
-        onClick={handleConvert}
-        className="mt-3 p-2 bg-blue-500 text-white rounded"
-      >
-        Convert
-      </button>
-
-      {/* Conversion Result */}
-      {convertedAmount !== null && (
-        <p className="mt-3 text-lg font-semibold">
-          {amount} {from} = {convertedAmount.toFixed(2)} {to}
-        </p>
-      )}
-    </div>
+    </section>
   );
 }
+
+export default Page;
+
+

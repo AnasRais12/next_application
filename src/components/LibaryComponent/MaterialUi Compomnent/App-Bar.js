@@ -12,17 +12,12 @@ import { fetchExchangeRates } from '@/helper/CurrenyConver';
 
 export default function Navbar() {
   const router = useRouter();
-  const { user } = GlobalDetails();
+  const { user,setRates,setFrom,from,symbol,setSymbol} = GlobalDetails();
   const cartItem = getCart();
   const wishListState = getWishList();
   const [searchBar, setSearchBar] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [wishlistModal, setWishlistModal] = useState(false);
-    const [rates, setRates] = useState({});
-    const [amount, setAmount] = useState(1);
-    const [from, setFrom] = useState("USD");
-    const [to, setTo] = useState("PKR");
-    const [convertedAmount, setConvertedAmount] = useState(null);
     const [countries, setCountries] = useState([]);
   
     // Fetch exchange rates when the 'from' currency changes
@@ -37,20 +32,16 @@ export default function Navbar() {
         .then((data) => {
           setCountries(data)
         });
+
     }, [from]);
   
-    // Handle conversion logic
-    const handleConvert = () => {
-      if (rates[to]) {
-        console.log(rates,"___>>>")
-        setConvertedAmount(amount * rates[to]);
-      }
-    }
 
     
 
   const [showModal, setShowModal] = useState(false);
   const DropdownMenu = user ? ['Dashboard', 'Settings', 'Orders','Currency '] : ['Login'];
+
+  console.log("From Is Here!",from)
   console.log('cartState', cartItem);
   console.log('wishListState', wishListState);
 
@@ -94,7 +85,7 @@ export default function Navbar() {
               <FiSearch className="sm:text-[30px] text-[27px] text-gray-700 hover:text-orange-600" />
             </button>
 
-            <div className="relative  ">
+            <div className=" ">
         <div 
           className="mt-1 flex items-center justify-between  py-1 bg-white  rounded-md shadow-sm cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
@@ -107,7 +98,7 @@ export default function Navbar() {
 
         {/* Dropdown List */}
         {isOpen && (
-    <div className="absolute z-10 w-full bg-white rounded-md shadow-lg max-h-40 overflow-y-auto">
+    <div className="absolute right-28 z-10 w-[30%] top-full bg-white rounded-md shadow-lg max-h-40 overflow-y-auto">
       {countries.map((country) => {
         const currencyCode = country.currencies
           ? Object.keys(country.currencies)[0]
@@ -117,7 +108,9 @@ export default function Navbar() {
             key={country.cca3}
             className="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
             onClick={() => {
-              setFrom(currencyCode); // Yahan selected currency update ho rahi hai
+              setFrom(currencyCode); 
+              const currencySymbol = country.currencies?.[currencyCode]?.symbol || "$"; // Agar symbol na mile toh default '$' use karein
+              setSymbol(currencySymbol)
               setIsOpen(false);
             }}
           >
@@ -201,9 +194,7 @@ export default function Navbar() {
               ) : null}
             </button>
 
-            <button onClick={handleConvert} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-    Convert {amount}
-  </button>
+  
           </div>
         </div>
         {searchBar ? (
@@ -252,24 +243,7 @@ export default function Navbar() {
         ) : null}
         {wishlistModal && (
           <Wishlist setWishlistModal={setWishlistModal} />
-          // <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setWishlistModal(false)}>
-          //   <motion.div
-          //     initial={{ x: "100%" }}
-          //     animate={{ x: 0 }}
-          //     exit={{ x: "100%" }}
-          //     transition={{ type: "spring", stiffness: 100, damping: 20 }}
-          //     className="fixed top-0 right-0 sm:w-80 w-full h-full bg-white shadow-lg sm:p-6"
-          //     onClick={(e) => e.stopPropagation()} // Stop click from closing modal when clicking inside
-          //   >
-          //     <div className="flex justify-between items-center mb-4">
-          //       <h2 className="text-lg font-bold">Your Wishlist</h2>
-          //       <button onClick={() => setWishlistModal(false)}>
-          //         <RxCross2 size={24} className="text-gray-700 hover:text-red-600" />
-          //       </button>
-          //     </div>
-          //     <p>Wishlist items yahan dikhayenge...</p>
-          //   </motion.div>
-          // </div>
+       
         )}
       </div>
     </nav>

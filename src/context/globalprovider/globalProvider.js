@@ -1,11 +1,13 @@
 'use client';
 import React, { useContext, createContext, useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [settingModal, setSettingModal] = useState(false);
   const [deliveryCharges, setDeliveryCharges] = useState(0);
+      const [rates, setRates] = useState({});  // Exchange rates store karne ke liye
+      const [from, setFrom] = useState("USD"); // Default currency USD
+      const [symbol, setSymbol] = useState(); // Default currency USD
   const [distance, setDistance] = useState(0);
   const [authField, setAuthfield] = useState({ username: '', email: '' });  // jab user login ke bad verified page pe jaata hai to usko dikhane ke liyay 
   useEffect(() => {
@@ -29,7 +31,13 @@ export const GlobalProvider = ({ children }) => {
           setDeliveryCharges,
           deliveryCharges,
           setDistance,
-          distance
+          distance,
+          rates,
+          setFrom,
+          from,
+          setSymbol,
+          symbol,
+          setRates
         }}
       >
         {children},

@@ -8,8 +8,6 @@ import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar'
 import './globals.css';
 import { GlobalProvider } from '@/context/globalprovider/globalProvider';
 import { usePathname } from 'next/navigation';
-import { useFetchWishlist } from '@/customHooks/useFetchWishList';
-import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

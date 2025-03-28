@@ -21,6 +21,8 @@ import {
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import CSpinner from '@/components/CSpinner';
 import OrderSummary from './OrderSummary';
+import { ConvertPrice } from '@/helper/CurrenyConver';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 function Shopping_Cart({ deliveryCharges }) {
   const [RemoveCart, setRemoveCart] = useState(false);
   const session = useSession();
@@ -30,7 +32,7 @@ function Shopping_Cart({ deliveryCharges }) {
   const [subTotal, setSubTotal] = useState(0);
   const cart = getCart();
   const Total = subTotal + deliveryCharges;
-
+ const {rates,from,symbol} = GlobalDetails()
   useEffect(() => {
     setSubTotal(calculateTotalproduct_price(cart));
   }, [cart]);
@@ -96,7 +98,8 @@ function Shopping_Cart({ deliveryCharges }) {
                           </div>
                           <div className="text-end md:order-4 md:w-32">
                             <p className="text-[18px] font-bold text-gray-900 dark:text-white">
-                              ${item?.product_price || 0}
+                              {/* ${item?.product_price || 0} */}
+                                 <p> {symbol}: {ConvertPrice(item?.product_price,rates,from)}    </p>
                             </p>
                           </div>
                         </div>
@@ -207,7 +210,8 @@ function Shopping_Cart({ deliveryCharges }) {
                           SubTotal
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-white">
-                          {subTotal.toFixed(2)}
+                          {/* {subTotal.toFixed(2)} */}
+                          <p> {symbol}: {ConvertPrice(subTotal,rates,from)}    </p>
                         </dd>
                       </dl>
 
@@ -216,7 +220,8 @@ function Shopping_Cart({ deliveryCharges }) {
                           Shipping
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-white">
-                          {deliveryCharges.toFixed(2) || 100}
+                          {/* {deliveryCharges.toFixed(2) || 100} */}
+                          <p> {symbol}: {ConvertPrice(deliveryCharges,rates,from)}    </p>
                         </dd>
                       </dl>
                     </div>
@@ -226,7 +231,8 @@ function Shopping_Cart({ deliveryCharges }) {
                         Total
                       </dt>
                       <dd className="text-base font-bold text-gray-900 dark:text-white">
-                        {Total.toFixed(2)}
+                        {/* {Total.toFixed(2)} */}
+                        {symbol}: {ConvertPrice(Total,rates,from)}
                       </dd>
                     </dl>
                   </div>

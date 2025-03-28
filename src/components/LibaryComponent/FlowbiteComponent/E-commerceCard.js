@@ -8,14 +8,18 @@ import { addtoWishList } from '@/app/store/features/wishList/WishList';
 import { getWishList } from '@/utils/reduxGlobalStates/ReduxStates';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { ConvertPrice } from '@/helper/CurrenyConver';
 import { FaHeart } from 'react-icons/fa';
 import { FiShoppingCart, FiUser, FiSearch, FiHeart } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 
 function E_commerceCard() {
   const session = useSession();
   const dispatch = useDispatch();
+  
+  const { rates,from,symbol,setSymbol} = GlobalDetails();
   const [productLoading, setProductLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState({}); // Individual loading state
   const wishlistItems = getWishList();
@@ -134,8 +138,9 @@ function E_commerceCard() {
                 </div>
 
                 <div className="flex px-4 mt-3 gap-3 items-center justify-between">
-                  <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                    ${items.product_price}
+                  <span className="text-[20px] font-bold text-gray-900 dark:text-white">
+                {/* {items.product_price} */}
+                    <p> {symbol}: {ConvertPrice(items.product_price,rates,from)}    </p>
                   </span>
                   <button
                     onClick={() => handleShopNow(items.product_id)}

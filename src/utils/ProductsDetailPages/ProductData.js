@@ -6,7 +6,7 @@ export const CardsData = {
       product_id: 1,
       product_image: 'images/big-shoe1.png',
       product_name: 'Apple Watch',
-      product_price: 599,
+      product_price: 1,
       desc: 'Stay connected and track your fitness with the Apple Watch Series 7, featuring a sleek Aluminium case and GPS functionality.',
     },
     {

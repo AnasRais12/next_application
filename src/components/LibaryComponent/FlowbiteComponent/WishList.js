@@ -14,11 +14,16 @@ import { useDispatch } from 'react-redux';
 import { FiShoppingCart } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
 import { useEffect, useState } from 'react';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
+import { ConvertPrice } from '@/helper/CurrenyConver';
 export default function Wishlist({ setWishlistModal }) {
+
+  
   const wishlistItems = getWishList();
   const session = useSession();
   const [loadingItems, setLoadingItems] = useState({});
   const [crossButtonLoading, setCrossButtonLoading] = useState({});
+  const {rates,from,symbol} = GlobalDetails()
 
   const dispatch = useDispatch();
 
@@ -145,7 +150,7 @@ export default function Wishlist({ setWishlistModal }) {
                       {item.product_name}
                     </h3>
                     <p className="text-gray-600 text-md">
-                      ${item?.product_price}
+                       <p> {symbol}: {ConvertPrice(item.product_price,rates,from)}    </p>
                     </p>
                   </div>
                 </div>
