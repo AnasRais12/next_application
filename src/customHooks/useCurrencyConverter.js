@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchExchangeRates } from "@/helper/CurrenyConver";
+import UserQuery from "@/DbQuery/UserDetailQuery";
 
 export default function useCurrencyConverter() {
-  const [from, setFrom] = useState("PKR");
+  const [from, setFrom] = useState('PKR');
   const [rates, setRates] = useState({});
   const [countries, setCountries] = useState([]);
 

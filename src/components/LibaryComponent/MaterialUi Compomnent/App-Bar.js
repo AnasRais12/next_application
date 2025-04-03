@@ -7,12 +7,14 @@ import { getCart, getWishList } from '@/utils/reduxGlobalStates/ReduxStates';
 import { RxCross2 } from 'react-icons/rx';
 import { motion } from 'framer-motion';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
+import UserQuery from '@/DbQuery/UserDetailQuery';
 import { addtoWishList } from '@/app/store/features/wishList/WishList';
 import { fetchExchangeRates } from '@/helper/CurrenyConver';
 
 export default function Navbar() {
   const router = useRouter();
   const { user,setRates,setFrom,from,symbol,setSymbol} = GlobalDetails();
+  const {userDetails} = UserQuery()
   const cartItem = getCart();
   const wishListState = getWishList();
   const [searchBar, setSearchBar] = useState(false);
@@ -22,19 +24,52 @@ export default function Navbar() {
   
     // Fetch exchange rates when the 'from' currency changes
     useEffect(() => {
-      fetchExchangeRates(from).then((data) => {
-        if (data) setRates(data);
-      });
-  
-      // Fetch countries for flag selection
+      // ممالک کی معلومات حاصل کریں
       fetch("https://restcountries.com/v3.1/all")
         .then((res) => res.json())
         .then((data) => {
-          setCountries(data)
+          setCountries(data);
+    
+          // صارف کی کرنسی کا کوڈ حاصل کریں
+          const userCurrencyCode = userDetails?.currency_code;
+    
+          // متعلقہ کرنسی کا نشان تلاش کریں
+          const countryWithCurrency = data.find((country) =>
+            country.currencies?.[userCurrencyCode]
+          );
+    
+          if (countryWithCurrency) {
+            const currencySymbol = countryWithCurrency.currencies[userCurrencyCode].symbol;
+            setSymbol(currencySymbol);
+          }
         });
+    }, [from, userDetails]);
+    
 
-    }, [from]);
+    useEffect(() => {
+      const getExchangeRates = async () => {
+        const data = await fetchExchangeRates(from);
+        if (data) {
+          setRates(data);
+        } else {
+          console.log('No data found');
+        }
+      };
   
+      getExchangeRates();
+  
+      fetch('https://restcountries.com/v3.1/all')
+        .then((res) => res.json())
+        .then((data) => setCountries(data))
+        .catch((error) => console.error('Error fetching countries:', error));
+    }, [from, setRates]);
+  
+    useEffect(() => {
+      if (userDetails?.currency_code) {
+        setFrom(userDetails?.currency_code);  // Default 'USD' set kar rahe hain agar currency_code nahi ho
+      }
+    }, [userDetails, from]);
+    
 
     
 
@@ -45,6 +80,10 @@ export default function Navbar() {
   console.log('cartState', cartItem);
   console.log('wishListState', wishListState);
 
+  console.log(userDetails?.currency_code,"Hello!")
+  console.log("Hello!",from)
+
+
   return (
     <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-[9999]">
       <div className=" px-4 sm:px-6 md:px-6 lg:px-8">
@@ -52,8 +91,8 @@ export default function Navbar() {
           {/* Logo */}
            <div className="flex-shrink-0">
             <img
-              className="h-8 w-auto transform hover:scale-105 transition-transform duration-200"
-              src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=150&h=40"
+              className="size-14 w-auto transform hover:scale-105 transition-transform duration-200"
+              src="/images/logo.jpg"
               alt="Company Logo"
             />
           </div>
@@ -100,16 +139,17 @@ export default function Navbar() {
         {isOpen && (
     <div className="absolute right-28 z-10 w-[30%] top-full bg-white rounded-md shadow-lg max-h-40 overflow-y-auto">
       {countries.map((country) => {
-        const currencyCode = country.currencies
+        const currencyCode =  country.currencies
           ? Object.keys(country.currencies)[0]
           : "USD";
+          console.log("Hit Me",currencyCode)
         return (
           <div
             key={country.cca3}
             className="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
             onClick={() => {
               setFrom(currencyCode); 
-              const currencySymbol = country.currencies?.[currencyCode]?.symbol || "$"; // Agar symbol na mile toh default '$' use karein
+              const currencySymbol = country.currencies ?.[currencyCode]?.symbol || "$"; // Agar symbol na mile toh default '$' use karein
               setSymbol(currencySymbol)
               setIsOpen(false);
             }}

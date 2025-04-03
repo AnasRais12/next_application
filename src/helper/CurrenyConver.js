@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const ExchangeFrom= "USD"
-// Exchange rates fetch karne ka function
 export const fetchExchangeRates = async (baseCurrency) => {
-  console.log("Fetching Exchange Rates for:", baseCurrency);
+  console.log("Fetching Exchange Rates for::::::::::::::", baseCurrency);
   try {
     const res = await axios.get(`https://api.exchangerate-api.com/v4/latest/${baseCurrency}`);
     return res.data.rates; // Exchange rates return karega
@@ -25,15 +24,12 @@ export const ConvertPrice = (price, rates,to,) => {
     return price; // Default to original price if rates are invalid
   }
 
-  if (!rates[ExchangeFrom]) {
-    console.error(`Base currency (${ExchangeFrom}) rate not found.`);
-    return price;
-  }
+  // if (!rates[ExchangeFrom]) {
+  //   console.error(`Base currency (${ExchangeFrom}) rate not found.`);
+  //   return price;
+  // }
 
-  if (!rates[to]) {
-    console.warn(`Exchange rate for ${to} not found.`);
-    return price;
-  }
+ 
 
   // Conversion Formula: (price / fromRate) * toRate
   const convertedPrice = (price / rates[ExchangeFrom]) * rates[to];

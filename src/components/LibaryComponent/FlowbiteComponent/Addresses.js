@@ -23,7 +23,7 @@ const schema = yup.object().shape({
     .required('Phone number is required'),
   country: yup.string().required('Country is required'),
   city: yup.string().required('City is required'),
-  area: yup.string().required('Area is required'),
+  area: yup.string(),
   address: yup.string().required('Address is required'),
   zip_code: yup
     .string()
@@ -165,7 +165,7 @@ const AddressForm = () => {
       setLoading(false);
     }
   };
-
+console.log("selectedCountryData!!",selectedCountryData)
   if (isReloading || countryLoading) {
     return <CustomSpinner />;
   }
