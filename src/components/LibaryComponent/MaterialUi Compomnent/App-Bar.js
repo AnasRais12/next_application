@@ -10,6 +10,7 @@ import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import { addtoWishList } from '@/app/store/features/wishList/WishList';
 import { fetchExchangeRates } from '@/helper/CurrenyConver';
+import Link from 'next/link';
 
 export default function Navbar() {
   const router = useRouter();
@@ -69,19 +70,9 @@ export default function Navbar() {
         setFrom(userDetails?.currency_code);  // Default 'USD' set kar rahe hain agar currency_code nahi ho
       }
     }, [userDetails, from]);
-    
-
-    
 
   const [showModal, setShowModal] = useState(false);
-  const DropdownMenu = user ? ['Dashboard', 'Settings', 'Orders','Currency '] : ['Login'];
-
-  console.log("From Is Here!",from)
-  console.log('cartState', cartItem);
-  console.log('wishListState', wishListState);
-
-  console.log(userDetails?.currency_code,"Hello!")
-  console.log("Hello!",from)
+  const DropdownMenu = user ? ['home', 'settings', ] : ['login'];
 
 
   return (
@@ -193,17 +184,14 @@ export default function Navbar() {
                       return (
                         <li
                           key={index}
-                          className={`px-4 text-[13px] md:text-[16px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer ${
-                            item === 'Become A buyer'
-                              ? 'bg-[green] text-white hover:bg-[#4dd14d]'
-                              : 'text-black'
-                          }`}
-                          onClick={() =>
-                            // router.push(`/signup?role=${role}`)
-                            router.push(`/login`)
-                          }
-                        >
-                          {item}
+                          className={`px-4 text-[13px] capitalize md:text-[16px] whitespace-nowrap py-2 hover:bg-gray-100 cursor-pointer 
+                         `}
+                       onClick={async () => {
+    await router.push(`/${item}`);  // Router push ko await karte hain
+    setShowModal(false);  // Modal ko false karte hain
+  }}
+>
+  {item}
                         </li>
                       );
                     })}
@@ -222,8 +210,8 @@ export default function Navbar() {
               ) : null}
             </button>
             {/* Shopping Cart */}
-            <button
-              onClick={() => router.push('/shoppingcart')}
+            <Link
+             href="/shoppingcart"
               className="relative"
             >
               <FiShoppingCart className="sm:text-[30px] text-[25px] text-gray-700 hover:text-orange-600" />
@@ -232,7 +220,7 @@ export default function Navbar() {
                   {cartItem?.length}
                 </span>
               ) : null}
-            </button>
+            </Link>
 
   
           </div>

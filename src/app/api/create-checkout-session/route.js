@@ -8,26 +8,38 @@ const stripe = new Stripe(
 export async function POST(request) {
   try {
     // Extract Data from Request
-    const { products, currency, userEmail, orderId } = await request.json();
+    const { products, currency, userEmail, orderId,deliveryCharges } = await request.json();
 
     // Create Stripe Checkout Session
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
-      line_items: products.map((item) => ({
-        price_data: {
-          currency,
-          product_data: { name: item.product_name },
-          unit_amount: item?.amount * 100,
+      line_items: [
+        ...products.map((item) => ({
+          price_data: {
+            currency,
+            product_data: { name: item.product_name },
+            unit_amount: item.amount * 100,
+          },
+          quantity: item.quantity || 1,
+        })),
+        {
+          price_data: {
+            currency,
+            product_data: { name: "Delivery Charges" },
+            unit_amount: deliveryCharges * 100, 
+          },
+          quantity: 1,  // Yeh quantity rakhein, lekin custom metadata add karen
+       
+         
         },
-        quantity: item.quantity || 1,
-      })),
+      ],
       customer_email: userEmail,
 
       success_url: `https://next-application-pi.vercel.app/home`,
       cancel_url: `https://next-application-pi.vercel.app/checkout`,
-      metadata: { orderId: orderId },
+      metadata: { orderId: orderId  },
     });
 
     // Return JSON response using NextResponse

@@ -11,7 +11,6 @@ import { addToCart,} from '@/app/store/features/CartReducer/CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 const ProductCard = (props) => {
   const { data } = props;
-  console.log(data, 'ye raha mera product');
   const [quantity, setQuantity] = useState(props.product?.quantity || 1);
   const session = useSession();
   const [loading, setloading] = useState(false);

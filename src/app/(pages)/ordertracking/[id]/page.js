@@ -7,6 +7,7 @@ import CustomSpinner from '@/components/Spinner';
 import { supabase } from '@/lib/supabase';
 import Map from '@/components/Map';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 function page() {
   const params = useParams();
   const router = useRouter();
@@ -58,12 +59,11 @@ function page() {
       {trackingId.length == 0 ? (
         <div className="text-center mt-20 text-gray-500 sm:text-xl text-md bg-white py-20 flex-col gap-3  flex justify-center items-center ">
           You haven’t placed an order yet. Shop now and track your orders here!
-          <button
-            onClick={() => router.push('/home')}
+            <Link href="/home"
             className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
           >
             Shop Now
-          </button>
+          </Link>
         </div>
       ) : (
         <>
@@ -71,12 +71,11 @@ function page() {
             <div className="text-center mt-20 text-gray-500 sm:text-xl text-md bg-white py-20 flex-col gap-3 flex justify-center items-center">
               Your order has been successfully delivered. Thank you for shopping
               with us!
-              <button
-                onClick={() => router.push('/settings')}
+                <Link href="/settings"
                 className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
               >
                 View Orders
-              </button>
+                </Link>
             </div>
           ) : (
             <div className="bg-gray-100 min-h-screen mt-20 flex justify-center items-center">

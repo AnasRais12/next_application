@@ -16,6 +16,9 @@ export const signInWithGoogle = async (setgoogleLoading) => {
     setgoogleLoading(true);
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options:{
+        redirectTo: 'https://next-application-pi.vercel.app/home',
+      }
     });
 
     if (error) {

@@ -19,6 +19,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { GoArrowLeft } from 'react-icons/go';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { ConvertPrice } from '@/helper/CurrenyConver';
+import Link from 'next/link';
 
 const OrderSummary = () => {
   const session = useSession();
@@ -26,14 +27,13 @@ const OrderSummary = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const cart = getCart();
-  const { deliveryCharges } = GlobalDetails();
   const [paymentMethod, setPaymentMethod] = useState('Credit Card');
   const [cardLoading, setcardLoading] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
   const [deliveryLoading, setdeliveryLoading] = useState(false);
   const [showingCardLoading, setShowingCardLoading] = useState(false); // ye isliyay banaya taakey jab mai payment karta hu to mujhe emply wali condition nazar aati hai ussey bachne ke liyay
   const [darkMode, setdark] = useState(false);
-  const { rates, from, symbol } = GlobalDetails()
+  const { rates, from, symbol,deliveryCharges } = GlobalDetails()
   // const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   // const tax = subTotal * 0.08;
   const Total = subTotal + deliveryCharges;
@@ -53,12 +53,13 @@ const OrderSummary = () => {
                 <h1 className="text-2xl font-bold mb-6 text-left">
                   Order Summary
                 </h1>
-                <button
-                  onClick={() => router.push('/shoppingcart')}
-                  className="text-[25px] hover:text-[red] hidden sm:block"
-                >
+                 <Link
+                href="/shoppingcart"
+                   className="text-[25px] hover:text-[red] hidden sm:block"
+              >
+              
                   <RxCross2 />
-                </button>
+                </Link>
                 {/* ⬅️ Arrow icon (sm screens par dikhega) */}
                 <button
                   onClick={() => router.push('/shoppingcart')}
@@ -165,7 +166,8 @@ const OrderSummary = () => {
                         setcardLoading,
                         Swal,
                         loadStripe,
-                        setShowingCardLoading
+                        setShowingCardLoading,
+                        deliveryCharges
                       )
                     }
                     disabled={cardLoading}

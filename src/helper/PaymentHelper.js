@@ -2,7 +2,8 @@ export const CreateStripeSession = async (
   cart,
   session,
   loadStripe,
-  orderId
+  orderId,
+  deliveryCharges
 ) => {
   try {
     const res = await fetch('/api/create-checkout-session', {
@@ -17,6 +18,7 @@ export const CreateStripeSession = async (
         currency: 'usd',
         userEmail: session?.user?.email,
         orderId: orderId,
+        deliveryCharges: deliveryCharges, 
       }),
     });
     const data = await res.json();
@@ -42,7 +44,8 @@ export const handleCardPayment = async (
   setcardLoading,
   Swal,
   loadStripe,
-  setShowingCardLoading
+  setShowingCardLoading,
+  deliveryCharges
 ) => {
   try {
     setcardLoading(true);
@@ -110,7 +113,7 @@ export const handleCardPayment = async (
         if (trackingError) {
           console.log('trackingError ERROR', trackingError?.message);
         } else {
-          await CreateStripeSession(cart, session, loadStripe, orderId);
+          await CreateStripeSession(cart, session, loadStripe, orderId, deliveryCharges);
           Swal.fire({
             icon: 'success',
             title: 'Order Confirmed!',

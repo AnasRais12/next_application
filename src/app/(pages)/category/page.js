@@ -3,9 +3,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FaStar, FaSearch, FaTimes } from 'react-icons/fa';
 import { BsToggleOn, BsToggleOff } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
-import { FaFilter, FaHeart } from 'react-icons/fa6';
+import { FaHeart } from 'react-icons/fa6';
+import { RxCross2 } from 'react-icons/rx';
 import useSession from '@/utils/UserExist/GetSession';
 import { useDispatch } from 'react-redux';
+import { LiaSlidersHSolid } from "react-icons/lia";
 import { supabase } from '@/lib/supabase';
 import { addtoWishList } from '@/app/store/features/wishList/WishList';
 import { toast } from 'react-toastify';
@@ -178,20 +180,35 @@ const ProductFilter = () => {
   };
 
   return (
-    <div className=" mx-auto  mt-20 p-4">
-      <div className="flex lg:flex-row flex-col  gap-6">
-        {/* Filter Sectio */}
-
+    <>
+    <div className={`mx-auto  ${isFilterVisible ? 'mt-20' : 'mt-6' }    lg:mt-20  sm:px-4 px-2 py-4`}>
+    {isFilterVisible && (
         <div
-          className={`w-full   lg:w-[25%]   p-4 rounded-lg shadow-lg ${isFilterVisible ? 'lg:block block ' : 'hidden lg:block'}`}
-        >
+          className="fixed lg:hidden inset-0 bg-black opacity-50 z-40"
+          onClick={() => setIsFilterVisible(false)}
+        ></div>
+      )}
+      <div className="flex lg:flex-row  flex-col relative  gap-6">
+        {/* Filter Sectio */}
+       
+       <div
+       className={`lg:w-[25%] p-4 rounded-lg shadow-lg transition-all duration-700 ease-in-out 
+         ${isFilterVisible ? 'opacity-100 h-[85vh] overflow-y-auto translate-x-0 fixed top-[15%] sm:top-[15%] z-[9999] left-0 w-full md:w-[50%]  bg-white bg-opacity-100 '  : 'opacity-0 max-h-0 -translate-x-full'}
+         lg:opacity-100 lg:max-h-fit lg:translate-x-0`}
+     >
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold">Filters</h2>
             <button
               onClick={clearFilters}
-              className="text-sm text-blue-600 hover:text-blue-800"
+              className="text-sm text-blue-600 lg:block hidden hover:text-blue-800"
             >
               Clear All
+            </button>
+            <button
+              onClick={()=> setIsFilterVisible(!isFilterVisible)}
+              className="text-[25px] text-blue-600 lg:hidden block hover:text-blue-800"
+            >
+             <RxCross2/>
             </button>
           </div>
 
@@ -318,12 +335,19 @@ const ProductFilter = () => {
               <span>Show only in stock</span>
             </button>
           </div>
+
+          <button
+              onClick={clearFilters}
+              className="text-sm text-blue-600 lg:hidden block hover:text-blue-800"
+            >
+              Clear All
+            </button>
         </div>
         <button
           onClick={() => setIsFilterVisible(!isFilterVisible)}
-          className="px-4 bg-[red] py-4 lg:hidden block"
+          className="text-[35px]  lg:hidden block"
         >
-          <FaFilter />
+          <LiaSlidersHSolid  />
         </button>
         {/* Product Grid */}
         <div className="w-full md:w-3/4">
@@ -396,6 +420,7 @@ const ProductFilter = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

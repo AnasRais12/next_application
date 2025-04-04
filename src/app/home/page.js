@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import Header from '@/components/LibaryComponent/FlowbiteComponent/Header';
 import E_commerceCard from '@/components/LibaryComponent/FlowbiteComponent/E-commerceCard';
 import useSession from '@/utils/UserExist/GetSession';
@@ -6,6 +7,8 @@ import Categories from '@/components/LibaryComponent/FlowbiteComponent/Categorie
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import CustomSpinner from '@/components/Spinner';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
+import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
 
 function page() {
   const session = useSession();
@@ -13,6 +16,7 @@ function page() {
   useFetchCartlist(session?.user?.id);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
+
   if ((session?.user?.id && wishListLoading) || cartListLoading) {
     return <CustomSpinner />;
   }
