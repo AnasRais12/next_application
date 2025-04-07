@@ -7,6 +7,7 @@ import UserQuery from '@/DbQuery/UserDetailQuery';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { supabase } from '@/lib/supabase';
 import CustomSpinner from '@/components/Spinner';
+import Link from 'next/link';
 
 export default function ConfirmOrder() {
   const { userDetails } = UserQuery();
