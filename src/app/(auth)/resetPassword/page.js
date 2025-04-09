@@ -13,6 +13,7 @@ import { FaArrowLeftLong } from 'react-icons/fa6';
 import CSpinner from '@/components/CSpinner';
 
 import Swal from 'sweetalert2';
+import Link from 'next/link';
 const forgetAccountValidation = yup.object().shape({
   resetpassword: yup
     .string()
@@ -58,51 +59,98 @@ function Forget_Account() {
   };
 
   return (
-    <div className="fixed bg-custom-gradient inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2  relative">
-        {/* Logo */}
-        <div
-          className=" 
-      sm:gap-0 gap-2  sm:flex-row flex justify-between items-start sm:items-center flex-col-reverse "
-        >
-          <h2 className="text-[24px]  font-normal">Change Password</h2>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden border border-gray-200">
+      {/* Header with Gradient Background */}
+ 
+         <div className="bg-gradient-to-r from-blue-600 to-purple-600 sm:p-6 p-3 text-center">
+    
+      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center mx-auto justify-center backdrop-blur-sm">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                strokeWidth="1.5" 
+                stroke="currentColor" 
+                className="w-5 h-5 text-white"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" 
+                />
+              </svg>
+            </div>
+      <h1 className="text-xl font-bold text-white mt-3">Change Password</h1>
+    </div>
+  
+      {/* Form Content */}
+      <div className=" p-3 sm:p-6">
+        <form onSubmit={handleSubmit(handleResetPassword)} className="space-y-5">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              New Password
+            </label>
+            <input
+              {...register('resetpassword')}
+              type="password"
+              placeholder="Enter new password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+            {errors?.resetpassword?.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.resetpassword.message}</p>
+            )}
+          </div>
+  
+          {/* Password Requirements */}
+          <div className="bg-blue-50 p-3 rounded-lg">
+            <p className="text-sm font-medium text-gray-700 mb-2">Password must contain:</p>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li className="flex items-center">
+                <svg className="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                At least 8 characters
+              </li>
+              <li className="flex items-center">
+                <svg className="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round"  strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                One uppercase letter
+              </li>
+              <li className="flex items-center">
+                <svg className="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round"  strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                One number or special character
+              </li>
+            </ul>
+          </div>
+  
           <button
-            className="text-black text-[24px] sm:text-[24px] xl:text-[25px] font-normal"
-            onClick={moveToLogin}
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
           >
-            <RxCross2 className="hidden hover:text-[red] sm:block" />
-            <FaArrowLeftLong className="block sm:hidden" />
+            {loading ? (
+              <CSpinner color="text-white" size="sm" />
+            ) : (
+              'Update Password'
+            )}
           </button>
-        </div>
-
-        {/* Login Form */}
-
-        <div className="">
-          <form onSubmit={handleSubmit(handleResetPassword)} className="mt-3 ">
-            <div className="  flex flex-col gap-2">
-              <input
-                {...register('resetpassword')}
-                type="password"
-                placeholder="Change Password"
-                className="w-full px-4 py-3 sm:py-4 border-2 border-[#ccc] rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors?.resetpassword?.message}</p>
-            </div>
-            <div className="w-full flex justify-center  mt-2    items-center ">
-              <div className="flex flex-col gap-3 w-full">
-                <button
-                  type="submit"
-                  className="w-full px-3 py-2 rounded-[8px] text-[20px] bg-black text-white "
-                >
-                  {' '}
-                  {loading == true ? <CSpinner color={'black'} /> : 'Continue'}
-                </button>
-              </div>
-            </div>
-          </form>
+        </form>
+  
+        {/* Back to Login (Mobile) */}
+        <div className="mt-4 ">
+          <Link href={'/login'}
+            className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
+          >
+            Back to Login
+          </Link >
         </div>
       </div>
     </div>
+  </div>
   );
 }
 

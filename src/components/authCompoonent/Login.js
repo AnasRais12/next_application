@@ -13,6 +13,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
+import { ForgetPassword } from './ForgetPassword';
 
 //scheman//
 const LoginSchema = yup.object().shape({
@@ -39,13 +40,14 @@ function Login({ background, position }) {
   const { setUser } = GlobalDetails();
   const router = useRouter();
   const [credentialLoading, setCredentialLoading] = useState(false);
+  const [forgetPasswordModal, setForgetPasswordModal] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
 
   const moveToRegister = () => {
     router.push('signup');
   };
   const moveToForgetAccount = () => {
-    router.push('/forgetaccount');
+    setForgetPasswordModal(true);
   };
   const handleLoginSumbit = async (data) => {
     const { email, password } = data;
@@ -127,9 +129,9 @@ function Login({ background, position }) {
 
   return (
     <>
- <div className={`$ inset-0 flex items-center z-50 bg-white`}>
+<div className={` inset-0 flex items-center z-50 bg-white`}>
   {/* Image Section (Desktop Only) */}
-  <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+  <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-100 to-purple-200 relative overflow-hidden">
     <div className="absolute inset-0 flex items-center justify-center p-12">
       <div className="text-white text-center">
         <h2 className="text-4xl font-bold mb-4">Welcome Back!</h2>
@@ -139,7 +141,7 @@ function Login({ background, position }) {
         <p>"The best way to predict the future is to create it."</p>
       </div>
     </div>
-    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center opacity-20" />
+    <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_hybrid&w=740')] bg-cover bg-center opacity-100 border-r-2" />
   </div>
 
   {/* Login Form Section */}
@@ -147,8 +149,10 @@ function Login({ background, position }) {
     <div className="max-w-md w-full">
       {/* Logo/Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-          <span className="text-white text-2xl font-bold">E</span>
+      <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
         </div>
         <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
         <p className="text-gray-500 mt-2">Login to continue your journey</p>
@@ -167,6 +171,7 @@ function Login({ background, position }) {
         </div>
 
         <div>
+
           <div className="flex justify-between items-center mb-1">
             <label className="block text-sm font-medium text-gray-700">Password</label>
             <button
@@ -239,108 +244,15 @@ function Login({ background, position }) {
       </div>
     </div>
   </div>
+  {forgetPasswordModal && (
+    <>
+     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40" />
+     <ForgetPassword setForgetPasswordModal={setForgetPasswordModal}/>
+    </>
+  )}
 </div>
     </>
   );
 }
 
 export default Login;
-
-{
-  /* <div className="static h-screen flex   items-center sm:items-center  justify-center w-full z-50  bg-opacity-50">
-        <div className=" w-full h-full sm:max-h-fit relative sm:w-[70vw]  md:w-[60vw] lg:w-[60vw] xl:w-[50vw] py-5 rounded-md shadow-2xl ">
-          <div className="sm:pt-10 pt-0 px-6 sm:px-10">
-            <div
-              className=" 
-            sm:gap-0 gap-2  sm:flex-row flex justify-between items-start sm:items-center flex-col-reverse "
-            >
-              <h2 className="text-[24px] sm:text-[30px] xl:text-[36px] font-normal">
-                Login
-              </h2>
-            </div>
-            <p className="text-gray-600 mt-4 sm:mt-8 text-[16px] lg:text-[18px]  xl:text-[20px]">
-              We will send you a code by SMS
-            </p>
-          </div>
-          <form onSubmit={handleSubmit(handleLoginSumbit)} className="sm:mt-8 mt-4 px-1">
-            <div className="px-6 sm:px-10 flex flex-col gap-10">
-              <input
-                {...register('username')}
-                type="text"
-                placeholder="Enter Your Username"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-unique"
-              />
-              <p>{errors?.username?.message}</p>
-              <input
-                {...register('password')}
-                type="password"
-                placeholder="Enter Your Password"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-unique"
-              />
-              <p>{errors?.password?.message}</p>
-            </div>
-            <div className="w-full flex justify-center  mt-8    items-center py-2 border-t-2">
-              <div className="flex flex-col gap-6 w-[90%]">
-
-                <button
-                  type="submit"
-                  disabled={credentialLoading}
-                  className="w-full px-3 py-2 rounded-[8px] text-[20px] bg-green-900 text-white my-[10px]"
-                >
-                  {' '}
-                  {credentialLoading ? (
-                    <CSpinner />
-                  ) : (
-                    "Login In")}
-                </button>
-                <button onClick={handleGoogleLogin}
-                  disabled={googleLoading}
-                  type="button"
-                  className="w-full px-3 py-2 flex items-center gap-4 justify-center rounded-[8px] text-[20px] text-black bg-gray-200 x my-[10px]"
-                >
-                  {googleLoading ? (
-                    <CSpinner color="text-black"  size="sm"  />
-                  ) : (
-                    <FcGoogle size={25} style={{ marginRight: "10px" }} />
-                  )}
-                  {googleLoading ? "" : "Sign In with Google"}
-                </button>
-
-                <button onClick={handleGithubLogin}
-                  disabled={githubLoading}
-                  type="button"
-                  className="w-full px-3 py-2 flex items-center gap-4 justify-center rounded-[8px] text-[20px] bg-black text-white my-[10px]"
-                >
-                  {githubLoading ? (
-                    <CSpinner size="sm" style={{ marginRight: "10px" }} />  // Agar loading hai toh spinner dikhaiye
-                  ) : (
-                    <ImGithub size={25} style={{ marginRight: "10px" }} />  // Agar loading nahi hai toh GitHub icon dikhaiye
-                  )}
-                  {githubLoading ? "" : "Sign In with GitHub"} {/* Button text */
-}
-//         </button>
-
-//       </div>
-//     </div>
-//   </form>
-
-//   <div className="w-full justify-center flex">
-//     <div className="flex w-[80%] justify-between  items-center">
-//       <button
-//         onClick={moveToRegister}
-//         className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
-//       >
-//         {' '}
-//         Did'nt Have an Account
-//       </button>
-//       <button
-//         onClick={moveToForgetAccount}
-//         className="w-[40%] py-2 rounded-[8px]  px-10 text-[20px] bg-green-900 text-white my-[10px]"
-//       >
-//         {' '}
-//         Forgetten Account?
-//       </button>
-//     </div>
-//   </div>
-// </div>
-// </div> */}

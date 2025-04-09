@@ -17,50 +17,92 @@ function page() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-custom-gradient ">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-[90%] sm:w-96 text-center">
-        <div className="flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mx-auto mb-4">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="w-full max-w-lg bg-white rounded-2xl overflow-hidden shadow-2xl mx-4">
+      {/* Header with Gradient Background */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-500 p-6 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-8 h-8 text-purple-600"
+            className="w-8 h-8 text-white"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M21.75 12.75v4.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25v-4.5m19.5 0V9.75m0 3l-9-6.75m9 6.75L12 19.5m9-9.75L12 4.5m0 15L2.25 12.75M12 19.5l9-6.75M12 4.5L3 11.25m0 3.75v4.5a2.25 2.25 0 002.25 2.25h15a2.25 2.25 0 002.25-2.25v-4.5"
+              d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.981l7.5-4.039a2.25 2.25 0 012.134 0l7.5 4.039a2.25 2.25 0 011.183 1.98V19.5z"
             />
           </svg>
         </div>
-
-        <h1 className="text-2xl font-semibold mb-2">
-          Verify your email address
-        </h1>
-        <p className="text-1xl font-semibold text-gray-600 mb-2">
-          {' '}
-          Hello <span className="text-black">{userInfo?.username}</span>.
-        </p>
-        <p className="text-gray-600 mb-6">
-          We have sent a verification link to{' '}
-          <strong className="text-black">{userInfo?.email}</strong>.
-          <br />
-          Click on the link to complete the verification process.
-          <br />
-          You might need to check your spam folder.
-        </p>
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => router.push('/login')}
-            className="bg-purple-600 w-full text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700"
-          >
-            Sign In
-          </button>
+        <h1 className="text-2xl font-bold text-white mt-4">Verify Your Email</h1>
+      </div>
+  
+      {/* Content Area */}
+      <div className="p-8">
+        <div className="text-center mb-6">
+          <p className="text-lg text-gray-600 mb-4">
+            Hello <span className="font-semibold text-gray-800">{userInfo?.username}</span>,
+            we've sent a verification link to:
+          </p>
+          <p className="text-lg font-medium text-purple-600 bg-purple-50 rounded-lg py-2 px-4 inline-block">
+            {userInfo?.email}
+          </p>
+        </div>
+  
+        {/* Visual Email Graphic */}
+        <div className="relative mb-8">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-blue-100 opacity-30"></div>
+          </div>
+          <div className="relative flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-16 h-16 text-purple-600"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+              />
+            </svg>
+          </div>
+        </div>
+  
+        <div className="space-y-4 text-center">
+          <p className="text-gray-600">
+            Click the link in the email to verify your account.
+            <br />
+            Haven't received it? Check your spam folder.
+          </p>
+  
+          <div className="pt-4 space-y-3">
+            <button
+              onClick={() => router.push('/login')}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
+            >
+              Back to Sign In
+            </button>
+  
+            {/* <button
+              // onClick={handleResendEmail}
+              className="text-sm text-purple-600 hover:text-purple-800 font-medium underline underline-offset-2 transition-colors"
+            >
+              Resend Verification Email
+            </button> */}
+          </div>
         </div>
       </div>
+  
+    
     </div>
+  </div>
   );
 }
 
