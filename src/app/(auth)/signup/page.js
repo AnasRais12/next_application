@@ -39,7 +39,7 @@ function Register() {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
   const router = useRouter();
-  const [roleFromParams, setRoleFromParams] = useState('buyer'); // ✅ Fix by using state
+  const [roleFromParams, setRoleFromParams] = useState('buyer');
   const { setAuthfield } = GlobalDetails();
   const [loading, setLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
@@ -132,74 +132,87 @@ function Register() {
 
   return (
     <Suspense>
-      <div className="fixed inset-0 bg-custom-gradient flex items-center justify-center z-50">
-        <div className="bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2 relative">
-          <div className="flex flex-col items-center">
-            <h2 className="text-2xl font-bold mt-2">Welcome Back</h2>
-            <p className="text-gray-500 text-sm">Sign Up to your account</p>
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center z-50">
+        <div className="bg-white p-8 rounded-xl  shadow-xl sm:w-[70%] lg:w-[50%] xl:w-[30%] w-full sm:mx-0 mx-4 relative border border-gray-100">
+          <div className="flex flex-col items-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
+            <p className="text-gray-500 mt-2">Join our community today</p>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-2">
             <form
-              className="flex-col gap-1 flex"
+              className="flex-col gap-4 flex"
               onSubmit={handleSubmit(OnSubmitHandler)}
             >
-              <input
-                {...register('username')}
-                type="text"
-                required
-                name="username"
-                placeholder="Enter Your Username"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors.username?.message}</p>
+              <div>
+                <input
+                  {...register('username')}
+                  type="text"
+                  required
+                  name="username"
+                  placeholder="Username"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                {errors.username && (
+                  <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+                )}
+              </div>
 
-              <input
-                {...register('email')}
-                required
-                type="email"
-                name="email"
-                placeholder="Enter Your Email"
-                className="w-full px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors.email?.message}</p>
+              <div>
+                <input
+                  {...register('email')}
+                  required
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                )}
+              </div>
 
-              <input
-                {...register('password')}
-                type="password"
-                placeholder="Enter Your Password"
-                className="w-full px-4 py-3 sm:py-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <p>{errors.password?.message}</p>
+              <div>
+                <input
+                  {...register('password')}
+                  type="password"
+                  placeholder="Password"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                )}
+              </div>
 
               <button
                 type="submit"
-                className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg mt-2 hover:opacity-90 transition-all shadow-md"
               >
-                {loading ? <CSpinner /> : 'Create Account'}
+                {loading ? <CSpinner /> : 'Sign Up'}
               </button>
-              <div className="mt-4 text-center">
-                <p className="text-black text-md">Or Login with</p>
-                <div className="flex flex-col items-center justify-center gap-4 mt-2">
-                  <button
-                    onClick={() => signInWithGoogle(setgoogleLoading)}
-                    disabled={googleLoading}
-                    type="button"
-                    className="w-full px-3 py-2 flex items-center gap-2 justify-center rounded-[8px] text-[16px] text-black bg-gray-200 x my-[10px]"
-                  >
-                    {googleLoading ? (
-                      <CSpinner color="text-black" size="sm" />
-                    ) : (
-                      <FcGoogle size={20} style={{ marginRight: '2px' }} />
-                    )}
-                    {googleLoading ? '' : 'Sign In with Google'}
-                  </button>
-                  {/* <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
-                              <BsFacebook size={20} className="text-blue-500" />
-                              Facebook
-                            </button> */}
+
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
                 </div>
               </div>
+
+              <button
+                onClick={() => signInWithGoogle(setgoogleLoading)}
+                disabled={googleLoading}
+                type="button"
+                className="w-full px-3 py-3 flex items-center gap-2 justify-center rounded-lg text-[16px] text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
+              >
+                {googleLoading ? (
+                  <CSpinner color="text-gray-700" size="sm" />
+                ) : (
+                  <FcGoogle size={20} />
+                )}
+                {googleLoading ? '' : 'Sign up with Google'}
+              </button>
             </form>
           </div>
         </div>

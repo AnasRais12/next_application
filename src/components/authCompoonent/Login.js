@@ -127,87 +127,97 @@ function Login({ background, position }) {
 
   return (
     <>
-      <div
-        className={`${position} ${background} inset-0 flex items-center justify-center z-5`}
-      >
-        <div className="bg-white p-6 border-2 rounded-2xl shadow-lg sm:w-[70%] lg:w-[40vw] w-full sm:mx-0 mx-2  relative">
-          {/* <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-700" onClick={onClose}>
-          <IoClose size={24} />
-        </button> */}
+    <div className={`${position} ${background} inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50`}>
+  <div className="bg-white p-8 rounded-xl shadow-xl sm:w-[70%] lg:w-[30vw] w-full sm:mx-0 mx-4 relative border border-gray-100">
+    {/* Logo */}
+    <div className="flex flex-col items-center mb-6">
+      <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
+      <p className="text-gray-500 mt-2">Login to your account</p>
+    </div>
 
-          {/* Logo */}
-          <div className="flex flex-col items-center">
-            {/* <div className="bg-black text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl">
-            E<span></span>
-          </div> */}
-            <h2 className="text-2xl font-bold mt-2">Welcome Back</h2>
-            <p className="text-gray-500 text-sm">
-              Please login to your account
-            </p>
-          </div>
-
-          {/* Login Form */}
-
-          <div className="mt-4">
-            <form onSubmit={handleSubmit(handleLoginSumbit)}>
-              <input
-                {...register('email')}
-                type="email"
-                placeholder="Enter Email "
-                className="w-full p-3 border-2 border-[#ccc] rounded-[10px]   bg-white b focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                {...register('password')}
-                type="password"
-                placeholder="Password"
-                className="w-full p-3 border-2 border-[#ccc] rounded-lg bg-white mt-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-              <div className="text-right text-sm text-unique mt-3 cursor-pointer">
-                <p onClick={moveToForgetAccount}>Forgot password?</p>
-              </div>
-
-              <button
-                type="submit"
-                disabled={credentialLoading}
-                className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique"
-              >
-                {credentialLoading ? <CSpinner /> : 'Login In'}
-              </button>
-            </form>
-          </div>
-
-          {/* Social Login */}
-          <div className="mt-4 text-center">
-            <p className="text-black text-md">Or Login with</p>
-            <div className="flex flex-col items-center justify-center gap-4 mt-2">
-              <button
-                onClick={() => signInWithGoogle(setgoogleLoading)}
-                disabled={googleLoading}
-                type="button"
-                className="w-full px-3 py-2 flex items-center gap-2 justify-center rounded-[8px] text-[16px] text-black bg-gray-200 x my-[10px]"
-              >
-                {googleLoading ? (
-                  <CSpinner color="text-black" size="sm" />
-                ) : (
-                  <FcGoogle size={20} style={{ marginRight: '10px' }} />
-                )}
-                {googleLoading ? '' : 'Sign In with Google'}
-              </button>
-              {/* <button onClick={signInWithFacebook} className="flex w-full justify-center bg-black text-white  items-center gap-2 px-4 py-2 border rounded-lg  ">
-                <BsFacebook size={20} className="text-blue-500" />
-                Facebook
-              </button> */}
-            </div>
-            <p
-              onClick={moveToRegister}
-              className="text-left mt-2 cursor-pointer"
-            >
-              Not registered?{' '}
-              <span className="text-unique">Create account</span>
-            </p>
-          </div>
+    {/* Login Form */}
+    <div className="mt-2">
+      <form onSubmit={handleSubmit(handleLoginSumbit)} className="space-y-4">
+        <div>
+          <input
+            {...register('email')}
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
         </div>
+
+        <div>
+          <input
+            {...register('password')}
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+          )}
+        </div>
+
+        <div className="text-right">
+          <p 
+            onClick={moveToForgetAccount}
+            className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer transition-colors"
+          >
+            Forgot password?
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          disabled={credentialLoading}
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-all shadow-md"
+        >
+          {credentialLoading ? <CSpinner /> : 'Login'}
+        </button>
+      </form>
+    </div>
+
+    {/* Social Login */}
+    <div className="relative my-4">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-gray-200"></div>
       </div>
+      <div className="relative flex justify-center text-sm">
+        <span className="px-2 bg-white text-gray-500">Or continue with</span>
+      </div>
+    </div>
+
+    <button
+      onClick={() => signInWithGoogle(setgoogleLoading)}
+      disabled={googleLoading}
+      type="button"
+      className="w-full px-3 py-3 flex items-center gap-2 justify-center rounded-lg text-[16px] text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
+    >
+      {googleLoading ? (
+        <CSpinner color="text-gray-700" size="sm" />
+      ) : (
+        <FcGoogle size={20} />
+      )}
+      {googleLoading ? '' : 'Sign in with Google'}
+    </button>
+
+    <div className="text-center mt-4">
+      <p className="text-gray-600">
+        Not registered?{' '}
+        <span 
+          onClick={moveToRegister}
+          className="text-blue-600 hover:text-blue-800 cursor-pointer font-medium transition-colors"
+        >
+          Create account
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
     </>
   );
 }
