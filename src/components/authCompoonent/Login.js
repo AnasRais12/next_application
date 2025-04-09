@@ -127,94 +127,116 @@ function Login({ background, position }) {
 
   return (
     <>
-    <div className={`${position} ${background} inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50`}>
-  <div className="bg-white p-8 rounded-xl shadow-xl sm:w-[70%] lg:w-[30vw] w-full sm:mx-0 mx-4 relative border border-gray-100">
-    {/* Logo */}
-    <div className="flex flex-col items-center mb-6">
-      <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-      <p className="text-gray-500 mt-2">Login to your account</p>
+ <div className={`$ inset-0 flex items-center z-50 bg-white`}>
+  {/* Image Section (Desktop Only) */}
+  <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+    <div className="absolute inset-0 flex items-center justify-center p-12">
+      <div className="text-white text-center">
+        <h2 className="text-4xl font-bold mb-4">Welcome Back!</h2>
+        <p className="text-xl opacity-90">Your journey begins here</p>
+      </div>
+      <div className="absolute bottom-8 left-8 right-8 text-white opacity-80 text-sm">
+        <p>"The best way to predict the future is to create it."</p>
+      </div>
     </div>
+    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center opacity-20" />
+  </div>
 
-    {/* Login Form */}
-    <div className="mt-2">
-      <form onSubmit={handleSubmit(handleLoginSumbit)} className="space-y-4">
+  {/* Login Form Section */}
+  <div className="w-full lg:w-1/2 h-screen flex items-center justify-center p-4 sm:p-8">
+    <div className="max-w-md w-full">
+      {/* Logo/Header */}
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <span className="text-white text-2xl font-bold">E</span>
+        </div>
+        <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
+        <p className="text-gray-500 mt-2">Login to continue your journey</p>
+      </div>
+
+      {/* Login Form */}
+      <form onSubmit={handleSubmit(handleLoginSumbit)} className="space-y-5">
         <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             {...register('email')}
             type="email"
-            placeholder="Email"
+            placeholder="your@email.com"
             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-          )}
         </div>
 
         <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <button
+              type="button"
+              onClick={moveToForgetAccount}
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
+              Forgot password?
+            </button>
+          </div>
           <input
             {...register('password')}
             type="password"
-            placeholder="Password"
+            placeholder="••••••••"
             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
-          {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-          )}
-        </div>
-
-        <div className="text-right">
-          <p 
-            onClick={moveToForgetAccount}
-            className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer transition-colors"
-          >
-            Forgot password?
-          </p>
         </div>
 
         <button
           type="submit"
           disabled={credentialLoading}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-all shadow-md"
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
         >
-          {credentialLoading ? <CSpinner /> : 'Login'}
+          {credentialLoading ? (
+            <CSpinner color="text-white" size="sm" />
+          ) : (
+            'Login to your account'
+          )}
         </button>
       </form>
-    </div>
 
-    {/* Social Login */}
-    <div className="relative my-4">
-      <div className="absolute inset-0 flex items-center">
-        <div className="w-full border-t border-gray-200"></div>
+      {/* Divider */}
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-200"></div>
+        </div>
+        <div className="relative flex justify-center">
+          <span className="px-3 bg-white text-gray-500 text-sm">OR</span>
+        </div>
       </div>
-      <div className="relative flex justify-center text-sm">
-        <span className="px-2 bg-white text-gray-500">Or continue with</span>
+
+      {/* Social Login */}
+      <button
+        onClick={() => signInWithGoogle(setgoogleLoading)}
+        disabled={googleLoading}
+        type="button"
+        className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
+      >
+        {googleLoading ? (
+          <CSpinner color="text-gray-700" size="sm" />
+        ) : (
+          <>
+            <FcGoogle size={20} />
+            <span>Continue with Google</span>
+          </>
+        )}
+      </button>
+
+      {/* Sign Up Link */}
+      <div className="text-center mt-6">
+        <p className="text-gray-600">
+          Don't have an account?{' '}
+          <button
+            onClick={moveToRegister}
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            Sign up
+          </button>
+        </p>
       </div>
-    </div>
-
-    <button
-      onClick={() => signInWithGoogle(setgoogleLoading)}
-      disabled={googleLoading}
-      type="button"
-      className="w-full px-3 py-3 flex items-center gap-2 justify-center rounded-lg text-[16px] text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
-    >
-      {googleLoading ? (
-        <CSpinner color="text-gray-700" size="sm" />
-      ) : (
-        <FcGoogle size={20} />
-      )}
-      {googleLoading ? '' : 'Sign in with Google'}
-    </button>
-
-    <div className="text-center mt-4">
-      <p className="text-gray-600">
-        Not registered?{' '}
-        <span 
-          onClick={moveToRegister}
-          className="text-blue-600 hover:text-blue-800 cursor-pointer font-medium transition-colors"
-        >
-          Create account
-        </span>
-      </p>
     </div>
   </div>
 </div>
