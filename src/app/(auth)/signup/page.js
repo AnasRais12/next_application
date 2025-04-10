@@ -153,7 +153,7 @@ function Register() {
     <div className="max-w-md w-full">
       {/* Logo/Header - Matching Login Page */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
+        <div className="w-16 h-16 bg-primary hover:bg-green-800 hover:bg-green-800 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
           </svg>
@@ -165,12 +165,12 @@ function Register() {
       {/* Register Form */}
       <form onSubmit={handleSubmit(OnSubmitHandler)} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+          <label className="block text-sm font-medium text-[#1f2937] mb-1">Username</label>
           <input
             {...register('username')}
             type="text"
             placeholder="Choose a username"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
           />
           {errors.username && (
             <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
@@ -178,12 +178,12 @@ function Register() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label className="block text-sm font-medium text-[#1f2937] mb-1">Email</label>
           <input
             {...register('email')}
             type="email"
             placeholder="your@email.com"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -191,12 +191,12 @@ function Register() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label className="block text-sm font-medium text-[#1f2937] mb-1">Password</label>
           <input
             {...register('password')}
             type="password"
             placeholder="••••••••"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
@@ -206,7 +206,7 @@ function Register() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
+          className="w-full bg-primary hover:bg-green-800 text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
         >
           {loading ? (
             <CSpinner color="text-white" size="sm" />
@@ -231,10 +231,10 @@ function Register() {
         onClick={() => signInWithGoogle(setgoogleLoading)}
         disabled={googleLoading}
         type="button"
-        className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
+        className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-[#1f2937] bg-white border border-gray-200 hover:bg-gray-50 transition-all"
       >
         {googleLoading ? (
-          <CSpinner color="text-gray-700" size="sm" />
+          <CSpinner color="text-[#1f2937]" size="sm" />
         ) : (
           <>
             <FcGoogle size={20} />
@@ -245,11 +245,11 @@ function Register() {
 
       {/* Login Link - Similar to Sign Up Link in Login Page */}
       <div className="text-center mt-6">
-        <p className="text-gray-600">
+        <p className="text-[#1f2937]">
           Already have an account?{' '}
           <Link href={'/login'}
             // onClick={moveToLogin}
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-green-800 font-medium"
           >
             Login
           </Link>

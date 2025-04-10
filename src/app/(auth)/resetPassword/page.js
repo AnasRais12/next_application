@@ -63,7 +63,7 @@ function Forget_Account() {
     <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden border border-gray-200">
       {/* Header with Gradient Background */}
  
-         <div className="bg-gradient-to-r from-blue-600 to-purple-600 sm:p-6 p-3 text-center">
+         <div className="bg-primary hover:bg-green-800 sm:p-6 p-3 text-center">
     
       <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center mx-auto justify-center backdrop-blur-sm">
               <svg 
@@ -88,14 +88,14 @@ function Forget_Account() {
       <div className=" p-3 sm:p-6">
         <form onSubmit={handleSubmit(handleResetPassword)} className="space-y-5">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-dark">
               New Password
             </label>
             <input
               {...register('resetpassword')}
               type="password"
               placeholder="Enter new password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
             />
             {errors?.resetpassword?.message && (
               <p className="text-red-500 text-sm mt-1">{errors.resetpassword.message}</p>
@@ -104,7 +104,7 @@ function Forget_Account() {
   
           {/* Password Requirements */}
           <div className="bg-blue-50 p-3 rounded-lg">
-            <p className="text-sm font-medium text-gray-700 mb-2">Password must contain:</p>
+            <p className="text-sm font-medium text-dark mb-2">Password must contain:</p>
             <ul className="text-xs text-gray-600 space-y-1">
               <li className="flex items-center">
                 <svg className="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ function Forget_Account() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
+            className="w-full bg-primary hover:bg-green-800 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
           >
             {loading ? (
               <CSpinner color="text-white" size="sm" />
@@ -143,7 +143,7 @@ function Forget_Account() {
         {/* Back to Login (Mobile) */}
         <div className="mt-4 ">
           <Link href={'/login'}
-            className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
+            className="text-green-800 hover:text-primary text-sm font-medium flex items-center gap-1"
           >
             Back to Login
           </Link >

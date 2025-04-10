@@ -129,128 +129,131 @@ function Login({ background, position }) {
 
   return (
     <>
-<div className={` inset-0 flex items-center z-50 bg-white`}>
-  {/* Image Section (Desktop Only) */}
-  <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-100 to-purple-200 relative overflow-hidden">
-    <div className="absolute inset-0 flex items-center justify-center p-12">
-      <div className="text-white text-center">
-        <h2 className="text-4xl font-bold mb-4">Welcome Back!</h2>
-        <p className="text-xl opacity-90">Your journey begins here</p>
-      </div>
-      <div className="absolute bottom-8 left-8 right-8 text-white opacity-80 text-sm">
-        <p>"The best way to predict the future is to create it."</p>
-      </div>
-    </div>
-    <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_hybrid&w=740')] bg-cover bg-center opacity-100 border-r-2" />
-  </div>
-
-  {/* Login Form Section */}
-  <div className="w-full lg:w-1/2 h-screen flex items-center justify-center p-4 sm:p-8">
-    <div className="max-w-md w-full">
-      {/* Logo/Header */}
-      <div className="text-center mb-8">
-      <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-        </div>
-        <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
-        <p className="text-gray-500 mt-2">Login to continue your journey</p>
-      </div>
-
-      {/* Login Form */}
-      <form onSubmit={handleSubmit(handleLoginSumbit)} className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            {...register('email')}
-            type="email"
-            placeholder="your@email.com"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          />
-        </div>
-
-        <div>
-
-          <div className="flex justify-between items-center mb-1">
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <button
-              type="button"
-              onClick={moveToForgetAccount}
-              className="text-sm text-blue-600 hover:text-blue-800"
-            >
-              Forgot password?
-            </button>
+      <div className={` inset-0 flex items-center z-50 bg-[white]`}>
+        {/* Image Section (Desktop Only) */}
+        <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-100 to-purple-200 relative overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center p-12">
+            <div className="text-white text-center">
+              <h2 className="text-4xl text-[#1f2937] font-bold mb-4">Welcome Back!</h2>
+              <p className="text-xl opacity-90">Your journey begins here</p>
+            </div>
+            <div className="absolute bottom-8 left-8 right-8 text-white opacity-80 text-sm">
+              <p>"The best way to predict the future is to create it."</p>
+            </div>
           </div>
-          <input
-            {...register('password')}
-            type="password"
-            placeholder="••••••••"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          />
+          <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_hybrid&w=740')] bg-cover bg-center opacity-100 border-r-2" />
         </div>
 
-        <button
-          type="submit"
-          disabled={credentialLoading}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
-        >
-          {credentialLoading ? (
-            <CSpinner color="text-white" size="sm" />
-          ) : (
-            'Login to your account'
-          )}
-        </button>
-      </form>
+        {/* Login Form Section */}
+        <div className="w-full lg:w-1/2 h-screen flex items-center justify-center p-4 sm:p-8">
+          <div className="max-w-md w-full">
+            {/* Logo/Header */}
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-[#047857] rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
+              <p className="text-gray-500 mt-2">Login to continue your journey</p>
+            </div>
 
-      {/* Divider */}
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200"></div>
-        </div>
-        <div className="relative flex justify-center">
-          <span className="px-3 bg-white text-gray-500 text-sm">OR</span>
-        </div>
-      </div>
+            {/* Login Form */}
+            <form onSubmit={handleSubmit(handleLoginSumbit)} className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-[#1f2937] mb-1">Email</label>
+                <input
+                  {...register('email')}
+                  type="email"
+                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 border border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+                />
+              </div>
 
-      {/* Social Login */}
-      <button
-        onClick={() => signInWithGoogle(setgoogleLoading)}
-        disabled={googleLoading}
-        type="button"
-        className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
-      >
-        {googleLoading ? (
-          <CSpinner color="text-gray-700" size="sm" />
-        ) : (
+              <div>
+
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-sm font-medium text-[#1f2937]">Password</label>
+            
+                </div>
+                <input
+                  {...register('password')}
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full px-4 py-3 border border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+                />
+                <div className='w-full flex justify-end mt-2'>
+                      <button
+                    type="button"
+                    onClick={moveToForgetAccount}
+                    className="text-sm hover:text-[#1f2937] text-primary"
+                  >
+                    Forgot password?
+                  </button>
+                  </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={credentialLoading}
+                className="w-full bg-[#047857] text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
+              >
+                {credentialLoading ? (
+                  <CSpinner color="text-white" size="sm" />
+                ) : (
+                  'Login to your account'
+                )}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="px-3 bg-white text-[#1f2937] text-sm">OR</span>
+              </div>
+            </div>
+
+            {/* Social Login */}
+            <button
+              onClick={() => signInWithGoogle(setgoogleLoading)}
+              disabled={googleLoading}
+              type="button"
+              className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-[#1f2937] bg-white border border-[#ccc]   transition-all"
+            >
+              {googleLoading ? (
+                <CSpinner color="text-gray-700" size="sm" />
+              ) : (
+                <>
+                  <FcGoogle size={20} />
+                  <span>Continue with Google</span>
+                </>
+              )}
+            </button>
+
+            {/* Sign Up Link */}
+            <div className="text-center mt-6">
+              <p className="text-[#1f2937]">
+                Don't have an account?{' '}
+                <button
+                  onClick={moveToRegister}
+                  className="text-green-800 hover:text-primary font-medium"
+                >
+                  Sign up
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+        {forgetPasswordModal && (
           <>
-            <FcGoogle size={20} />
-            <span>Continue with Google</span>
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40" />
+            <ForgetPassword setForgetPasswordModal={setForgetPasswordModal} />
           </>
         )}
-      </button>
-
-      {/* Sign Up Link */}
-      <div className="text-center mt-6">
-        <p className="text-gray-600">
-          Don't have an account?{' '}
-          <button
-            onClick={moveToRegister}
-            className="text-blue-600 hover:text-blue-800 font-medium"
-          >
-            Sign up
-          </button>
-        </p>
       </div>
-    </div>
-  </div>
-  {forgetPasswordModal && (
-    <>
-     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40" />
-     <ForgetPassword setForgetPasswordModal={setForgetPasswordModal}/>
-    </>
-  )}
-</div>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { RxCross2 } from 'react-icons/rx';
 import CSpinner from '@/components/CSpinner';
 
 export const ForgetPassword = ({setForgetPasswordModal}) => {
+  
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [loading, setloading] = useState(false);
@@ -43,7 +44,7 @@ export const ForgetPassword = ({setForgetPasswordModal}) => {
  <div className="fixed inset-0 flex items-center justify-center z-50 ">
   <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden mx-4  ">
     {/* Header with Gradient Background */}
-    <div className="bg-gradient-to-r from-blue-600 to-purple-600 sm:p-6 p-3 text-center">
+    <div className="bg-primary hover:bg-green-800 sm:p-6 p-3 text-center">
       <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto backdrop-blur-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -65,13 +66,13 @@ export const ForgetPassword = ({setForgetPasswordModal}) => {
 
     {/* Form Content */}
     <div className="sm:p-6 p-3">
-      <p className="text-gray-600 mb-6 text-center">
+      <p className="text-dark mb-6 text-center">
         Enter your email to receive a password reset link
       </p>
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-dark mb-1">
             Email Address
           </label>
           <input
@@ -86,7 +87,7 @@ export const ForgetPassword = ({setForgetPasswordModal}) => {
         <button
           onClick={handleForgotPassword}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
+          className="w-full bg-primary hover:bg-green-800 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
         >
           {loading ? (
             <CSpinner color="text-white" size="sm" />
@@ -100,7 +101,7 @@ export const ForgetPassword = ({setForgetPasswordModal}) => {
       <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
         <button
            onClick={() => setForgetPasswordModal(false)}
-          className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
+          className="text-sm text-green-800 hover:text-primary font-medium flex items-center gap-1"
         >
           Back to Sign In
         </button>
