@@ -1,117 +1,196 @@
 import React from 'react';
 
-function Page() {
+function AboutPage() {
   return (
-    <div className="mt-24 bg-gray-50">
-      {/* Header Section */}
-      <header className="flex bg-gradient-to-r from-orange-500 to-orange-600 justify-center items-center text-white text-center py-6 shadow-md">
-        <h1 className="text-4xl font-extrabold">About Us</h1>
+    <div className=" min-h-screen">
+      {/* Hero Header */}
+      <header className="relative bg-white py-24 text-center">
+        <div className="absolute inset-0 "></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-dark mb-4">About <span className='text-primary'>ShopEase</span></h1>
+          <p className="text-xl text-dark/90 max-w-2xl mx-auto">
+            Your trusted shopping destination since 2015
+          </p>
+        </div>
       </header>
 
       {/* Our Story Section */}
-      <section className="text-center py-12 px-4">
-        <h2 className="text-3xl font-semibold text-gray-800">Our Story</h2>
-        <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">
-          We started with a vision to make online shopping seamless, affordable,
-          and reliable. Our platform connects thousands of brands and products
-          to customers worldwide.
-        </p>
+      <section className="py-16  bg-gray-50 mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-dark mb-6">Our <span className='text-primary'>Story</span></h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto mb-8"></div>
+          <p className="text-lg text-gray-600 mb-8">
+            Founded in 2015, ShopEase began with a simple vision: to create an online shopping experience that combines 
+            convenience, quality, and affordability. What started as a small team of passionate individuals has grown into 
+            a platform serving millions of customers worldwide.
+          </p>
+          <p className="text-lg text-gray-600">
+            We pride ourselves on connecting customers with the best products from trusted brands, all while maintaining 
+            the personal touch that sets us apart from larger retailers.
+          </p>
+        </div>
       </section>
 
-      {/* Our Mission Section */}
-      <section className="bg-gray-100 py-12 px-4">
-        <h2 className="text-3xl font-semibold text-center text-gray-800">
-          Our Mission
-        </h2>
-        <p className="mt-6 text-lg text-center text-gray-600 max-w-3xl mx-auto">
-          To provide an unparalleled shopping experience by offering the best
-          quality products, fast delivery, and exceptional customer service.
-        </p>
-      </section>
-
-      {/* Why Shop With Us? Section */}
-      <section className="text-center py-12 px-4">
-        <h2 className="text-3xl font-semibold text-gray-800">
-          Why Shop With Us?
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-8">
-          <div className="p-6 shadow-xl rounded-lg bg-white hover:bg-orange-100 transition duration-300">
-            <h3 className="text-xl font-semibold text-orange-600">
-              Wide Product Range
-            </h3>
-            <p className="text-gray-600">
-              Find everything from electronics to fashion in one place.
-            </p>
-          </div>
-          <div className="p-6 shadow-xl rounded-lg bg-white hover:bg-orange-100 transition duration-300">
-            <h3 className="text-xl font-semibold text-orange-600">
-              Secure Payments
-            </h3>
-            <p className="text-gray-600">
-              Your transactions are safe and encrypted.
-            </p>
-          </div>
-          <div className="p-6 shadow-xl rounded-lg bg-white hover:bg-orange-100 transition duration-300">
-            <h3 className="text-xl font-semibold text-orange-600">
-              Fast Shipping
-            </h3>
-            <p className="text-gray-600">
-              Get your orders delivered quickly and on time.
-            </p>
-          </div>
-          <div className="p-6 shadow-xl rounded-lg bg-white hover:bg-orange-100 transition duration-300">
-            <h3 className="text-xl font-semibold text-orange-600">
-              24/7 Customer Support
-            </h3>
-            <p className="text-gray-600">
-              We are here to help you anytime, anywhere.
-            </p>
+      {/* Mission and Values */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-dark mb-6">Our <span className='text-primary'>Mission</span></h2>
+              <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mb-8"></div>
+              <p className="text-lg text-gray-600 mb-6">
+                To revolutionize online shopping by providing an unparalleled customer experience through:
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-gray-600">Curated selection of quality products</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-gray-600">Competitive pricing and regular deals</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-gray-600">Fast and reliable shipping</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-gray-600">Exceptional customer service</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white p-8 rounded-lg shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                alt="Our team working"
+                className="w-full h-auto rounded"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Our Commitment Section */}
-      <section className="bg-gray-50 py-12 px-4">
-        <h2 className="text-3xl font-semibold text-center text-gray-800">
-          Our Commitment
-        </h2>
-        <p className="mt-6 text-lg text-center text-gray-600 max-w-3xl mx-auto">
-          We believe in delivering quality products at the best product_prices,
-          ensuring customer satisfaction and trust in every purchase.
-        </p>
+      {/* Why Choose Us */}
+      <div className='bg-gray-50'>
+      <section className="py-16  container   mx-auto px-4">
+        <div className="text-center  mb-12">
+          <h2 className="text-3xl font-bold text-dark mb-4">Why Choose <span className='text-primary'>ShopEase?</span></h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto"></div>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-primary">
+            <div className="text-primary mb-4">
+              <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-center text-dark mb-3">Wide Selection</h3>
+            <p className="text-gray-600 text-center">
+              Thousands of products across all categories to meet your every need.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-accent">
+            <div className="text-accent mb-4">
+              <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-center text-dark mb-3">Secure Shopping</h3>
+            <p className="text-gray-600 text-center">
+              Industry-leading security measures to protect your data and transactions.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-secondary">
+            <div className="text-secondary mb-4">
+              <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-center text-dark mb-3">Fast Delivery</h3>
+            <p className="text-gray-600 text-center">
+              90% of orders delivered within 2-3 business days with real-time tracking.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-primary-dark">
+            <div className="text-primary-dark mb-4">
+              <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-center text-dark mb-3">24/7 Support</h3>
+            <p className="text-gray-600 text-center">
+              Our customer care team is always ready to assist you with any questions.
+            </p>
+          </div>
+        </div>
+      </section>
+      </div>
+
+      {/* Testimonials */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-dark mb-4">What Our <span className='text-primary'>Customers Say</span></h2>
+            <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto"></div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "ShopEase has completely transformed my shopping experience. The quality of products and delivery speed is unmatched!",
+                name: "Sarah Johnson",
+                role: "Loyal Customer since 2018"
+              },
+              {
+                quote: "I love the variety and the frequent deals. Customer service is always helpful when I have questions about products.",
+                name: "Michael Chen",
+                role: "Verified Buyer"
+              },
+              {
+                quote: "As a small business owner, I appreciate how easy it is to find what I need at competitive prices. Highly recommend!",
+                name: "David Wilson",
+                role: "Small Business Owner"
+              }
+            ].map((testimonial, index) => (
+              <div key={index} className="bg-white p-8 rounded-lg shadow-md">
+                <div className="text-yellow-400 mb-4 flex">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-600 italic mb-6">"{testimonial.quote}"</p>
+                <div>
+                  <h4 className="font-semibold text-dark">{testimonial.name}</h4>
+                  <p className="text-gray-500 text-sm">{testimonial.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Customer Testimonials Section */}
-      <section className="bg-white text-gray-800 text-center py-12 px-4">
-        <h2 className="text-3xl font-semibold text-black">
-          Customer Testimonials
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8 max-w-5xl mx-auto">
-          <div className="p-6 shadow-xl rounded-lg bg-gray-50 hover:bg-gray-200 transition duration-300">
-            <p className="italic">
-              "Amazing products with fast delivery! Highly recommend shopping
-              here."
-            </p>
-            <h3 className="mt-4 font-semibold">- Customer A</h3>
-          </div>
-          <div className="p-6 shadow-xl rounded-lg bg-gray-50 hover:bg-gray-200 transition duration-300">
-            <p className="italic">
-              "Great customer support and quality products at affordable
-              product_prices."
-            </p>
-            <h3 className="mt-4 font-semibold">- Customer B</h3>
-          </div>
-          <div className="p-6 shadow-xl rounded-lg bg-gray-50 hover:bg-gray-200 transition duration-300">
-            <p className="italic">
-              "Secure payment options and trustworthy service. Love shopping
-              here!"
-            </p>
-            <h3 className="mt-4 font-semibold">- Customer C</h3>
-          </div>
+      {/* CTA Section */}
+      <section className="py-16 bg-gray-50  text-dark text-center">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6">Ready to Experience <span className='text-primary'>ShopEase?</span></h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Join millions of satisfied customers shopping with confidence today.
+          </p>
+          <button className="bg-primary hover:bg-green-700
+           text-white font-bold py-3 px-8 rounded-full text-lg transition-colors shadow-lg">
+            Start Shopping Now
+          </button>
         </div>
       </section>
     </div>
   );
 }
 
-export default Page;
+export default AboutPage;
