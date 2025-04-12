@@ -1,118 +1,156 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+    terms: false,
+  })
+
+  const handleChange = (e) => {
+    const { id, value, type, checked } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === 'checkbox' ? checked : value,
+    }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    // Save to localStorage
+    localStorage.setItem('contactFormData', JSON.stringify(formData))
+
+    // Show swal message
+    Swal.fire({
+      icon: 'success',
+      title: 'Thank you!',
+      text: 'Your message has been saved.',
+    })
+
+    // Optionally reset form
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+      terms: false,
+    })
+  }
   return (
-    <section className="py-16 bg-gray-50 pt-36 sm:pt-20 min-h-screen">
-      <div className=" mx-auto px-4">
+    <section className=" bg-gray-50 pt-10  min-h-screen">
+      <div className=" mx-auto ">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-dark mb-3">
-            <span className="text-primary">Contact</span> Our Team
-          </h2>
-          <p className="text-dark/80 text-xl max-w-2xl mx-auto">
+      
+        <div className="bg-white rounded-xl mb-12 shadow-lg    overflow-hidden  border border-gray-100">
+          <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 p-6 md:p-8 xl:px-14 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold pt-6 text-white mb-2">
+            Contact Our Team
+            </h1>
+            <p className="text-emerald-100 text-lg">
             Have questions or feedback? We'd love to hear from you.
-          </p>
+            </p>
+          </div>
+          
         </div>
 
         {/* Contact Form */}
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-          <form className="space-y-6">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-dark mb-2"
-              >
-                Your Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="John Doe"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-dark mb-2"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="your@email.com"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="subject"
-                className="block text-sm font-medium text-dark mb-2"
-              >
-                Subject
-              </label>
-              <select
-                id="subject"
-                className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                required
-              >
-                <option value="">Select a subject</option>
-                <option value="support">Customer Support</option>
-                <option value="feedback">Product Feedback</option>
-                <option value="order">Order Inquiry</option>
-                <option value="business">Business Partnership</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="message"
-                className="block text-sm font-medium text-dark mb-2"
-              >
-                Your Message
-              </label>
-              <textarea
-                id="message"
-                rows="6"
-                className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="How can we help you?"
-                required
-              ></textarea>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                id="terms"
-                type="checkbox"
-                className="w-4 h-4 text-primary rounded focus:ring-primary border-gray-300"
-                required
-              />
-              <label
-                htmlFor="terms"
-                className="ml-2 text-sm text-dark/80"
-              >
-                I agree to the <a href="/privacy" className="text-primary hover:underline">privacy policy</a>
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full md:w-auto px-8 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors shadow-md"
-            >
-              Send Message
-            </button>
-          </form>
+        <div className="m-6 md:m-8 xl:mx-14 mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-dark mb-2">
+            Your Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="John Doe"
+            required
+          />
         </div>
 
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-dark mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="your@email.com"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="subject" className="block text-sm font-medium text-dark mb-2">
+            Subject
+          </label>
+          <select
+            id="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            required
+          >
+            <option value="">Select a subject</option>
+            <option value="support">Customer Support</option>
+            <option value="feedback">Product Feedback</option>
+            <option value="order">Order Inquiry</option>
+            <option value="business">Business Partnership</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-dark mb-2">
+            Your Message
+          </label>
+          <textarea
+            id="message"
+            rows="6"
+            value={formData.message}
+            onChange={handleChange}
+            className="w-full px-4 py-2.5 text-dark border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="How can we help you?"
+            required
+          ></textarea>
+        </div>
+
+        <div className="flex items-center">
+          <input
+            id="terms"
+            type="checkbox"
+            checked={formData.terms}
+            onChange={handleChange}
+            className="w-4 h-4 text-primary rounded focus:ring-primary border-gray-300"
+            required
+          />
+          <label htmlFor="terms" className="ml-2 text-sm text-dark/80">
+            I agree to the <a href="/privacy" className="text-primary hover:underline">privacy policy</a>
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full md:w-auto px-8 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors shadow-md"
+        >
+          Send Message
+        </button>
+      </form>
+    </div>
+
         {/* Additional Contact Info */}
-        <div className="max-w-2xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="m-6 md:m-8 xl:mx-14 mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 text-center">
             <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

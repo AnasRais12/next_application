@@ -1,21 +1,22 @@
+import Link from 'next/link';
 import React from 'react';
 
 function FAQPage() {
   return (
-    <div className=" min-h-screen bg-gray-50 pt-10">
-    <div className=" mx-auto px-4 py-16 bg-gray-50 ">
-      {/* Header Section */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold text-dark mb-3">
-          <span className="text-primary">Frequently Asked</span> Questions
-        </h2>
-        <p className="text-dark/80 text-xl max-w-2xl mx-auto">
-          Find answers to common questions about our products and services
-        </p>
-      </div>
+    <div className=" min-h-screen bg-gray-50 pt-10 ">
+    <div className=" mx-auto  bg-gray-50 ">
+      {/* Header Section */}    
+      <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 p-6  md:p-8 xl:px-14 text-center">
+            <h1 className=" text-3xl sm:text-4xl md:text-5xl font-bold pt-6 text-white mb-2">
+            Frequently Asked Questions
+            </h1>
+            <p className="text-emerald-100 text-md sm:text-lg">
+            Find answers to common questions about our products and services
+            </p>
+          </div>
 
       {/* FAQ Accordion */}
-      <div className="max-w-3xl mx-auto space-y-4">
+      <div className=" m-6 md:m-8 xl:mx-14 mx-auto space-y-4">
         {[
           {
             question: "What payment methods do you accept?",
@@ -76,16 +77,16 @@ function FAQPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="text-center mt-16">
+      <div className=" m-6 md:m-8 xl:mx-14  my-10 pb-6">
         <h3 className="text-2xl font-semibold text-dark mb-4">
           Still have questions?
         </h3>
-        <p className="text-dark/80 mb-6 max-w-2xl mx-auto">
+        <p className="text-dark/80 mb-6 max-w-2xl ">
           Our customer support team is available 24/7 to assist you with any inquiries.
         </p>
-        <button className="bg-primary hover:bg-primary-dark text-white font-medium py-3 px-8 rounded-lg shadow-md transition-colors">
+        <Link href="/contact" className="bg-primary hover:bg-primary-dark text-white font-medium py-3 px-8 rounded-lg shadow-md transition-colors">
           Contact Support
-        </button>
+        </Link>
       </div>
     </div>
     </div>

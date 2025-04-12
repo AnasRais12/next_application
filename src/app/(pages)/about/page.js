@@ -4,15 +4,18 @@ function AboutPage() {
   return (
     <div className=" min-h-screen">
       {/* Hero Header */}
-      <header className="relative bg-white py-24 text-center">
-        <div className="absolute inset-0 "></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-dark mb-4">About <span className='text-primary'>ShopEase</span></h1>
-          <p className="text-xl text-dark/90 max-w-2xl mx-auto">
+    
+      <div className="bg-white rounded-xl shadow-lg  pt-10 overflow-hidden  border border-gray-100">
+          <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 p-6 md:p-8 xl:px-14 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold pt-6 text-white mb-2">
+            About <span className=''>ShopEase</span>
+            </h1>
+            <p className="text-emerald-100 text-lg">
             Your trusted shopping destination since 2015
-          </p>
+            </p>
+          </div>
+          
         </div>
-      </header>
 
       {/* Our Story Section */}
       <section className="py-16  bg-gray-50 mx-auto px-4">
