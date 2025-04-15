@@ -213,12 +213,12 @@ export default function Wishlist({ setWishlistModal }) {
     <span className="text-sm text-gray-500">
       {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}
     </span>
-    <button
+    {/* <button
       onClick={clearWishlist}
       className="text-sm text-red-500 hover:text-red-600 font-medium"
     >
       Clear All
-    </button>
+    </button> */}
   </div>
 )}
       </motion.div>
