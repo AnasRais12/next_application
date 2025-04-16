@@ -41,12 +41,12 @@ function UserSideBar({ setchangepasswordModal, setSettingModal }) {
   };
   return (
     <>
-      <button className="lg:hidden px-2 py-2 h-fit  bg-[orange] mb-4 justify-start w-fit items-start  flex  text-white rounded-lg shadow-lg">
+      <button className="lg:hidden px-2 py-2 h-fit  bg-primary mb-4 justify-start w-fit items-start  flex  text-white rounded-lg shadow-lg">
         <FiMenu onClick={() => setIsMenuOpen(true)} />
       </button>
       {/* Sidebar */}
       <aside
-        className={`w-72  bg-gradient-to-b from-orange-700 to-orange-700 z-50 lg:mt-14 mt-16 text-white sm:p-6 p-3 shadow-lg fixed inset-y-0 left-0 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 lg:relative lg:block rounded-r-lg`}
+        className={`w-72  bg-gradient-to-b from-primary to-green-600 z-50 lg:mt-14 mt-16 text-white sm:p-6 p-3 shadow-lg fixed inset-y-0 left-0 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 lg:relative lg:block rounded-r-lg`}
       >
         <button
           className="lg:hidden absolute sm:top-4 top-5 right-4 text-white text-[30px]"
@@ -69,21 +69,21 @@ function UserSideBar({ setchangepasswordModal, setSettingModal }) {
             <li className="text-white font-semibold">Personal Information</li>
             <li
               onClick={() => setSettingModal(true)}
-              className="text-gray-300 hover:text-orange-400 cursor-pointe rounded-md border-2 cursor-pointer py-2 px-2 mr-2 transition-colors"
+              className="text-gray-300 hover:text-white cursor-pointe rounded-md border-2 cursor-pointer py-2 px-2 mr-2 transition-colors"
             >
               Order History
             </li>
             {user?.user_metadata?.provider_id ? null : (
               <li
                 onClick={OpenPasswordModal}
-                className="text-gray-300 cursor-pointer hover:text-orange-400  rounded-md border-2 py-2 px-2 mr-2 transition-colors"
+                className="text-gray-300 cursor-pointer hover:text-white  rounded-md border-2 py-2 px-2 mr-2 transition-colors"
               >
                 Change Password
               </li>
             )}
             <li
               onClick={userlogout}
-              className="text-gray-300 hover:text-orange-400 cursor-pointer rounded-md border-2 py-2 px-2 mr-2 transition-colors"
+              className="text-gray-300 hover:text-white cursor-pointer rounded-md border-2 py-2 px-2 mr-2 transition-colors"
             >
               {Logoutloading ? <CSpinner /> : 'Logout'}
             </li>
@@ -128,7 +128,7 @@ function UserSideBar({ setchangepasswordModal, setSettingModal }) {
                 </button>
                 <button
                   onClick={userDelete}
-                  className="py-2 px-3 shadow-md text-sm font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  className="py-2 px-3 shadow-md text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
                 >
                   {Deleteloading ? <CSpinner /> : "Yes, I'm sure"}
                 </button>

@@ -42,186 +42,192 @@ const OrderSummary = () => {
   }, [cart]);
 
   return (
-    <div className={` `}>
-      <div className=" sm:mx-auto ">
-        {cart?.length > 0 ? (
-          <div
-            className={`   rounded-xl sm:border-t-2  sm:shadow-lg overflow-hidden transition-all duration-300`}
-          >
-            <div className="p-2 sm:p-6 md:p-8">
-              <div className="flex sm:flex-row flex-col-reverse sm:gap-0 gap-1 justify-between items-start w-full pr-6 ">
-                <h1 className="text-2xl font-bold mb-6 text-left">
-                  Order Summary
-                </h1>
-                 <Link
+    <div className={``}>
+  <div className=" mx-auto w-full  md:max-w-7xl px-2  lg:px-4">
+    {cart?.length > 0 ? (
+      <div className={`rounded-xl shadow-lg overflow-hidden transition-all duration-300 ${darkMode ? 'dark:bg-gray-700' : 'bg-white'}`}>
+        <div className="p-6 sm:p-8">
+          {/* Header with back button */}
+          <div className="sm:flex-row flex flex-col-reverse gap-2 justify-between items-start sm:items-center mb-8">
+            <h1 className="text-2xl font-bold text-[#1f2937] dark:text-white">
+              Order Summary
+            </h1>
+            <div className="flex items-center">
+              <Link
                 href="/shoppingcart"
-                   className="text-[25px] hover:text-[red] hidden sm:block"
+                className="hidden sm:flex items-center text-sm text-[#047857] hover:underline"
               >
-              
-                  <RxCross2 />
-                </Link>
-                {/* ⬅️ Arrow icon (sm screens par dikhega) */}
-                <button
-                  onClick={() => router.push('/shoppingcart')}
-                  className="text-[25px] hover:text-[red] block sm:hidden"
-                >
-                  <GoArrowLeft />
-                </button>
-              </div>
+                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Cart
+              </Link>
+              <button
+                onClick={() => router.push('/shoppingcart')}
+                className="sm:hidden text-[#047857]"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
 
-              <div className="space-y-4 mb-8">
-                {cart.map((item, index) => (
-                  <div
-                    key={index}
-                    className={`flex justify-between items-center shadow-md sm:p-4 p-3 ${darkMode ? 'bg-gray-700' : ''} rounded-lg`}
-                  >
-                    <div className=" sm:w-fit w-[70%]  flex justify-start flex-col gap-2 text-start items-start">
-                      <h3 className="font-medium sm:text-[16px] text-[14px]  ">
-                        {item?.product_name}
-                      </h3>
-                      <p className="text-sm text-left text-gray-500">
-                        Quantity: {item.quantity}
-                      </p>
-                    </div>
-                    <p className="font-semibold">
-                      {/* ${item?.product_price.toFixed(2)} */}
-                      <p> {symbol}: {ConvertPrice(item?.product_price
-                    , rates, from)}    </p>
-                    </p>
-                  </div>
-                ))}
-              </div>
-
+          {/* Cart Items */}
+          <div className="space-y-4 mb-8">
+            {cart.map((item, index) => (
               <div
-                className={`space-y-2 p-4 ${darkMode ? 'bg-gray-700' : 'bg-white'} rounded-lg mb-8`}
+                key={index}
+                className={`flex justify-between items-center p-4 rounded-lg transition-all ${darkMode ? 'bg-gray-600 hover:bg-gray-500' : 'bg-gray-50 hover:bg-gray-100'}`}
               >
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  {/* <span>${subTotal.toFixed(2)}</span> */}
-                  <p> {symbol}: {ConvertPrice(subTotal
-                    , rates, from)}    </p>
+                <div className="w-[70%] sm:w-fit flex flex-col gap-1 text-start">
+                  <h3 className="font-medium text-[#1f2937] dark:text-white sm:text-base text-sm">
+                    {item?.product_name}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-300">
+                    Quantity: {item.quantity}
+                  </p>
                 </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  {/* <span>${deliveryCharges}</span> */}
-                  <p> {symbol}: {ConvertPrice(deliveryCharges
-                    , rates, from)}    </p>
-                </div>
-                {/* <div className="flex justify-between">
-       <span>Tax</span>
-       <span>${tax.toFixed(2)}</span>
-     </div> */}
-                <div className="flex justify-between font-bold pt-2 border-t">
-                  <span>Total</span>
-                  {/* <span>${Total.toFixed(2)}</span> */}
-                  <p> {symbol}: {ConvertPrice(Total, rates, from)}    </p>
-                </div>
+                <p className="font-semibold text-[#1f2937] dark:text-white">
+                  {symbol}: {ConvertPrice(item?.product_price, rates, from)}
+                </p>
               </div>
+            ))}
+          </div>
 
-              <div className="mb-8">
-                <h2 className="text-xl text-left font-semibold mb-6">
-                  Payment Method
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      id: 'Credit Card',
-                      icon: FaCreditCard,
-                      label: 'Credit Card',
-                    },
-                    {
-                      id: 'Cash on Delivery',
-                      icon: MdLocalShipping,
-                      label: 'Cash on Delivery',
-                    },
-                  ].map((method) => (
-                    <div
-                      key={method.id}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all duration-300 ${paymentMethod === method.id
-                          ? `${darkMode ? 'bg-orange-600' : 'bg-blue-50'} border-orange-500`
-                          : `${darkMode ? 'bg-gray-700' : 'bg-gray-50'} border-transparent`
-                        } border-2 hover:border-orange-500`}
-                      onClick={() => setPaymentMethod(method.id)}
-                    >
-                      <method.icon className="text-2xl mr-3" />
-                      <span>{method.label}</span>
-                    </div>
-                  ))}
-                </div>
+          {/* Order Summary */}
+          <div className={`p-4 rounded-lg mb-8 ${darkMode ? 'bg-gray-600' : 'bg-gray-50'}`}>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-300">Subtotal</span>
+                <span className="text-[#1f2937] dark:text-white">
+                  {symbol}: {ConvertPrice(subTotal, rates, from)}
+                </span>
               </div>
-
-              <div className="flex items-center justify-between">
-                {paymentMethod === 'Credit Card' ? (
-                  <button
-                    onClick={() =>
-                      handleCardPayment(
-                        supabase,
-                        session,
-                        cart,
-                        paymentMethod,
-                        userDetails,
-                        deleteAllCartItem,
-                        RemoveAllFromCart,
-                        dispatch,
-                        setcardLoading,
-                        Swal,
-                        loadStripe,
-                        setShowingCardLoading,
-                        deliveryCharges
-                      )
-                    }
-                    disabled={cardLoading}
-                    className={`px-6 py-3 w-full rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors ${cardLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
-                  >
-                    {cardLoading ? <CSpinner /> : 'Place Order'}
-                  </button>
-                ) : (
-                  <button
-                    onClick={() =>
-                      handleDelievery(
-                        supabase,
-                        session,
-                        cart,
-                        paymentMethod,
-                        userDetails,
-                        deleteAllCartItem,
-                        RemoveAllFromCart,
-                        dispatch,
-                        setdeliveryLoading,
-                        router,
-                        Swal,
-                        setShowingCardLoading
-                      )
-                    }
-                    disabled={deliveryLoading}
-                    className={`px-6 py-3 w-full rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors ${deliveryLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
-                  >
-                    {deliveryLoading ? <CSpinner /> : 'Place Order'}
-                  </button>
-                )}
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-300">Shipping</span>
+                <span className="text-[#1f2937] dark:text-white">
+                  {symbol}: {ConvertPrice(deliveryCharges, rates, from)}
+                </span>
+              </div>
+              <div className="flex justify-between font-bold pt-3 border-t border-gray-300 dark:border-gray-500">
+                <span className="text-[#1f2937] dark:text-white">Total</span>
+                <span className="text-[#047857] dark:text-[#047857]">
+                  {symbol}: {ConvertPrice(Total, rates, from)}
+                </span>
               </div>
             </div>
           </div>
-        ) : (
-          <>
-            {showingCardLoading && (
-              <div className="w-full flex-col gap-3 h-fit pt-20 flex justify-center items-center">
-                <p>
-                  Your cart is empty! Add some items to your order before
-                  checking out.
-                </p>
-                <button
-                  onClick={() => router.push('/home')}
-                  className="py-3 px-6 border-unique border-2 text-unique"
+
+          {/* Payment Method */}
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-[#1f2937] dark:text-white mb-6">
+              Payment Method
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  id: 'Credit Card',
+                  icon: FaCreditCard,
+                  label: 'Credit Card',
+                  color: paymentMethod === 'Credit Card' ? 'bg-[#047857] text-white' : `${darkMode ? 'bg-gray-600' : 'bg-gray-50'}`
+                },
+                {
+                  id: 'Cash on Delivery',
+                  icon: MdLocalShipping,
+                  label: 'Cash on Delivery',
+                  color: paymentMethod === 'Cash on Delivery' ? 'bg-[#047857] text-white' : `${darkMode ? 'bg-gray-600' : 'bg-gray-50'}`
+                }
+              ].map((method) => (
+                <div
+                  key={method.id}
+                  className={`flex items-center p-4 rounded-lg cursor-pointer transition-all duration-300 border ${paymentMethod === method.id ? 'border-[#047857]' : 'border-transparent hover:border-[#047857]'} ${method.color}`}
+                  onClick={() => setPaymentMethod(method.id)}
                 >
-                  Start Shopping
-                </button>
-              </div>
+                  <method.icon className={`text-2xl mr-3 ${paymentMethod === method.id ? 'text-white' : 'text-[#047857]'}`} />
+                  <span className={paymentMethod === method.id ? 'text-white' : 'text-[#1f2937] dark:text-white'}>
+                    {method.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Place Order Button */}
+          <div className="flex items-center justify-between">
+            {paymentMethod === 'Credit Card' ? (
+              <button
+                onClick={() =>
+                  handleCardPayment(
+                    supabase,
+                    session,
+                    cart,
+                    paymentMethod,
+                    userDetails,
+                    deleteAllCartItem,
+                    RemoveAllFromCart,
+                    dispatch,
+                    setcardLoading,
+                    Swal,
+                    loadStripe,
+                    setShowingCardLoading,
+                    deliveryCharges
+                  )
+                }
+                disabled={cardLoading}
+                className={`px-6 py-3 w-full rounded-lg bg-[#047857] text-white font-semibold hover:bg-[#03644a] transition-colors ${cardLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
+              >
+                {cardLoading ? <CSpinner /> : 'Place Order'}
+              </button>
+            ) : (
+              <button
+                onClick={() =>
+                  handleDelievery(
+                    supabase,
+                    session,
+                    cart,
+                    paymentMethod,
+                    userDetails,
+                    deleteAllCartItem,
+                    RemoveAllFromCart,
+                    dispatch,
+                    setdeliveryLoading,
+                    router,
+                    Swal,
+                    setShowingCardLoading
+                  )
+                }
+                disabled={deliveryLoading}
+                className={`px-6 py-3 w-full rounded-lg bg-[#047857] text-white font-semibold hover:bg-[#03644a] transition-colors ${deliveryLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
+              >
+                {deliveryLoading ? <CSpinner /> : 'Place Order'}
+              </button>
             )}
-          </>
-        )}
+          </div>
+        </div>
       </div>
-    </div>
+    ) : (
+      <>
+        {showingCardLoading && (
+          <div className={`w-full flex-col gap-4 h-fit pt-20 flex justify-center items-center text-center ${darkMode ? 'dark:text-white' : ''}`}>
+            <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <p className="text-lg text-[#1f2937] dark:text-white">
+              Your cart is empty! Add some items to your order before checking out.
+            </p>
+            <button
+              onClick={() => router.push('/home')}
+              className="mt-4 px-6 py-2 rounded-lg border-2 border-[#047857] text-[#047857] hover:bg-[#047857] hover:text-white transition-colors"
+            >
+              Start Shopping
+            </button>
+          </div>
+        )}
+      </>
+    )}
+  </div>
+</div>
   );
 };
 

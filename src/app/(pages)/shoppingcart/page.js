@@ -15,7 +15,7 @@ function Page() {
   const { userDetails } = UserQuery();
   const { deliveryCharges, setDeliveryCharges,setDistance,distance } = GlobalDetails();
   const session = useSession();
-  const [loadingSession, setLoadingSession] = useState(true);
+  const [loadingSession, setLoadingSession] = useState(false);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
 
@@ -25,7 +25,7 @@ function Page() {
   }, [distance]);
   useEffect(() => {
     if (!session?.user?.id) {
-      setLoadingSession(false);
+      setLoadingSession(true);
     }
   }, [session]);
 
@@ -42,10 +42,12 @@ function Page() {
     );
   }
 
-  if (loadingSession) return <CustomSpinner />;
+
+
   // Agar wishlist ya cart loading hai toh spinner dikhao
   if (wishListLoading || cartListLoading) return <CustomSpinner />;
 
+  console.log(session,"Session is here ")
 
   return (
     <div>

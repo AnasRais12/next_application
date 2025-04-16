@@ -150,13 +150,13 @@ useEffect(() => {
   return (
     <>
       <div className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="max-w-lg w-[90%] bg-white rounded-lg shadow-2xl overflow-hidden">
+        <div className="sm:max-w-4xl relative w-full bg-white rounded-lg shadow-2xl overflow-hidden">
           {/* Header */}
           <div className=" text-black py-4 px-4 sm:px-6 text-left flex justify-between items-center border-b-2 text-lg font-semibold">
             <h1> Edit Your Details </h1>
             <button
               onClick={() => setIsEditing(false)}
-              className="hover:text-[red] text-black text-[20px]"
+              className="hover:text-[red] text-black text-[25px] sm:text-[30px]"
             >
               <RxCross2 />
             </button>
@@ -165,7 +165,7 @@ useEffect(() => {
           {/* Form Container */}
           <form
             onSubmit={handleSubmit(handleSave)}
-            className="space-y-3 h-[70vh]  px-4 pb-4 py-3 overflow-y-auto"
+            className="space-y-3 h-[70vh] px-3  sm:px-4 pb-4 py-3 overflow-y-auto"
           >
             <div>
               <label className="block mb-2 text-sm font-normal">
@@ -176,7 +176,7 @@ useEffect(() => {
                 {...register('full_name')}
                 defaultValue={userDetails?.full_name}
                 placeholder="Enter your full name"
-                className="w-full border-2 border-[#f1f0f0] focus:outline-2 focus:outline-orange-400 p-2 rounded"
+                   className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               />
               <p className="text-red-500">{errors.full_name?.message}</p>
             </div>
@@ -186,7 +186,7 @@ useEffect(() => {
               <label className="block text-sm mb-2 font-normal">Country</label>
               <select
                 {...register('country')}
-                className="w-full border-2 p-2 rounded"
+                  className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               >
                      <option value="">{userDetails?.country}</option>
                 {countries.map((country) => (
@@ -205,7 +205,7 @@ useEffect(() => {
               <label className="block text-sm mb-2 font-normal">City</label>
               <select
                 {...register('city')}
-                className="w-full border-2 p-2 rounded"
+                   className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               >
                      <option value="">{userDetails?.city}</option>
                 {cities?.map((city) => (
@@ -226,7 +226,7 @@ useEffect(() => {
               <label className="block text-sm mb-2 font-normal">Area</label>
               <select
                 {...register('area')}
-                className="w-full border-2 p-2 rounded"
+                   className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               >
                <option value="">{userDetails?.area}</option>
                 {areas?.map((area) => (
@@ -251,7 +251,7 @@ useEffect(() => {
                 {...register('address')}
                 type="text"
                 defaultValue={userDetails?.address}
-                className="w-full border-2 p-2 rounded"
+                   className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               />
               {errors.address && (
                 <p className="text-red-500 text-sm">{errors.address.message}</p>
@@ -265,7 +265,7 @@ useEffect(() => {
                 {...register('zip_code')}
                 type="text"
                 defaultValue={userDetails?.zip_code}
-                className="w-full border-2 p-2 rounded"
+                    className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               />
               {errors.zip_code && (
                 <p className="text-red-500 text-sm">
@@ -283,7 +283,7 @@ useEffect(() => {
                 {...register('phone_number')}
                 type="text"
                 defaultValue={userDetails?.phone_number}
-                className="w-full border-2 text-black p-2 rounded"
+                   className="w-full p-3 mb-4 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
               />
               {errors.phone_number && (
                 <p className="text-red-500 text-sm">
@@ -295,7 +295,7 @@ useEffect(() => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-unique w-full   text-white px-4 py-2 rounded"
+              className="bg-primary w-full     text-white px-4 py-2 rounded"
               disabled={loading}
             >
               {loading ? <CSpinner /> : 'Save Changes'}

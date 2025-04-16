@@ -13,7 +13,7 @@ const Checkout = ({ userAddresssExist,}) => {
   return (
     <>
       <div
-        className="mt-16 sm:mt-24 sm:px-[3rem] px-3 mb-16 "
+        className="mt-16 sm:mt-24  mb-16 "
         style={{ textAlign: 'center' }}
       >
         <OrderSummary

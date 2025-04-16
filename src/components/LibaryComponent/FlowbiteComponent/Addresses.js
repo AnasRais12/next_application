@@ -171,131 +171,160 @@ console.log("selectedCountryData!!",selectedCountryData)
   }
 
   return (
-    <>
-      <h2 className="text-xl font-medium mt-4 mb-5">User Information</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block mb-2 text-sm font-normal">Full Name</label>
-          <input
-            type="text"
-            {...register('full_name')}
-            defaultValue={profileData?.name}
-            placeholder="Enter your full name"
-            className="w-full border-2 border-[#f1f0f0] focus:outline-2 focus:outline-orange-400 p-2 rounded"
-          />
-          <p className="text-red-500">{errors.full_name?.message}</p>
-        </div>
-
-        {/* Phone Number */}
-        <div>
-          <label className="block text-sm mb-2 font-normal">Phone Number</label>
-          <input
-            {...register('phone_number')}
-            type="text"
-            placeholder="Enter your No:"
-            className="w-full border-2 p-2 rounded"
-          />
-          {errors.phone_number && (
-            <p className="text-red-500 text-sm">
-              {errors.phone_number.message}
-            </p>
-          )}
-        </div>
-
-        {/* Country Dropdown */}
-        <div>
-          <label className="block text-sm mb-2 font-normal">Country</label>
-          <select
-            {...register('country')}
-            className="w-full border-2 p-2 rounded"
-          >
-            <option value="">Select Country</option>
-            {countries.map((country) => (
-              <option key={country.geonameId} value={country.countryCode}>
-                {country.countryName}
-              </option>
-            ))}
-          </select>
-          {errors.country && (
-            <p className="text-red-500 text-sm">{errors.country.message}</p>
-          )}
-        </div>
-
-        {/* City Dropdown */}
-        <div>
-          <label className="block text-sm mb-2 font-normal">City</label>
-          <select {...register('city')} className="w-full border-2 p-2 rounded">
-            <option value="">Select City</option>
-            {cities?.map((city) => (
-              <option key={city?.geonameId} value={city?.geonameId}>
-                {' '}
-                {/* 🔹 Name store ho raha hai */}
-                {city.name}
-              </option>
-            ))}
-          </select>
-          {errors.city && (
-            <p className="text-red-500 text-sm">{errors.city.message}</p>
-          )}
-        </div>
-
-        {/* Area Dropdown */}
-        <div>
-          <label className="block text-sm mb-2 font-normal">Area</label>
-          <select {...register('area')} className="w-full border-2 p-2 rounded">
-            <option value="">Select Area</option>
-            {areas?.map((area) => (
-              <option key={area?.geonameId} value={area?.name}>
-                {' '}
-                {/* 🔹 Name store ho raha hai */}
-                {area.name}
-              </option>
-            ))}
-          </select>
-          {errors.area && (
-            <p className="text-red-500 text-sm">{errors.area.message}</p>
-          )}
-        </div>
-
-        {/* Address Field */}
-        <div>
-          <label className="block text-sm mb-2 font-normal">House No:</label>
-          <input
-            {...register('address')}
-            type="text"
-            placeholder="Enter Your  House no:"
-            className="w-full border-2 p-2 rounded"
-          />
-          {errors.address && (
-            <p className="text-red-500 text-sm">{errors.address.message}</p>
-          )}
-        </div>
-
-        {/* Zip Code */}
-        <div>
-          <label className="block text-sm mb-2 font-normal">Zip Code</label>
-          <input
-            {...register('zip_code')}
-            type="text"
-            placeholder="Enter Zip Code"
-            className="w-full border-2 p-2 rounded"
-          />
-          {errors.zip_code && (
-            <p className="text-red-500 text-sm">{errors.zip_code.message}</p>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="bg-unique w-full text-white px-4 py-2 rounded"
-          disabled={loading}
+    <div className="bg-white  sm:py-6 sm:px-6 py-3 px-2 rounded-lg ">
+    <h2 className="text-2xl font-bold text-[#1f2937] mb-6">User Information</h2>
+  
+    {error && (
+      <div className="mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+        <p>{error}</p>
+      </div>
+    )}
+  
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {/* Full Name */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          Full Name <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          {...register('full_name')}
+          defaultValue={profileData?.name}
+          placeholder="Enter your full name"
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
+        />
+        {errors.full_name && (
+          <p className="mt-1 text-sm text-red-500">{errors.full_name.message}</p>
+        )}
+      </div>
+  
+      {/* Phone Number */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          Phone Number <span className="text-red-500">*</span>
+        </label>
+        <input
+          {...register('phone_number')}
+          type="tel"
+          placeholder="Enter your phone number"
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
+        />
+        {errors.phone_number && (
+          <p className="mt-1 text-sm text-red-500">{errors.phone_number.message}</p>
+        )}
+      </div>
+  
+      {/* Country Dropdown */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          Country <span className="text-red-500">*</span>
+        </label>
+        <select
+          {...register('country')}
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
         >
-          {loading ? <CSpinner /> : 'Submit'}
-        </button>
-      </form>
-    </>
+          <option value="">Select Country</option>
+          {countries.map((country) => (
+            <option key={country.geonameId} value={country.countryCode}>
+              {country.countryName}
+            </option>
+          ))}
+        </select>
+        {errors.country && (
+          <p className="mt-1 text-sm text-red-500">{errors.country.message}</p>
+        )}
+      </div>
+  
+      {/* City Dropdown */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          City <span className="text-red-500">*</span>
+        </label>
+        <select
+          {...register('city')}
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
+        >
+          <option value="">Select City</option>
+          {cities?.map((city) => (
+            <option key={city?.geonameId} value={city?.geonameId}>
+              {city.name}
+            </option>
+          ))}
+        </select>
+        {errors.city && (
+          <p className="mt-1 text-sm text-red-500">{errors.city.message}</p>
+        )}
+      </div>
+  
+      {/* Area Dropdown */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          Area <span className="text-red-500">*</span>
+        </label>
+        <select
+          {...register('area')}
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
+        >
+          <option value="">Select Area</option>
+          {areas?.map((area) => (
+            <option key={area?.geonameId} value={area?.name}>
+              {area.name}
+            </option>
+          ))}
+        </select>
+        {errors.area && (
+          <p className="mt-1 text-sm text-red-500">{errors.area.message}</p>
+        )}
+      </div>
+  
+      {/* Address Field */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          House Address <span className="text-red-500">*</span>
+        </label>
+        <input
+          {...register('address')}
+          type="text"
+          placeholder="Enter your house number and street"
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
+        />
+        {errors.address && (
+          <p className="mt-1 text-sm text-red-500">{errors.address.message}</p>
+        )}
+      </div>
+  
+      {/* Zip Code */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-[#1f2937]">
+          Zip Code <span className="text-red-500">*</span>
+        </label>
+        <input
+          {...register('zip_code')}
+          type="text"
+          placeholder="Enter your zip/postal code"
+          className="w-full p-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-[#047857] outline-none transition-all"
+        />
+        {errors.zip_code && (
+          <p className="mt-1 text-sm text-red-500">{errors.zip_code.message}</p>
+        )}
+      </div>
+  
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full py-3 px-4 rounded-lg bg-[#047857] hover:bg-[#03644a] text-white font-medium transition-colors ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
+      >
+        {loading ? (
+          <span className="flex items-center justify-center">
+            <CSpinner /> 
+          </span>
+        ) : (
+          'Save Information'
+        )}
+      </button>
+    </form>
+  </div>
   );
 };
 

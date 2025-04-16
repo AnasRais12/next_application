@@ -59,7 +59,7 @@ export default function Navbar() {
   }, [from, setFrom, setRates, setSymbol, userDetails]);
 
   return (
-    <nav className="bg-white shadow w-full fixed top-0 left-0 z-[9999]">
+    <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-[9999]">
       <div className="px-3 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between py-3 gap-4 sm:gap-0">
           {/* Logo */}
@@ -72,28 +72,28 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Search Bar */}
-          <div className="hidden lg:flex flex-1 items-center mx-6 border border-gray-300 rounded-md shadow-sm bg-white">
-            <select className="bg-light px-3 py-2 w-1/5 text-sm text-dark border-r outline-none">
-              <option>All Categories</option>
-              <option>Electronics</option>
-              <option>Books</option>
-              <option>Crafts</option>
-            </select>
-            <input
-              type="text"
-              className="flex-1 px-4 py-2 text-dark outline-none"
-              placeholder="Search products..."
-            />
-            <button className="bg-primary px-4 py-2 hover:bg-blue-700">
-              <FiSearch className="text-white" />
-            </button>
-          </div>
+          <div className="hidden lg:flex flex-1 items-stretch mx-6 rounded-lg shadow-md border border-gray-300 overflow-hidden">
+  <select className="px-4 py-3 text-sm text-gray-700 border-r outline-none focus:bg-white">
+    <option>All Categories</option>
+    <option>Electronics</option>
+    <option>Books</option>
+    <option>Crafts</option>
+  </select>
+  <input
+    type="text"
+    className="flex-1 px-4 text-gray-800 py-3 placeholder:text-gray-400 outline-none"
+    placeholder="Search for products..."
+  />
+  <button className="bg-green-700 px-5 flex py-3  items-center justify-center text-white hover:bg-green-800 transition-all">
+    <FiSearch className="text-lg" />
+  </button>
+</div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-2 lg:space-x-3">
             {/* Mobile Search */}
             <button className="block lg:hidden" onClick={() => setSearchBar(true)}>
-              <FiSearch className="text-2xl text-dark hover:text-primary" />
+              <FiSearch className="lg:text-[30px] text-[25px] mx-2  text-dark hover:text-primary" />
             </button>
 
             {/* Enhanced Currency Dropdown */}
@@ -159,7 +159,7 @@ export default function Navbar() {
     {user ? (
       <span className="text-base font-semibold">{user.email[0].toUpperCase()}</span>
     ) : (
-      <FiUser className="text-xl" />
+      <FiUser className="text-[25px] lg:text-[30px]" />
     )}
   </button>
 
@@ -173,10 +173,16 @@ export default function Navbar() {
       ></div>
       
       {/* Slider panel */}
-      <div className="fixed top-0 sm:right-2 right-0 sm:h-fit h-full  w-full sm:w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto">
+      <motion.div
+  initial={{ x: '100%' }}
+  animate={{ x: showModal ? 0 : '100%' }}
+  transition={{ duration: 0.6, ease: "anticipate" }}
+  className="fixed top-0 sm:right-0 right-0 sm:h-fit h-full w-full sm:w-64 bg-white shadow-xl z-50 overflow-y-auto"
+>
   {/* Header with close button */}
   <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
-    <h3 className="font-semibold text-lg">Menu</h3>
+    <h3 className="font-semibold text-lg"><FiUser className="text-[25px] lg:text-[30px]" /></h3>
+   
     <button 
       onClick={() => setShowModal(false)}
       className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
@@ -270,7 +276,7 @@ export default function Navbar() {
       )}
     </div>
   </div>
-</div>
+</motion.div>
     </>
   )}
 </div>
@@ -280,7 +286,7 @@ export default function Navbar() {
               onClick={() => setWishlistModal(true)} 
               className="relative p-1 hover:text-primary transition-colors"
             >
-              <FiHeart className="text-[25px] text-dark hover:text-primary" />
+              <FiHeart className="text-[25px] lg:text-[30px] text-dark hover:text-primary" />
               {wishListState?.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
                   {wishListState.length}
@@ -290,7 +296,7 @@ export default function Navbar() {
 
             {/* Cart */}
             <Link href="/shoppingcart" className="relative p-1 hover:text-primary transition-colors">
-              <FiShoppingCart className="text-[25px] text-dark hover:text-primary" />
+              <FiShoppingCart className="text-[25px] lg:text-[30px] text-dark hover:text-primary" />
               {cartItem?.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
                   {cartItem.length}

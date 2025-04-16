@@ -60,7 +60,7 @@ function page() {
         <>
           {addressForm ? (
             <div className="mt-4 pt-10 sm:pt-20 mb-10 bg-gray-50">
-              <div className=" w-full sm:w-[90%] md:w-[70%] mx-auto  border sm:border-2 bg-white p-4 sm:p-6 shadow-md rounded-lg">
+              <div className=" w-full sm:w-[90%] md:max-w-7xl xl:max-w-4xl mx-auto  border sm:border-2 bg-white p-2 sm:p-6 shadow-md rounded-lg">
                 <AddressForm setUserAddresssExist={setUserAddresssExist} />
               </div>
             </div>
@@ -72,5 +72,6 @@ function page() {
     </>
   );
 }
+
 
 export default page;

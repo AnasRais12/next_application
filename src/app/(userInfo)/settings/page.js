@@ -21,6 +21,7 @@ const page = () => {
  
   if ((session?.user?.id && wishListLoading) || cartListLoading || userAddressLoading) {
     return <CustomSpinner />;
+    // return <h1>Hello World</h1>
   }
 
   return (

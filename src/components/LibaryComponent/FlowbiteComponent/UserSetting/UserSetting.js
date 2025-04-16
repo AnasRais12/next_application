@@ -72,19 +72,19 @@ const UserSetting = ({ userAddressLoading, userAddressInfo }) => {
                 email address.
               </p>
             </div>
-            <button
+            {/* <button
               onClick={() => router.push('/home')}
               className="text-[25px] hover:text-[red] hidden sm:block"
             >
               <RxCross2 />
-            </button>
+            </button> */}
             {/* ⬅️ Arrow icon (sm screens par dikhega) */}
-            <button
+            {/* <button
               onClick={() => router.push('/home')}
               className="text-[25px] hover:text-[red] block sm:hidden"
             >
               <GoArrowLeft />
-            </button>
+            </button> */}
           </div>
           {/*  user Details*/}
           {isAddressExist ? (
@@ -233,7 +233,7 @@ const UserSetting = ({ userAddressLoading, userAddressInfo }) => {
               {!userAddressInfo ||
                 (userAddressInfo.length === 0 && (
                   <div className="w-full flex justify-start">
-                    <div className=" w-full  border sm:border-2 bg-white p-4 sm:p-6 shadow-md rounded-lg">
+                    <div className=" w-full  border sm:border-2 bg-white p-2 sm:p-2 shadow-md rounded-lg">
                       <AddressForm
                         setIsAddressExist={setIsAddressExist}
                         isAddressExist={isAddressExist}
