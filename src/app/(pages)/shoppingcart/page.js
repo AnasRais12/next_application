@@ -7,6 +7,8 @@ import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
 import useSession from '@/utils/UserExist/GetSession';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import Map from '@/components/Map';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import CustomSpinner from '@/components/Spinner';
 import Login from '@/components/authCompoonent/Login';
@@ -51,6 +53,7 @@ function Page() {
 
   return (
     <div>
+      <Navbar/>
       <Shopping_Cart deliveryCharges={deliveryCharges} />
       <div className="hidden">
         <Map
@@ -60,6 +63,7 @@ function Page() {
           heights={'0px'}
         />
       </div>
+      <Footer />
     </div>
   );
 }

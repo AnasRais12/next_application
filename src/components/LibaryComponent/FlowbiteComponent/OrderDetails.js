@@ -14,9 +14,9 @@ export const OrderDetailsModal = ({ order, onClose, setSelectedOrder }) => {
   return (
     <div className="fixed inset-0 bg-black z-[9999]  bg-opacity-50 flex items-center justify-center p-4">
       <div className={`bg-white  rounded-lg  w-full max-w-2xl`}>
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold">Order Details</h3>
+        <div className="p-6 ">
+          <div className="flex border-b-2 pb-2 justify-between items-center mb-4">
+            <h3 className="text-xl  font-semibold text-dark">Order Details</h3>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-red-700"
@@ -101,7 +101,7 @@ export const OrderDetailsModal = ({ order, onClose, setSelectedOrder }) => {
                 <FiPrinter className="mr-2" /> Print
               </button>
               <button
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 flex items-center"
+                className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-green-700 flex items-center"
                 onClick={() => alert('Download started')}
               >
                 <FiDownload className="mr-2" /> Download
@@ -111,7 +111,7 @@ export const OrderDetailsModal = ({ order, onClose, setSelectedOrder }) => {
             <>
               <div className="sm:mt-6 custom:mt-6 xs:mt-2 custom:space-x-3 custom:flex-row flex sm:flex-row xs:flex-col justify-end items-center w-fill  sm:space-x-3 xs:space-y-2">
                 <button
-                  className="px-4 py-2 text-sm font-medium text-white xs:w-full bg-orange-600 rounded-md hover:bg-blue-700 "
+                  className="px-4 py-2 text-sm font-medium text-white xs:w-full bg-primary rounded-md hover:bg-green-700 "
                   onClick={() => router.push(`/ordertracking/${orderId}`)}
                 >
                   Track Order

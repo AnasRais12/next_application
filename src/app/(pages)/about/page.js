@@ -1,7 +1,26 @@
+"use client"
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import CustomSpinner from '@/components/Spinner';
+import { useFetchCartlist } from '@/customHooks/useFetchCartList';
+import { useFetchWishlist } from '@/customHooks/useFetchWishList';
+import useSession from '@/utils/UserExist/GetSession';
 import React from 'react';
 
 function AboutPage() {
+
+   const session = useSession();
+    useFetchWishlist(session?.user?.id);
+    useFetchCartlist(session?.user?.id);
+    const { cartListLoading } = useFetchCartlist(session?.user?.id);
+    const { wishListLoading } = useFetchWishlist(session?.user?.id);
+  
+    if ((session?.user?.id && wishListLoading) || cartListLoading) {
+      return <CustomSpinner />;
+    }
   return (
+    <>
+    <Navbar/>
     <div className=" min-h-screen">
       {/* Hero Header */}
     
@@ -19,7 +38,7 @@ function AboutPage() {
 
       {/* Our Story Section */}
       <section className="py-16  bg-gray-50 mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="mx-auto text-center">
           <h2 className="text-3xl font-bold text-dark mb-6">Our <span className='text-primary'>Story</span></h2>
           <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto mb-8"></div>
           <p className="text-lg text-gray-600 mb-8">
@@ -36,7 +55,7 @@ function AboutPage() {
 
       {/* Mission and Values */}
       <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
+        <div className="  mx-auto p-6 md:p-8 xl:px-14">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-dark mb-6">Our <span className='text-primary'>Mission</span></h2>
@@ -76,7 +95,7 @@ function AboutPage() {
 
       {/* Why Choose Us */}
       <div className='bg-gray-50'>
-      <section className="py-16  container   mx-auto px-4">
+      <section className="  mx-auto p-6 md:p-8 xl:px-14">
         <div className="text-center  mb-12">
           <h2 className="text-3xl font-bold text-dark mb-4">Why Choose <span className='text-primary'>ShopEase?</span></h2>
           <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto"></div>
@@ -136,7 +155,7 @@ function AboutPage() {
 
       {/* Testimonials */}
       <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
+        <div className=" mx-auto p-6 md:p-8 xl:px-14">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-dark mb-4">What Our <span className='text-primary'>Customers Say</span></h2>
             <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto"></div>
@@ -181,7 +200,7 @@ function AboutPage() {
 
       {/* CTA Section */}
       <section className="py-16 bg-gray-50  text-dark text-center">
-        <div className="container mx-auto px-4">
+        <div className="p-6 md:p-8 xl:px-14 mx-auto px-4">
           <h2 className="text-3xl font-bold mb-6">Ready to Experience <span className='text-primary'>ShopEase?</span></h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Join millions of satisfied customers shopping with confidence today.
@@ -193,6 +212,8 @@ function AboutPage() {
         </div>
       </section>
     </div>
+    <Footer/>
+    </>
   );
 }
 

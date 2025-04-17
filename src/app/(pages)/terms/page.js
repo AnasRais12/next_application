@@ -1,7 +1,26 @@
+"use client"
 import React from 'react';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import CustomSpinner from '@/components/Spinner';
+import { useFetchCartlist } from '@/customHooks/useFetchCartList';
+import { useFetchWishlist } from '@/customHooks/useFetchWishList';
+import useSession from '@/utils/UserExist/GetSession';
+
 
 const TermsAndConditions = () => {
+      const session = useSession();
+                useFetchWishlist(session?.user?.id);
+                useFetchCartlist(session?.user?.id);
+                const { cartListLoading } = useFetchCartlist(session?.user?.id);
+                const { wishListLoading } = useFetchWishlist(session?.user?.id);
+              
+                if ((session?.user?.id && wishListLoading) || cartListLoading) {
+                  return <CustomSpinner />;
+                }
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10 ">
       <div className=" ">
         {/* Header Card */}
@@ -134,6 +153,9 @@ const TermsAndConditions = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    {/* Footer */}
+    </>
   );
 };
 

@@ -7,6 +7,11 @@ import CustomSpinner from '@/components/Spinner';
 import { supabase } from '@/lib/supabase';
 import Map from '@/components/Map';
 import { useRouter } from 'next/navigation';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import { useFetchCartlist } from '@/customHooks/useFetchCartList';
+import { useFetchWishlist } from '@/customHooks/useFetchWishList';
+import useSession from '@/utils/UserExist/GetSession';
 import Link from 'next/link';
 function page() {
   const params = useParams();
@@ -15,6 +20,14 @@ function page() {
   const [distance, setDistance] = useState();
   const initialTrackingTime = trackingId?.[0]?.tracking_time ?? null;
   const [trackingTime, setTrackingTime] = useState(initialTrackingTime);
+    const session = useSession();
+                  useFetchWishlist(session?.user?.id);
+                  useFetchCartlist(session?.user?.id);
+                  const { cartListLoading } = useFetchCartlist(session?.user?.id);
+                  const { wishListLoading } = useFetchWishlist(session?.user?.id);
+                
+              
+  
 
   useEffect(() => {
     if (initialTrackingTime === 0) {
@@ -51,16 +64,18 @@ function page() {
   }
   if (shipingAddressLoading) return <CustomSpinner />;
 
-  console.log(trackingId, '___>> Tracking kia hai ');
-  console.log(trackingTime, 'Time-');
+  if ((session?.user?.id && wishListLoading) || cartListLoading) {
+    return <CustomSpinner />;
+  }
 
   return (
     <>
+      <Navbar />
       {trackingId.length == 0 ? (
         <div className="text-center mt-20 text-gray-500 sm:text-xl text-md bg-white py-20 flex-col gap-3  flex justify-center items-center ">
           You haven’t placed an order yet. Shop now and track your orders here!
             <Link href="/home"
-            className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
+            className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-green-700 transition"
           >
             Shop Now
           </Link>
@@ -79,7 +94,7 @@ function page() {
             </div>
           ) : (
             <div className="bg-gray-100 min-h-screen mt-20 flex justify-center items-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] ">
+              <div className="bg-white p-4 rounded-lg shadow-lg w-full  md:px-10 md:py-10 ">
                 <h2 className="text-2xl font-semibold text-left border-b-2 pb-2 text-gray-800 mb-6">
                   Order Tracking
                 </h2>
@@ -149,6 +164,7 @@ function page() {
           )}
         </>
       )}
+      <Footer />
     </>
   );
 }

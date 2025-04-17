@@ -10,6 +10,8 @@ import Checkout from '@/components/LibaryComponent/MaterialUi Compomnent/Checkou
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
 import Map from '@/components/Map';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 function page() {
   const session = useSession();
   useFetchCartlist(session?.user?.id);
@@ -41,6 +43,7 @@ function page() {
   }
   return (
     <>
+    <Navbar/>
       {userAddresssExist ? (
         <>
              <div className='hidden'>
@@ -69,6 +72,7 @@ function page() {
           )}
         </>
       )}
+      <Footer/>
     </>
   );
 }

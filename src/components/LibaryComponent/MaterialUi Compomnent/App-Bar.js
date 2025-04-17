@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { FiShoppingCart, FiUser, FiSearch, FiHeart, FiChevronDown, FiCheck, FiX, FiChevronRight } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiSearch, FiHeart, FiChevronDown, FiCheck, FiX, FiChevronRight, FiSmartphone, FiHeadphones, FiCamera, FiShoppingBag } from 'react-icons/fi';
 import Wishlist from '../FlowbiteComponent/WishList';
 import { useRouter } from 'next/navigation';
 import { getCart, getWishList } from '@/utils/reduxGlobalStates/ReduxStates';
@@ -60,7 +60,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-[9999]">
-      <div className="px-3 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between py-3 gap-4 sm:gap-0">
           {/* Logo */}
           <div className="flex items-center">
@@ -181,7 +181,12 @@ export default function Navbar() {
 >
   {/* Header with close button */}
   <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
-    <h3 className="font-semibold text-lg"><FiUser className="text-[25px] lg:text-[30px]" /></h3>
+    <h3 className="font-semibold text-lg capitalize">{user ?    <>
+      Hello{' '}
+      <span className="text-primary">
+        {user?.user_metadata?.full_name || userDetails?.full_name}
+      </span> 
+    </> : <FiUser className="text-[25px] lg:text-[30px]" />}</h3>
    
     <button 
       onClick={() => setShowModal(false)}
@@ -196,7 +201,7 @@ export default function Navbar() {
     {DropdownMenu.map((item, index) => (
       <li
         key={index}
-        className="px-4 py-3 hover:bg-gray-50 capitalize cursor-pointer transition-colors flex items-center"
+        className="px-4 py-3 hover:bg-primary hover:text-white capitalize cursor-pointer transition-colors flex items-center"
         onClick={async () => {
           await router.push(`/${item}`);
           setShowModal(false);
@@ -288,17 +293,17 @@ export default function Navbar() {
             >
               <FiHeart className="text-[25px] lg:text-[30px] text-dark hover:text-primary" />
               {wishListState?.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs size-5 flex items-center justify-center rounded-full">
                   {wishListState.length}
                 </span>
               )}
             </button>
 
             {/* Cart */}
-            <Link href="/shoppingcart" className="relative p-1 hover:text-primary transition-colors">
+            <Link href="/shoppingcart" className="relative  hover:text-primary transition-colors">
               <FiShoppingCart className="text-[25px] lg:text-[30px] text-dark hover:text-primary" />
               {cartItem?.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs size-5 flex items-center justify-center rounded-full">
                   {cartItem.length}
                 </span>
               )}
@@ -308,42 +313,99 @@ export default function Navbar() {
 
         {/* Mobile Search Bar Overlay */}
         {searchBar && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black bg-opacity-50 z-[10000]"
-          >
-            <motion.div 
-              initial={{ y: -50 }}
-              animate={{ y: 0 }}
-              className="bg-white p-4 w-full"
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.2 }}
+    className="fixed inset-0 bg-black bg-opacity-50 z-[10000] backdrop-blur-sm"
+  >
+    <motion.div 
+      initial={{ y: -50 }}
+      animate={{ y: 0 }}
+      className="bg-white p-4 w-full shadow-lg"
+    >
+      <div className="flex justify-between items-center mb-4">
+        <span className="text-xl font-bold text-primary">ShopEase</span>
+        <button 
+          onClick={() => setSearchBar(false)}
+          className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <RxCross2 className="text-dark text-2xl" />
+        </button>
+      </div>
+      
+      <div className="flex items-center border-2 border-primary rounded-lg overflow-hidden shadow-sm mb-4">
+      
+        <input
+          type="text"
+          className="flex-1 px-4 py-3 text-dark outline-none"
+          placeholder="Search for products, brands and more..."
+        />
+        <button className="bg-primary px-6 py-3 hover:bg-green-700 transition-colors">
+          <FiSearch size={20} className="text-white" />
+        </button>
+      </div>
+
+      {/* Category Links Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="px-2 py-3"
+      >
+        <h3 className="text-sm font-medium text-gray-500 mb-3">POPULAR CATEGORIES</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {[
+            { name: "Smartphones", icon: <FiSmartphone className="mr-2" /> },
+            // { name: "Laptops", icon: <FiLaptop className="mr-2" /> },
+            { name: "Headphones", icon: <FiHeadphones className="mr-2" /> },
+            { name: "Cameras", icon: <FiCamera className="mr-2" /> },
+            { name: "Fashion", icon: <FiShoppingBag className="mr-2" /> },
+            // { name: "Books", icon: <FiBook className="mr-2" /> },
+            // { name: "Home Appliances", icon: <FiHome className="mr-2" /> },
+            // { name: "Beauty", icon: <FiSmile className="mr-2" /> },
+          ].map((category, index) => (
+            <motion.a
+              key={index}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="#"
+              className="flex items-center px-4 py-2 bg-gray-50 rounded-lg hover:bg-primary hover:text-white transition-all duration-200"
             >
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-xl font-bold text-primary">ShopEase</span>
-                <button onClick={() => setSearchBar(false)}>
-                  <RxCross2 className="text-dark text-2xl" />
-                </button>
-              </div>
-              <div className="flex items-center border rounded-md shadow-sm">
-                <select className="bg-light px-3 py-2 w-[35%] text-sm border-r outline-none">
-                  <option>All</option>
-                  <option>Electronics</option>
-                  <option>Books</option>
-                </select>
-                <input
-                  type="text"
-                  className="flex-1 px-4 py-2 text-dark outline-none"
-                  placeholder="Search..."
-                />
-                <button className="bg-primary px-4 py-2 hover:bg-blue-700">
-                  <FiSearch size={18} className="text-white" />
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
+              {category.icon}
+              <span className="text-sm font-medium">{category.name}</span>
+            </motion.a>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Recent Searches (optional) */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mt-4 px-2 py-3"
+      >
+        <h3 className="text-sm font-medium text-gray-500 mb-3">RECENT SEARCHES</h3>
+        <div className="flex flex-wrap gap-2">
+          {["iPhone 15", "Macbook Pro", "Wireless Earbuds", "Smart Watch"].map((search, index) => (
+            <motion.span
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              className="inline-flex items-center px-3 py-1.5 bg-gray-100 rounded-full text-sm"
+            >
+              {search}
+              <button className="ml-2 text-gray-400 hover:text-gray-600">
+                <RxCross2 size={14} />
+              </button>
+            </motion.span>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  </motion.div>
+)}
 
         {/* Wishlist Modal */}
         {wishlistModal && <Wishlist setWishlistModal={setWishlistModal} />}

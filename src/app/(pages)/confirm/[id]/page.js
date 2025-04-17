@@ -52,7 +52,7 @@ export default function ConfirmOrder() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white w-[95%] sm:w-[70%] lg:w-[40%] p-6 sm:mx-0 mx-2 rounded-lg shadow-lg text-center">
-        <BsCheckCircle className="w-16 h-16 text-orange-500 mx-auto" />
+        <BsCheckCircle className="w-16 h-16 text-primary mx-auto" />
         <h1 className="text-2xl font-semibold mt-4">Order Confirmed</h1>
         <p className="mt-4 text-lg capitalize">
           Thank you,{' '}
@@ -67,13 +67,13 @@ export default function ConfirmOrder() {
         </p>
         <div className="flex flex-col gap-3">
           <Link href="/home"
-            className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
+            className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-green-700 transition"
           >
             Back to Home
           </Link>
           <button
             onClick={() => TrackOrder()}
-            className=" px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
+            className=" px-4 py-2 bg-primary text-white rounded-lg hover:bg-green-700 transition"
           >
             Track Your Order
           </button>

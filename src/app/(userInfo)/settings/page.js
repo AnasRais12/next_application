@@ -9,6 +9,8 @@ import { createAddress, purchaseLabel } from '@/helper/ShippingHelper';
 import { supabase } from '@/lib/supabase';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import useSession from '@/utils/UserExist/GetSession';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 
 const page = () => {
   const session = useSession();
@@ -26,10 +28,12 @@ const page = () => {
 
   return (
     <>
+    <Navbar/>
       <UserSetting
         userAddressLoading={userAddressLoading}
         userAddressInfo={userAddressInfo}
       />
+      <Footer/>
     </>
   );
 };

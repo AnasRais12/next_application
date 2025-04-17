@@ -3,12 +3,9 @@ import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { ToastContainer } from 'react-toastify';
-import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 import Script from 'next/script';
-import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
 import './globals.css';
 import { GlobalProvider } from '@/context/globalprovider/globalProvider';
-import { usePathname } from 'next/navigation';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -27,10 +24,7 @@ const geistMono = localFont({
 // };
 
 export default function RootLayout({ children }) {
-  const pathName = usePathname();
-  const isLoginPage = pathName === '/login';
-  const isRegisterPage = pathName === '/register';
-  const isForgetPage = pathName === '/verifyaccount';
+
 
   return (
     <html lang="en">
@@ -56,10 +50,8 @@ export default function RootLayout({ children }) {
 />
         <Provider store={store}>
           <GlobalProvider>
-            {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
             {children}
             <ToastContainer autoClose={1000} />
-            {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />}
           </GlobalProvider>
         </Provider>
       </body>
