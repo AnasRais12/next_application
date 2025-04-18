@@ -12,11 +12,8 @@ import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 
 function page() {
   const session = useSession();
-  useFetchWishlist(session?.user?.id);
-  useFetchCartlist(session?.user?.id);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
-
   if ((session?.user?.id && wishListLoading) || cartListLoading) {
     return <CustomSpinner />;
   }
