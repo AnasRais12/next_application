@@ -149,11 +149,11 @@ function Register() {
   </div>
 
   {/* Register Form Section */}
-  <div className="w-full lg:w-1/2 h-screen flex items-center justify-center p-4 sm:p-8">
+  <div className="w-full lg:w-1/2 h-screen  flex items-center justify-center p-4 sm:p-8">
     <div className="max-w-md w-full">
       {/* Logo/Header - Matching Login Page */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-primary hover:bg-green-800 hover:bg-green-800 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
+        <div className="w-16 h-16 bg-primary  hover:bg-green-800 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
           </svg>
@@ -170,7 +170,7 @@ function Register() {
             {...register('username')}
             type="text"
             placeholder="Choose a username"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border-2 border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
           />
           {errors.username && (
             <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
@@ -183,7 +183,7 @@ function Register() {
             {...register('email')}
             type="email"
             placeholder="your@email.com"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border-2 border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -196,7 +196,7 @@ function Register() {
             {...register('password')}
             type="password"
             placeholder="••••••••"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border-2 border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
@@ -231,7 +231,7 @@ function Register() {
         onClick={() => signInWithGoogle(setgoogleLoading)}
         disabled={googleLoading}
         type="button"
-        className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-[#1f2937] bg-white border border-gray-200 hover:bg-gray-50 transition-all"
+        className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-[#1f2937] bg-white border-2 border-[#ccc] hover:bg-gray-50 transition-all"
       >
         {googleLoading ? (
           <CSpinner color="text-[#1f2937]" size="sm" />

@@ -166,7 +166,7 @@ function Login({ background, position }) {
                   {...register('email')}
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full px-4 py-3 border border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border-2 border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -180,7 +180,7 @@ function Login({ background, position }) {
                   {...register('password')}
                   type="password"
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 border border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border-2 border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
                 />
                 <div className='w-full flex justify-end mt-2'>
                       <button

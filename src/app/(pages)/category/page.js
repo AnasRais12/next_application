@@ -5,6 +5,11 @@ import { BsToggleOn, BsToggleOff } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 import { FaHeart } from 'react-icons/fa6';
 import { RxCross2 } from 'react-icons/rx';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
+import Navbar from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import CustomSpinner from '@/components/Spinner';
+import { useFetchCartlist } from '@/customHooks/useFetchCartList';
+import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import useSession from '@/utils/UserExist/GetSession';
 import { useDispatch } from 'react-redux';
 import { LiaSlidersHSolid } from "react-icons/lia";
@@ -51,7 +56,13 @@ const categories = ['Electronics', 'Fashion', 'Home', 'Sports'];
 const brands = ['SoundMaster', 'TechVision', 'LuxStyle', 'SportsPro'];
 
 const ProductFilter = () => {
-  const session = useSession();
+   const session = useSession();
+          useFetchWishlist(session?.user?.id);
+          useFetchCartlist(session?.user?.id);
+          const { cartListLoading } = useFetchCartlist(session?.user?.id);
+          const { wishListLoading } = useFetchWishlist(session?.user?.id);
+        
+        
   const router = useRouter();
   const wishlistItems = getWishList();
   const dispatch = useDispatch();
@@ -178,9 +189,13 @@ const ProductFilter = () => {
       }));
     }
   };
+  if ((session?.user?.id && wishListLoading) || cartListLoading) {
+    return <CustomSpinner />;
+  }
 
   return (
     <>
+    <Navbar/>
     <div className={`mx-auto  ${isFilterVisible ? 'mt-20' : 'mt-6' }    lg:mt-20  sm:px-4 px-2 py-4`}>
     {isFilterVisible && (
         <div
@@ -420,6 +435,7 @@ const ProductFilter = () => {
         </div>
       </div>
     </div>
+    <Footer/>
     </>
   );
 };
