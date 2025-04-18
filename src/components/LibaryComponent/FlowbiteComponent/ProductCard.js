@@ -9,10 +9,17 @@ import Link from 'next/link';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { addToCart,} from '@/app/store/features/CartReducer/CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFetchWishlist } from '@/customHooks/useFetchWishList';
+import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 const ProductCard = (props) => {
+   const session = useSession();
+    useFetchWishlist(session?.user?.id);
+    useFetchCartlist(session?.user?.id);
+    const { cartListLoading } = useFetchCartlist(session?.user?.id);
+    const { wishListLoading } = useFetchWishlist(session?.user?.id);
+  
   const { data } = props;
   const [quantity, setQuantity] = useState(props.product?.quantity || 1);
-  const session = useSession();
   const [loading, setloading] = useState(false);
   const dispatch = useDispatch();
   const cart = getCart();
@@ -74,10 +81,15 @@ const ProductCard = (props) => {
       setloading(false);
     }
   };
-  console.log('Cart Product Page wala ', cart);
-  console.log('Cart', cart);
+
+  if ((session?.user?.id && wishListLoading) || cartListLoading) {
+    return <CustomSpinner />;
+  }
+ 
 
   return (
+    <>
+    <Navbar/>
     <div className="font-[sans-serif] mt-20 py-10 flex justify-center p-4 bg-gray-50">
       <div className="lg:max-w-6xl max-w-xl mx-auto">
         <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-12 max-sm:gap-8">
@@ -175,7 +187,7 @@ const ProductCard = (props) => {
                   disabled={existingProduct}
                   onClick={handleAddToCart}
                   type="button"
-                  className={`px-4 py-3 w-[45%] rounded-[10px] ${existingProduct ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ' bg-unique text-white'} text-sm font-semibold`}
+                  className={`px-4 py-3 w-[45%] rounded-[10px] ${existingProduct ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ' bg-primary text-white'} text-sm font-semibold`}
                 >
                   {loading ? (
                     <CSpinner />
@@ -187,7 +199,7 @@ const ProductCard = (props) => {
                 </button>
                 <button
                   type="button"
-                  className="px-4 py-3 w-[45%] border  bg-unique text-white rounded-[10px] text-sm font-semibold"
+                  className="px-4 py-3 w-[45%] border  bg-primary text-white rounded-[10px] text-sm font-semibold"
                 >
                   Buy it now
                 </button>
@@ -206,6 +218,8 @@ const ProductCard = (props) => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
