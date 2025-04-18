@@ -164,7 +164,7 @@ const ProductCard = (props) => {
                   onClick={handleDecrement}
                   disabled={existingProduct}
                   type="button"
-                  className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-orange-600  focus:outline-none  transition duration-200 ease-in-out"
+                  className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-primary  focus:outline-none  transition duration-200 ease-in-out"
                 >
                   <AiOutlineMinus />
                 </button>
@@ -177,7 +177,7 @@ const ProductCard = (props) => {
                   onClick={handleIncrement}
                   disabled={existingProduct}
                   type="button"
-                  className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200 ease-in-out"
+                  className="flex items-center justify-center w-8 h-8 bg-gray-300 hover:text-white rounded-full hover:bg-primary focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200 ease-in-out"
                 >
                   <AiOutlinePlus />
                 </button>
