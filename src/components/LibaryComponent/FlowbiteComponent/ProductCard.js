@@ -4,21 +4,21 @@ import CSpinner from '@/components/CSpinner';
 import Swal from 'sweetalert2';
 import useSession from '@/utils/UserExist/GetSession';
 import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
+import Footer from './Footer';
 import { supabase } from '@/lib/supabase';
+import CustomSpinner from '@/components/Spinner';
 import Link from 'next/link';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { addToCart,} from '@/app/store/features/CartReducer/CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
+import Navbar from '../MaterialUi Compomnent/App-Bar';
 const ProductCard = (props) => {
    const session = useSession();
-    useFetchWishlist(session?.user?.id);
-    useFetchCartlist(session?.user?.id);
     const { cartListLoading } = useFetchCartlist(session?.user?.id);
     const { wishListLoading } = useFetchWishlist(session?.user?.id);
-  
-  const { data } = props;
+    const { data } = props;
   const [quantity, setQuantity] = useState(props.product?.quantity || 1);
   const [loading, setloading] = useState(false);
   const dispatch = useDispatch();
