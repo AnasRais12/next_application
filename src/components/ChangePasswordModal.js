@@ -75,8 +75,8 @@ function ChangePassword({ setchangepasswordModal }) {
         className={`fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center `}
       >
         <div className="max-w-md  w-[90%] p-6 bg-white shadow-lg rounded-lg">
-          <div className="flex justify-between px-2">
-            <h2 className="text-xl font-bold mb-4">Change Password</h2>
+          <div className="flex justify-between ">
+            <h2 className="text-xl font-medium mb-4">Change Password</h2>
             <button
               onClick={() => setchangepasswordModal(false)}
               className="text-xl font-bold mb-4 hover:text-[red]"
@@ -90,7 +90,7 @@ function ChangePassword({ setchangepasswordModal }) {
               <input
                 type="password"
                 {...register('currentPassword')}
-                className="w-full border-2 border-[#ccc] focus:outline-orange-600   p-1 sm p-1:sm:p-2 rounded"
+                className="w-full border-2 border-[#ccc] focus:outline-green-600   p-1 sm p-1:sm:p-2 rounded"
               />
               {errors.currentPassword && (
                 <p className="text-red-500">{errors.currentPassword.message}</p>
@@ -102,7 +102,7 @@ function ChangePassword({ setchangepasswordModal }) {
               <input
                 type="password"
                 {...register('newPassword')}
-                className="w-full border-2 border-[#ccc] focus:outline-orange-600   p-1 sm:p-2 rounded"
+                className="w-full border-2 border-[#ccc] focus:outline-green-600   p-1 sm:p-2 rounded"
               />
               {errors.newPassword && (
                 <p className="text-red-500">{errors.newPassword.message}</p>
@@ -114,7 +114,7 @@ function ChangePassword({ setchangepasswordModal }) {
               <input
                 type="password"
                 {...register('confirmPassword')}
-                className="w-full border-2 border-[#ccc] focus:outline-orange-600 p-1 sm:p-2 rounded"
+                className="w-full border-2 border-[#ccc] focus:outline-green-600 p-1 sm:p-2 rounded"
               />
               {errors.confirmPassword && (
                 <p className="text-red-500">{errors.confirmPassword.message}</p>
@@ -123,7 +123,7 @@ function ChangePassword({ setchangepasswordModal }) {
 
             <button
               type="submit"
-              className="w-full px-3 py-2 bg-blue-500 text-white rounded"
+              className="w-full px-3 py-2 bg-primary text-white rounded"
               disabled={loading}
             >
               {loading ? 'Updating...' : 'Change Password'}

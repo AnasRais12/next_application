@@ -153,7 +153,7 @@ export default function Navbar() {
   <button
     onClick={() => setShowModal(!showModal)}
     className={`rounded-full size-8 flex items-center justify-center transition ${
-      user ? 'bg-primary text-white hover:bg-blue-700' : 'text-dark hover:text-primary'
+      user ? 'bg-primary text-white hover:bg-green-700' : 'text-dark hover:text-primary'
     }`}
   >
     {user ? (

@@ -7,6 +7,7 @@ import { FiSearch, FiFilter, FiDownload, FiPrinter, FiPackage, FiShoppingBag, Fi
 import CustomSpinner from '@/components/Spinner';
 import { OrderDetailsModal } from './OrderDetails';
 import Link from 'next/link';
+import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 
 const OrderHistory = () => {
   const session = useSession();
@@ -14,6 +15,7 @@ const OrderHistory = () => {
     session?.user?.id
   );
   const [loading, setLoading] = useState(true);
+   const {  setSettingModal } = GlobalDetails();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -42,7 +44,7 @@ const OrderHistory = () => {
               <h1 className="sm:text-4xl text-3xl font-bold  text-primary  mb-1">Your Orders</h1>
               <p className="text-gray-500 sm:text-lg text-sm">Track and manage your purchases</p>
             </div>
-            <Link href="/home"
+            <Link onClick={()=>setSettingModal(false)} href="/home"
               className="px-5 py-2.5 cursor-pointer bg-primary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
             >
               <FiShoppingBag />
@@ -50,7 +52,7 @@ const OrderHistory = () => {
             </Link>
           </div>
   
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-xl shadow-lg border-2 border-gray-100 overflow-hidden">
             <div className="sm:p-6 p-2 py-6 border-b border-gray-100  ">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="relative flex-1  max-w-md">
