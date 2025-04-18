@@ -8,8 +8,7 @@ import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import useSession from '@/utils/UserExist/GetSession';
 export default function AccountSupportPage() {
   const session = useSession();
-          useFetchWishlist(session?.user?.id);
-          useFetchCartlist(session?.user?.id);
+  
           const { cartListLoading } = useFetchCartlist(session?.user?.id);
           const { wishListLoading } = useFetchWishlist(session?.user?.id);
         

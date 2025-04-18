@@ -15,8 +15,7 @@ import CustomSpinner from '@/components/Spinner';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 function page() {
   const session = useSession();
-  useFetchWishlist(session?.user?.id);
-  useFetchCartlist(session?.user?.id);
+ 
   const params = useParams();
   const router = useRouter();
   const {userDetails} = UserQuery()

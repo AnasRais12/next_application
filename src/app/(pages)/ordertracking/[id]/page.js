@@ -21,8 +21,7 @@ function page() {
   const initialTrackingTime = trackingId?.[0]?.tracking_time ?? null;
   const [trackingTime, setTrackingTime] = useState(initialTrackingTime);
     const session = useSession();
-                  useFetchWishlist(session?.user?.id);
-                  useFetchCartlist(session?.user?.id);
+               
                   const { cartListLoading } = useFetchCartlist(session?.user?.id);
                   const { wishListLoading } = useFetchWishlist(session?.user?.id);
                 

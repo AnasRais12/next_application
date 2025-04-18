@@ -10,8 +10,7 @@ import useSession from '@/utils/UserExist/GetSession';
 
 function FAQPage() {
     const session = useSession();
-        useFetchWishlist(session?.user?.id);
-        useFetchCartlist(session?.user?.id);
+    
         const { cartListLoading } = useFetchCartlist(session?.user?.id);
         const { wishListLoading } = useFetchWishlist(session?.user?.id);
       

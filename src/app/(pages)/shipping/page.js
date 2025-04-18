@@ -10,8 +10,7 @@ import Link from "next/link";
 
 export default function ShippingInfoPage() {
     const session = useSession();
-            useFetchWishlist(session?.user?.id);
-            useFetchCartlist(session?.user?.id);
+     
             const { cartListLoading } = useFetchCartlist(session?.user?.id);
             const { wishListLoading } = useFetchWishlist(session?.user?.id);
           
