@@ -13,9 +13,7 @@ function ContactPage() {
       const { cartListLoading } = useFetchCartlist(session?.user?.id);
       const { wishListLoading } = useFetchWishlist(session?.user?.id);
     
-      if ((session?.user?.id && wishListLoading) || cartListLoading) {
-        return <CustomSpinner />;
-      }
+      
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -53,6 +51,10 @@ function ContactPage() {
       message: '',
       terms: false,
     })
+  }
+
+  if ((session?.user?.id && wishListLoading) || cartListLoading) {
+    return <CustomSpinner />;
   }
   return (
     <>

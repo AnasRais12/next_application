@@ -25,9 +25,7 @@ function page() {
         calculatedeliveryCharges(setDeliveryCharges,distance,);
       }, [distance]);
   
-      console.log(deliveryCharges,"_____>> Delivery Charges")
-      console.log(distance,"_____>> Distance")
-      console.log(Number(userDetails?.long),"_____>> Detatance")
+   
 
   useEffect(() => {
     if (!userDetails) {
