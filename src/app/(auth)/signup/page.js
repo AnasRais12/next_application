@@ -106,7 +106,7 @@ function Register() {
       const { error: insertError } = await supabase.from('profiles').insert([
         {
           id: signUpData?.user?.id,
-          role: roleFromParams,
+          role: [roleFromParams],
           name: username,
           email,
         },
