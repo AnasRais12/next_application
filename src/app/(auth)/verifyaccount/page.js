@@ -20,7 +20,7 @@ function page() {
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
     <div className="w-full max-w-lg bg-white rounded-2xl overflow-hidden shadow-2xl mx-4">
       {/* Header with Gradient Background */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-500 p-6 text-center">
+      <div className="bg-primary p-6 text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ function page() {
             Hello <span className="font-semibold text-gray-800">{userInfo?.username}</span>,
             we've sent a verification link to:
           </p>
-          <p className="text-lg font-medium text-purple-600 bg-purple-50 rounded-lg py-2 px-4 inline-block">
+          <p className="text-lg font-medium text-primary bg-purple-50 rounded-lg py-2 px-4 inline-block">
             {userInfo?.email}
           </p>
         </div>
@@ -64,7 +64,7 @@ function page() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-16 h-16 text-purple-600"
+              className="w-16 h-16 text-primary"
             >
               <path
                 strokeLinecap="round"
@@ -85,7 +85,7 @@ function page() {
           <div className="pt-4 space-y-3">
             <button
               onClick={() => router.push('/login')}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
+              className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
             >
               Back to Sign In
             </button>

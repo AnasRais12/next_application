@@ -4,7 +4,6 @@ import emailjs from '@emailjs/browser';
 import { useRouter } from 'next/navigation';
 import { RxCross2 } from 'react-icons/rx';
 import { ImCross } from 'react-icons/im';
-import UserQuery from '@/DbQuery/UserDetailQuery';
 import { supabase } from '@/lib/supabase';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -23,7 +22,6 @@ const forgetAccountValidation = yup.object().shape({
 
 function Forget_Account() {
   const router = useRouter();
-  const { updateUserDetails } = UserQuery();
   const {
     register,
     handleSubmit,
@@ -40,17 +38,18 @@ function Forget_Account() {
     try {
       setLoading(true);
       const { resetpassword } = data;
-      const { error } = await supabase.auth.updateUser({
+      const { data:Reset, error:ResetError } = await supabase.auth.updateUser({
         password: resetpassword,
       });
-      if (error) {
-        Swal.fire({ icon: 'error', text: error.message });
-      } else {
-        const updatedFields = { password: resetpassword };
-        await updateUserDetails(updatedFields);
+
+      if (ResetError) {
+        Swal.fire({ icon: 'error', text: ResetError.message });
+        return ;
+     
+      }
         Swal.fire({ icon: 'success', text: 'Password reset successfully!' });
         router.push('/login');
-      }
+       
     } catch (error) {
       Swal.fire({ icon: 'error', text: error.message });
     } finally {

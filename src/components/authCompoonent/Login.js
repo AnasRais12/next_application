@@ -94,26 +94,51 @@ function Login({ background, position }) {
             .eq('id', data?.user?.id)
             .maybeSingle()
             .select();
-          if (Profile) {
-            Cookies.set('sb-user-role', Profile?.role, {
-              expires: 7,
-              secure: true,
-              path: '/',
-            });
-
-            if (Profile?.role === 'buyer') {
+            if (Profile) {
+              // Check if "seller" is already in roles
+              console.log('Profile is Here ', Profile.role);
+              // let currentRoles = [];
+    
+              // // Handle all possible cases:
+              // if (Array.isArray(Profile.role)) {
+              //   // Case 1: Already proper array (direct from Supabase)
+              //   currentRoles = Profile.role.filter(role => typeof role === 'string');
+              // } else if (Profile.role) {
+              //   // Case 2: Fallback for unexpected formats
+              //   currentRoles = [String(Profile.role)];
+              // }
+          
+              // 2. ADD MISSING BUYER ROLE
+              if (!Profile.role.includes("buyer")) {
+                const updatedRoles = [...Profile.role, "buyer"];
+            
+                // Update profile to include seller role
+                await supabase
+                  .from('profiles')
+                  .update({ role: updatedRoles })
+                  .eq('id', data?.user?.id);
+              }
+            
+              // Set cookie
+              Cookies.set('sb-user-role', "buyer", {
+                expires: 7,
+                secure: true,
+                path: '/',
+              });
+            
               Swal.fire({
                 icon: 'success',
                 text: `User Login Sucessfully`,
               });
+            
               router.push('/home');
-            } else {
+            }
+            else{
               Swal.fire({
                 icon: 'error',
                 text: `Invalid role! Please contact support `,
               });
             }
-          }
         }
       }
     } catch (error) {

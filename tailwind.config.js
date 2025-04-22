@@ -12,7 +12,6 @@ module.exports = {
         custom: { min: '301px', max: '639px' }, // 301px - 639px
       },
       fontFamily: {
-     c
       },
       backgroundImage: {
         'custom-gradient':
