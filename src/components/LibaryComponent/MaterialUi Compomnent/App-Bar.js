@@ -59,60 +59,68 @@ export default function Navbar() {
   }, [from, setFrom, setRates, setSymbol, userDetails]);
 
   return (
-    <nav className="bg-white shadow w-full fixed top-0 left-0 z-[9999]">
-      <div className="px-3 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between py-3 gap-4 sm:gap-0">
+    <nav className="bg-white border-b border-gray-100 w-full fixed top-0 left-0 z-[9999]">
+      {/* Top Announcement Bar */}
+      <div className="bg-primary text-white text-center py-1 text-sm">
+        Free shipping on orders over $50 | Use code WELCOME10 for 10% off
+      </div>
+      
+      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <Link href="/" className="flex items-center shrink-0">
             <img
-              className="h-10 sm:h-12 w-auto transition-transform duration-200 hover:scale-105"
+              className="h-10 w-auto transition-transform duration-200 hover:scale-105"
               src="/images/logo.jpg"
               alt="Logo"
             />
+            <span className="ml-2 text-xl font-bold text-primary hidden sm:block">ShopEase</span>
+          </Link>
+
+          {/* Desktop Search Bar - Center Positioned */}
+          <div className="hidden lg:flex mx-8 flex-1 max-w-2xl">
+            <div className="relative w-full">
+              <input
+                type="text"
+                className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pl-10"
+                placeholder="Search for products..."
+              />
+              <FiSearch className="absolute left-3 top-3 text-gray-400" />
+              <button className="absolute right-0 top-0 h-full px-4 bg-primary text-white rounded-r-full hover:bg-blue-700 transition-colors">
+                Search
+              </button>
+            </div>
           </div>
 
-          {/* Desktop Search Bar */}
-          <div className="hidden lg:flex flex-1 items-center mx-6 border border-gray-300 rounded-md shadow-sm bg-white">
-            <select className="bg-light px-3 py-2 w-1/5 text-sm text-dark border-r outline-none">
-              <option>All Categories</option>
-              <option>Electronics</option>
-              <option>Books</option>
-              <option>Crafts</option>
-            </select>
-            <input
-              type="text"
-              className="flex-1 px-4 py-2 text-dark outline-none"
-              placeholder="Search products..."
-            />
-            <button className="bg-primary px-4 py-2 hover:bg-blue-700">
-              <FiSearch className="text-white" />
-            </button>
-          </div>
-
-          {/* Right Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Mobile Search */}
-            <button className="block lg:hidden" onClick={() => setSearchBar(true)}>
-              <FiSearch className="text-2xl text-dark hover:text-primary" />
+          {/* Right Navigation Icons */}
+          <div className="flex items-center space-x-4 sm:space-x-6">
+            {/* Mobile Search Button */}
+            <button 
+              className="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors"
+              onClick={() => setSearchBar(true)}
+            >
+              <FiSearch className="text-xl text-gray-600" />
             </button>
 
-            {/* Enhanced Currency Dropdown */}
-            <div className="relative group">
-              <div
+            {/* Currency Selector */}
+            <div className="relative hidden sm:block">
+              <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center px-2 py-1.5 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-colors"
+                className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <img
-                  src={countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from)?.flags.png}
-                  className="w-5 h-4 mr-2 object-cover"
-                  alt="Country flag"
-                />
+                {countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from)?.flags?.png && (
+                  <img
+                    src={countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from).flags.png}
+                    className="w-5 h-4 object-cover rounded-sm"
+                    alt="Country flag"
+                  />
+                )}
                 <span className="text-sm font-medium">{from}</span>
-                <FiChevronDown className={`ml-1 text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-              </div>
+                <FiChevronDown className={`text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+              </button>
               
               {isOpen && (
-                <div className="absolute right-0 mt-1 w-56 bg-white rounded-md shadow-lg border border-gray-200 z-50 max-h-80 overflow-y-auto">
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-80 overflow-y-auto">
                   <div className="py-1">
                     <div className="px-3 py-2 border-b border-gray-100">
                       <p className="text-xs font-semibold text-gray-500">SELECT CURRENCY</p>
@@ -121,9 +129,9 @@ export default function Navbar() {
                       const code = Object.keys(country.currencies || {})[0] || "USD";
                       const currencySymbol = country.currencies?.[code]?.symbol || "$";
                       return (
-                        <div
+                        <button
                           key={country.cca3}
-                          className={`flex items-center px-3 py-2 hover:bg-blue-50 cursor-pointer ${from === code ? 'bg-blue-50' : ''}`}
+                          className={`flex items-center w-full px-3 py-2 hover:bg-blue-50 ${from === code ? 'bg-blue-50' : ''}`}
                           onClick={() => {
                             setFrom(code);
                             setSymbol(currencySymbol);
@@ -132,15 +140,15 @@ export default function Navbar() {
                         >
                           <img 
                             src={country.flags.png} 
-                            className="w-5 h-4 mr-3 object-cover" 
+                            className="w-5 h-4 mr-3 object-cover rounded-sm" 
                             alt={country.name.common}
                           />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-800 truncate">{country.name.common}</p>
+                          <div className="text-left">
+                            <p className="text-sm font-medium text-gray-800">{country.name.common}</p>
                             <p className="text-xs text-gray-500">{code} • {currencySymbol}</p>
                           </div>
-                          {from === code && <FiCheck className="text-primary ml-2" />}
-                        </div>
+                          {from === code && <FiCheck className="ml-auto text-primary" />}
+                        </button>
                       );
                     })}
                   </div>
@@ -148,59 +156,66 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Profile Dropdown */}
+            {/* User Profile */}
             <div className="relative">
               <button
                 onClick={() => setShowModal(!showModal)}
-                className={`rounded-full size-8 flex items-center justify-center transition ${
-                  user ? 'bg-primary text-white hover:bg-blue-700' : 'text-dark hover:text-primary'
+                className={`p-2 rounded-full transition ${
+                  user ? 'bg-primary text-white hover:bg-blue-700' : 'text-gray-600 hover:text-primary hover:bg-gray-50'
                 }`}
               >
                 {user ? (
-                  <span className="text-base font-semibold">{user.email[0].toUpperCase()}</span>
+                  <span className="text-sm font-semibold">{user.email[0].toUpperCase()}</span>
                 ) : (
                   <FiUser className="text-xl" />
                 )}
               </button>
 
               {showModal && (
-                <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
-                  <ul className="py-1 text-sm">
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md border border-gray-100 z-50 overflow-hidden"
+                >
+                  <ul className="py-1">
                     {DropdownMenu.map((item, index) => (
                       <li
                         key={index}
-                        className="px-4 py-2 hover:bg-light cursor-pointer"
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 hover:text-primary transition-colors"
                         onClick={async () => {
                           await router.push(`/${item}`);
                           setShowModal(false);
                         }}
                       >
-                        {item}
+                        {item.charAt(0).toUpperCase() + item.slice(1)}
                       </li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
               )}
             </div>
 
             {/* Wishlist */}
             <button 
               onClick={() => setWishlistModal(true)} 
-              className="relative p-1 hover:text-primary transition-colors"
+              className="p-2 relative rounded-full hover:bg-gray-50 transition-colors"
             >
-              <FiHeart className="text-[25px] text-dark hover:text-primary" />
+              <FiHeart className="text-xl text-gray-600 hover:text-primary" />
               {wishListState?.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
                   {wishListState.length}
                 </span>
               )}
             </button>
 
             {/* Cart */}
-            <Link href="/shoppingcart" className="relative p-1 hover:text-primary transition-colors">
-              <FiShoppingCart className="text-[25px] text-dark hover:text-primary" />
+            <Link 
+              href="/shoppingcart" 
+              className="p-2 relative rounded-full hover:bg-gray-50 transition-colors"
+            >
+              <FiShoppingCart className="text-xl text-gray-600 hover:text-primary" />
               {cartItem?.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs size-5 flex items-center justify-center rounded-full">
                   {cartItem.length}
                 </span>
               )}
@@ -214,34 +229,35 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
             className="fixed inset-0 bg-black bg-opacity-50 z-[10000]"
           >
             <motion.div 
-              initial={{ y: -50 }}
+              initial={{ y: -20 }}
               animate={{ y: 0 }}
-              className="bg-white p-4 w-full"
+              className="bg-white p-4 shadow-md"
             >
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-xl font-bold text-primary">ShopEase</span>
-                <button onClick={() => setSearchBar(false)}>
-                  <RxCross2 className="text-dark text-2xl" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary pl-10"
+                    placeholder="Search for products..."
+                    autoFocus
+                  />
+                  <FiSearch className="absolute left-3 top-3.5 text-gray-400" />
+                </div>
+                <button 
+                  onClick={() => setSearchBar(false)}
+                  className="ml-4 p-2 rounded-full hover:bg-gray-100"
+                >
+                  <RxCross2 className="text-xl text-gray-600" />
                 </button>
               </div>
-              <div className="flex items-center border rounded-md shadow-sm">
-                <select className="bg-light px-3 py-2 w-[35%] text-sm border-r outline-none">
-                  <option>All</option>
-                  <option>Electronics</option>
-                  <option>Books</option>
-                </select>
-                <input
-                  type="text"
-                  className="flex-1 px-4 py-2 text-dark outline-none"
-                  placeholder="Search..."
-                />
-                <button className="bg-primary px-4 py-2 hover:bg-blue-700">
-                  <FiSearch size={18} className="text-white" />
-                </button>
+              <div className="flex space-x-2 overflow-x-auto pb-2">
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Electronics</button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Clothing</button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Home</button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Books</button>
               </div>
             </motion.div>
           </motion.div>
