@@ -59,11 +59,8 @@ export default function Navbar() {
   }, [from, setFrom, setRates, setSymbol, userDetails]);
 
   return (
-    <nav className="bg-white border-b border-gray-100 w-full fixed top-0 left-0 z-[9999]">
-      {/* Top Announcement Bar */}
-      <div className="bg-primary text-white text-center py-1 text-sm">
-        Free shipping on orders over $50 | Use code WELCOME10 for 10% off
-      </div>
+    <nav className="bg-[red] border bg border-gray-100 w-full fixed top-0 left-0 z-[9999]">
+     
       
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16">
@@ -108,13 +105,13 @@ export default function Navbar() {
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                {countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from)?.flags?.png && (
+                {countries.length > 0 && countries?.find(c => c.currencies && Object.keys(c.currencies)[0] === from)?.flags?.png ? (
                   <img
                     src={countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from).flags.png}
                     className="w-5 h-4 object-cover rounded-sm"
                     alt="Country flag"
                   />
-                )}
+                ) : null}
                 <span className="text-sm font-medium">{from}</span>
                 <FiChevronDown className={`text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`} />
               </button>

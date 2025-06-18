@@ -1,8 +1,10 @@
 'use client';
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
+import { Roboto } from 'next/font/google';
 import { store } from './store/store';
 import { ToastContainer } from 'react-toastify';
+import ThemeRegistry from '@/components/ThemyRegistry';
 import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 import Script from 'next/script';
 import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
@@ -19,6 +21,11 @@ const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
   variable: '--font-geist-mono',
   weight: '100 900',
+});
+const roboto = Roboto({
+  weight: ['400', '500'], // Regular aur medium weights
+  subsets: ['latin'],     // Latin characters
+  display: 'swap',        // Font load hone tak default font nahi dikhega
 });
 
 // export const metadata = {
@@ -60,10 +67,13 @@ export default function RootLayout({ children }) {
 />
         <Provider store={store}>
           <GlobalProvider>
-            {!isLoginPage && !isRegisterPage && !isForgetPage && <Navbar_ />}
+              <ThemeRegistry>
+            {isLoginPage ? <Navbar_ /> : null}
             {children}
             <ToastContainer autoClose={1000} />
             {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />}
+        </ThemeRegistry>
+
           </GlobalProvider>
         </Provider>
       </body>
