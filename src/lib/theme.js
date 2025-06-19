@@ -19,7 +19,8 @@ const theme = createTheme({
     },
     success:{
       main: '#0c9409',
-    }
+    },
+    borderColor: '#E5E5E5', // Light gray border color
   },
   components: {
     MuiButton: {
@@ -54,7 +55,9 @@ const theme = createTheme({
               borderColor: '#E5E5E5',
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#1a1a1a', // Primary color on focus
+              borderColor: '#E5E5E5', // Primary color on focus
+              borderWidth: 1,
+
             },
           },
           '& input::placeholder': {

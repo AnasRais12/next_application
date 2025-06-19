@@ -20,7 +20,8 @@ module.exports = {
       }, // Replace with your image path
         colors: {
 
-          primary: "#1a1a1a",     // Rich Emerald Green
+          primary: "#1a1a1a",
+          disabledColor: "E5E5E5",     // Rich Emerald Green
           secondary: "#facc15",   // Warm Yellow
           accent: "#3b82f6",      // Soft Blue
           dark: "#1f2937",        // Neutral Text
