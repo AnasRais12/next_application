@@ -7,6 +7,16 @@ const roboto = Roboto({
   display: 'swap',
 });
 const theme = createTheme({
+  breakpoints:{
+    values: {
+      mobileS: 0,
+      xs: 380, // 380px
+      sm: 600, // 600px
+      md: 960, // 960px
+      lg: 1280, // 1280px
+      xl: 1920, // 1920px
+    },
+  },
   typography:{
     fontFamily: roboto.style.fontFamily,
   },
@@ -25,16 +35,22 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {
-          padding: '10px 20px',
-          borderRadius: '8px',
-          textTransform: 'none',
-          fontSize: '16px',
-          '&.Mui-disabled': {
-            backgroundColor: '#cccccc',
-            color: '#FFFFFF',
-          },
-        },
+        root: (props) => {
+          const { theme } = props; // ✅ yeh line zaroori hai
+          return {
+            padding: '14px 20px',
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontSize: '17px',
+            '&.Mui-disabled': {
+              backgroundColor: '#cccccc',
+              color: '#FFFFFF',
+            },
+            [theme.breakpoints.down('sm')]: {
+              padding: '10px 20px', // ✅ small screen par padding
+            },
+          };
+        }
       },
       defaultProps: {
         variant: 'contained',

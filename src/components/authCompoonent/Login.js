@@ -14,6 +14,9 @@ import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
 import { ForgetPassword } from './ForgetPassword';
+import { Button, Divider, Typography } from '@mui/material';
+import ValidatedTextField from '../form/ValidatedTextField';
+import theme from '@/lib/theme';
 
 //scheman//
 const LoginSchema = yup.object().shape({
@@ -30,18 +33,25 @@ const LoginSchema = yup.object().shape({
     .required('Password is Required'),
 });
 
-function Login({ background, position }) {
+function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
+    watch
   } = useForm({ resolver: yupResolver(LoginSchema) });
+  const email = watch('email');
+  const password = watch('password');
+
+  const isDisabled = !email?.trim() || !password?.trim()
   const { setUser } = GlobalDetails();
   const router = useRouter();
   const [credentialLoading, setCredentialLoading] = useState(false);
   const [forgetPasswordModal, setForgetPasswordModal] = useState(false);
+   const [roleFromParams, setRoleFromParams] = useState('buyer');
   const [googleLoading, setgoogleLoading] = useState(false);
+
 
   const moveToRegister = () => {
     router.push('signup');
@@ -94,26 +104,38 @@ function Login({ background, position }) {
             .eq('id', data?.user?.id)
             .maybeSingle()
             .select();
-          if (Profile) {
-            Cookies.set('sb-user-role', Profile?.role, {
-              expires: 7,
-              secure: true,
-              path: '/',
-            });
-
-            if (Profile?.role === 'buyer') {
-              Swal.fire({
-                icon: 'success',
-                text: `User Login Sucessfully`,
-              });
-              router.push('/home');
-            } else {
-              Swal.fire({
-                icon: 'error',
-                text: `Invalid role! Please contact support `,
-              });
-            }
-          }
+            if (Profile) {
+                // Check if "seller" is already in roles
+                if (!Profile.role.includes("buyer")) {
+                  const updatedRoles = [...Profile.role, "buyer"];
+              
+                  // Update profile to include seller role
+                  await supabase
+                    .from('profiles')
+                    .update({ role: updatedRoles })
+                    .eq('id', data?.user?.id);
+                }
+              
+                // Set cookie
+                Cookies.set('sb-user-role', roleFromParams, {
+                  expires: 7,
+                  secure: true,
+                  path: '/',
+                });
+              
+                Swal.fire({
+                  icon: 'success',
+                  text: `User Login Sucessfully`,
+                });
+              
+                router.push('/');
+              }
+              else{
+                Swal.fire({
+                  icon: 'error',
+                  text: `Invalid role! Please contact support `,
+                });
+              }
         }
       }
     } catch (error) {
@@ -131,7 +153,7 @@ function Login({ background, position }) {
     <>
       <div className={` inset-0 flex items-center z-50 bg-[white]`}>
         {/* Image Section (Desktop Only) */}
-        <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-100 to-purple-200 relative overflow-hidden">
+        <div className="hidden lg:flex w-1/2 h-screen  relative overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center p-12">
             <div className="text-white text-center">
               <h2 className="text-4xl text-[#1f2937] font-bold mb-4">Welcome Back!</h2>
@@ -141,93 +163,104 @@ function Login({ background, position }) {
               <p>"The best way to predict the future is to create it."</p>
             </div>
           </div>
-          <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_hybrid&w=740')] bg-cover bg-center opacity-100 border-r-2" />
+          <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_hybrid&w=740')] lg:bg-cover bg-contain bg-no-repeat bg-center opacity-100 border-r-2" />
         </div>
 
         {/* Login Form Section */}
-        <div className="w-full lg:w-1/2 h-screen flex items-center justify-center p-4 sm:p-8">
-          <div className="max-w-md w-full">
+        <div className="w-full flex items-center justify-center  lg:w-1/2 p-5 md:pt-8 md:p-12 lg:pt-8 lg:p-8">
+          <div className="lg:max-w-md w-full">
             {/* Logo/Header */}
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-[#047857] rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
+            <div className="lg:text-center mb-6 md:mb-8 lg:pt-8 pt-3 md:pt-8">
+              <div className="w-16 h-16 bg-primary lg:flex hidden  rounded-xl items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
-              <p className="text-gray-500 mt-2">Login to continue your journey</p>
+              <Typography sx={(theme) => ({
+                fontSize: {
+                  mobileS: '30px',
+                  xs: '40px',
+                  sm: '40px',
+                },
+              })}
+                variant="h4"
+                fontWeight="bold"
+                color="primary"
+              >
+                Welcome Back!
+              </Typography>
+
+              <Typography sx={(theme) => ({
+                fontSize: {
+                  mobileS: '18px',
+                  xs: '20px',
+                  sm: '20px',
+                },
+              })} variant="body1" color="text.secondary">
+                it's great to see you again.
+              </Typography>
             </div>
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit(handleLoginSumbit)} className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-[#1f2937] mb-1">Email</label>
-                <input
-                  {...register('email')}
-                  type="email"
-                  placeholder="your@email.com"
-                  className="w-full px-4 py-3 border border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
-                />
-              </div>
+            <form onSubmit={handleSubmit(handleLoginSumbit)} className="lg:space-y-5 md:space-y-7 space-y-4  w-full">
+              <ValidatedTextField
+                label="Email"
+                placeholder="Enter Your Email"
+                register={register}
+                name="email"
+                errors={errors}
+                theme={theme}
+                isValid={isValid}
+              />
 
-              <div>
+              <ValidatedTextField
+                label="Password"
+                placeholder="Enter your password"
+                type="password"
+                register={register}
+                name="password"
+                errors={errors}
+                isValid={isValid}
+                theme={theme}
+              />
 
-                <div className="flex justify-between items-center mb-1">
-                  <label className="block text-sm font-medium text-[#1f2937]">Password</label>
-            
-                </div>
-                <input
-                  {...register('password')}
-                  type="password"
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3 border border-[#ccc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
-                />
-                <div className='w-full flex justify-end mt-2'>
-                      <button
-                    type="button"
-                    onClick={moveToForgetAccount}
-                    className="text-sm hover:text-[#1f2937] text-primary"
-                  >
-                    Forgot password?
-                  </button>
-                  </div>
-              </div>
-
-              <button
+              <Button
                 type="submit"
-                disabled={credentialLoading}
-                className="w-full bg-[#047857] text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
+                disabled={credentialLoading || isDisabled}
+                className="w-full  p-3 flex items-center justify-center h-12"
               >
                 {credentialLoading ? (
                   <CSpinner color="text-white" size="sm" />
                 ) : (
                   'Login to your account'
                 )}
-              </button>
+              </Button>
             </form>
 
             {/* Divider */}
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center">
-                <span className="px-3 bg-white text-[#1f2937] text-sm">OR</span>
-              </div>
-            </div>
+            <Divider
+              sx={({ theme }) => ({
+                my: 3, color: 'gray', fontSize: '0.875rem',
+                '&::before, &::after': {
+                  borderColor: theme?.palette?.borderColor, // equivalent to Tailwind border-gray-200
+                },
+              })}
+            >
+              Or
+            </Divider>
 
             {/* Social Login */}
             <button
               onClick={() => signInWithGoogle(setgoogleLoading)}
               disabled={googleLoading}
               type="button"
-              className="w-full px-4 py-3 flex items-center justify-center gap-2 rounded-lg text-[#1f2937] bg-white border border-[#ccc]   transition-all"
+              className="w-full px-4 sm:py-4 py-3 flex items-center justify-center gap-2 rounded-lg text-primary bg-white border border-[#ccc]   transition-all"
             >
               {googleLoading ? (
                 <CSpinner color="text-gray-700" size="sm" />
               ) : (
                 <>
-                  <FcGoogle size={20} />
+                  <FcGoogle size={25} />
                   <span>Continue with Google</span>
                 </>
               )}
@@ -239,9 +272,9 @@ function Login({ background, position }) {
                 Don't have an account?{' '}
                 <button
                   onClick={moveToRegister}
-                  className="text-green-800 hover:text-primary font-medium"
+                  className="text-primary  hover:text-primary font-medium"
                 >
-                  Sign up
+                  Join
                 </button>
               </p>
             </div>

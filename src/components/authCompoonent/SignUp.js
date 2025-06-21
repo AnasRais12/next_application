@@ -59,8 +59,6 @@ function Register() {
   const { setAuthfield } = GlobalDetails();
   const [loading, setLoading] = useState(false);
   const [googleLoading, setgoogleLoading] = useState(false);
-  console.log(errors, isValid, "here is ")
-
   const OnSubmitHandler = async (data) => {
     const { email, password, username } = data;
     setLoading(true);
@@ -147,13 +145,12 @@ function Register() {
     }
   };
 
-  console.log(isValid, "isValid");
 
   return (
     <Suspense>
-      <div className="fixed inset-0 flex items-center z-50 bg-white">
+      <div className="inset-0 flex items-center z-50 bg-white">
         {/* Image Section (Desktop Only) - Matching Login Page */}
-        <div className="hidden lg:flex w-1/2 h-screen bg-gradient-to-br from-blue-100 to-purple-200 relative overflow-hidden">
+        <div className="hidden lg:flex w-1/2 border-r-2 h-screen relative overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center p-12">
             <div className="text-white text-center">
               <h2 className="text-4xl font-bold mb-4">Join Us Today!</h2>
@@ -163,34 +160,51 @@ function Register() {
               <p>"Great things start with small beginnings."</p>
             </div>
           </div>
-          <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_country_boost&w=740')] bg-cover bg-center opacity-100 border-r-2" />
+          <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?ga=GA1.1.1568870668.1738407596&semt=ais_country_boost&w=740')] bg-contain bg-no-repeat lg:bg-cover bg-center opacity-100 " />
         </div>
 
         {/* Register Form Section */}
-        <div className="w-full lg:w-1/2 h-screen flex items-center justify-center p-4 sm:p-8">
-          <div className="max-w-md w-full">
+        <div className="w-full flex items-center justify-center  lg:w-1/2 p-5 md:pt-8 md:p-12 lg:pt-8 lg:p-8">
+          <div className="lg:max-w-md w-full">
             {/* Logo/Header - Matching Login Page */}
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-primary  rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
+            <div className="lg:text-center mb-6 md:mb-8 lg:pt-8 pt-3 md:pt-8">
+              <div className="w-16 h-16 bg-primary lg:flex hidden  rounded-xl items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
               </div>
               <Typography
                 variant="h4"
+                sx={(theme) => ({
+                  fontSize: {
+                    mobileS: '30px',
+                    xs: '40px',      
+                    sm: '40px',   
+                  },
+                })}
+
                 fontWeight="bold"
                 color="primary"
               >
                 Create an account
               </Typography>
 
-              <Typography variant="body1" color="text.secondary">
+
+              <Typography
+                 sx={(theme) => ({
+                  fontSize: {
+                    mobileS: '18px',
+                    xs: '20px',      
+                    sm: '20px',   
+                  },
+                })}
+                variant="body1" color="text.secondary">
                 Let's create your account.
               </Typography>
             </div>
 
             {/* Register Form */}
-            <form onSubmit={handleSubmit(OnSubmitHandler)} className="space-y-5">
+            <form onSubmit={handleSubmit(OnSubmitHandler)} className="lg:space-y-5 md:space-y-7 space-y-4  w-full">
               <ValidatedTextField
                 label="Full Name"
                 placeholder="Enter Your Full Name"
@@ -221,7 +235,7 @@ function Register() {
                 theme={theme}
               />
               <Box>
-                <Typography variant="body2" color="textSecondary">
+                <Typography fontSize={"16px"} variant="body2" color="textSecondary">
                   By signing up you agree to our{' '}
                   <Link className='text-primary border-b-2 border-primary' href="/terms" >
                     Terms
@@ -240,7 +254,7 @@ function Register() {
               <Button
                 type="submit"
                 disabled={loading || isDisabled}
-                className="w-full bg-primary text-white p-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center h-12"
+                className="w-full bg-primary"
               >
                 {loading ? <CSpinner color="text-white" size="sm" /> : 'Create Account'}
               </Button>
@@ -249,7 +263,7 @@ function Register() {
             {/* Divider - Matching Login Page */}
             <Divider
               sx={({ theme }) => ({
-                my: 3, color: 'gray', fontSize: '0.875rem',
+                my: 3, color: 'gray', fontSize: '1.3rem',
                 '&::before, &::after': {
                   borderColor: theme?.palette?.borderColor, // equivalent to Tailwind border-gray-200
                 },
@@ -259,25 +273,11 @@ function Register() {
             </Divider>
 
             {/* Social Login - Matching Login Page */}
-            <Button
+            <button
               onClick={() => signInWithGoogle(setgoogleLoading)}
               disabled={googleLoading}
               type="button"
-              className="w-full px-4 py-3 flex items-center justify-center gap-2 "
-              sx={{
-                backgroundColor: 'white',
-                color: '#000000',
-                borderBottom: '3px solid #FFFFFF', 
-
-                '&:hover': {
-                  backgroundColor: 'white', 
-                  color: '#000000',
-                  borderBottom: '3px solid #4285F4'
-                },
-                '&.Mui-disabled': {
-                  color: '#000000', 
-                },
-              }}
+              className="w-full px-4 sm:py-4 py-3 flex items-center justify-center gap-2 rounded-lg text-primary bg-white border border-[#ccc]   transition-all"
             >
               {googleLoading ? (
                 <CSpinner color="text-[#000000]" size="sm" />
@@ -287,15 +287,14 @@ function Register() {
                   <span>Continue with Google</span>
                 </>
               )}
-            </Button>
+            </button>
 
             {/* Login Link - Similar to Sign Up Link in Login Page */}
             <div className="text-center mt-6">
-              <p className="text-[#808080]">
+              <p className="text-[#808080]  text-[20px]">
                 Already have an account?{' '}
                 <Link href={'/login'}
-                  // onClick={moveToLogin}
-                  className="text-primary font-medium"
+                  className="text-primary text-[20px] font-medium"
                 >
                   Login
                 </Link>

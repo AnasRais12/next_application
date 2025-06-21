@@ -68,10 +68,10 @@ export default function RootLayout({ children }) {
         <Provider store={store}>
           <GlobalProvider>
               <ThemeRegistry>
-            {isLoginPage ? <Navbar_ /> : null}
+            {/* {isLoginPage ? <Navbar_ /> : null} */}
             {children}
             <ToastContainer autoClose={1000} />
-            {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />}
+            {/* {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />} */}
         </ThemeRegistry>
 
           </GlobalProvider>

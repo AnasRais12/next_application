@@ -25,7 +25,7 @@ const ValidatedTextField = ({
 
   return (
     <FormControl fullWidth error={!!errors[name]} >
-      <label className="block text-sm font-medium  mb-1 ">{label}</label>
+      <label className="block text-lg lg:text-sm font-medium  mb-1 ">{label}</label>
       <TextField
         placeholder={placeholder}
         type={inputType}
@@ -39,14 +39,14 @@ const ValidatedTextField = ({
                 ? theme.palette.error.main
                 : isValid
                 ? '#4caf50'
-                : theme.palette.primary.main,
+                : theme.palette.borderColor
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               borderColor: errors[name]
                 ? theme.palette.error.main
                 : isValid
                 ? '#4caf50'
-                : theme.palette.primary.main,
+                : theme.palette.borderColor,
             },
           },
         })}
