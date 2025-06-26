@@ -5,6 +5,7 @@ import {
   FormControl,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from '@mui/material';
 import { CheckCircle, Error, Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -95,6 +96,9 @@ const ValidatedTextField = ({
           ),
         }}
       />
+        {errors[name]?.message && (
+    <FormHelperText sx={{fontWeight: '700',marginLeft:"4px"}}>{errors[name]?.message?.toString()}</FormHelperText>
+  )}
     </FormControl>
   );
 };

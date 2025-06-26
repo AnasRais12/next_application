@@ -1,24 +1,28 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { useRouter } from 'next/navigation';
-import { RxCross2 } from 'react-icons/rx';
-import { ImCross } from 'react-icons/im';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import { supabase } from '@/lib/supabase';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FaArrowLeftLong } from 'react-icons/fa6';
+import theme from '@/lib/theme';
 import CSpinner from '@/components/CSpinner';
-
 import Swal from 'sweetalert2';
 import Link from 'next/link';
+import ValidatedTextField from '@/components/form/ValidatedTextField';
+import { Button, Typography } from '@mui/material';
+import { FaArrowLeft } from 'react-icons/fa6';
+import AlertModal from '@/components/common/AlertModal';
 const forgetAccountValidation = yup.object().shape({
   resetpassword: yup
     .string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is Required'),
+  confirmPassword: yup
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is Required')
 });
 
 function Forget_Account() {
@@ -27,15 +31,14 @@ function Forget_Account() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
+    watch
   } = useForm({ resolver: yupResolver(forgetAccountValidation) });
+  const confirmPassword = watch('confirmPassword');
+  const resetpassword = watch('resetpassword');
+  const isDisabled = !resetpassword?.trim() || !confirmPassword?.trim()
   const [loading, setLoading] = useState(false);
-
-  const moveToLogin = () => {
-    router.push('/login');
-  };
-
   const handleResetPassword = async (data) => {
     try {
       setLoading(true);
@@ -43,67 +46,121 @@ function Forget_Account() {
       const { error } = await supabase.auth.updateUser({
         password: resetpassword,
       });
-      if (error) {
-        Swal.fire({ icon: 'error', text: error.message });
+      if (error) { AlertModal({
+              icon: 'error',
+              title: 'Update User Error',
+              text: `${error.message}`,
+              buttonText: 'Ok'
+            })
       } else {
         const updatedFields = { password: resetpassword };
         await updateUserDetails(updatedFields);
-        Swal.fire({ icon: 'success', text: 'Password reset successfully!' });
+          AlertModal({
+              icon: 'success',
+              title: 'Password reset successfully!',
+              text: `Your password has been reset successfully. You can now log in with your new password.`,
+              buttonText: 'Ok'
+            })
         router.push('/login');
       }
     } catch (error) {
-      Swal.fire({ icon: 'error', text: error.message });
+      AlertModal({
+              icon: 'error',
+              title: 'Something went wrong',
+              text: `${error.message}`,
+              buttonText: 'Ok'
+            })
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
-    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden border border-gray-200">
-      {/* Header with Gradient Background */}
- 
-         <div className="bg-primary hover:bg-green-800 sm:p-6 p-3 text-center">
-    
-      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center mx-auto justify-center backdrop-blur-sm">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                strokeWidth="1.5" 
-                stroke="currentColor" 
-                className="w-5 h-5 text-white"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" 
-                />
-              </svg>
-            </div>
-      <h1 className="text-xl font-bold text-white mt-3">Change Password</h1>
-    </div>
-  
-      {/* Form Content */}
-      <div className=" p-3 sm:p-6">
-        <form onSubmit={handleSubmit(handleResetPassword)} className="space-y-5">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-dark">
-              New Password
-            </label>
-            <input
-              {...register('resetpassword')}
-              type="password"
-              placeholder="Enter new password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
-            />
-            {errors?.resetpassword?.message && (
-              <p className="text-red-500 text-sm mt-1">{errors.resetpassword.message}</p>
-            )}
+    <div className="lg:fixed inset-0 flex items-center lg:justify-center z-50 bg-white">
+      <div className="bg-white lg:rounded-2xl lg:shadow-xl w-full lg:max-w-md sm:mx-4 mx-4 overflow-hidden lg:border lg:border-gray-200">
+        {/* Header with Gradient Background */}
+
+        <div className="lg:bg-primary  sm:p-6 sm:pt-6 pt-3 lg:text-primary text-primary lg:text-center">
+
+          <div className="w-10 h-10 mb-4 bg-white/20 rounded-lg lg:flex hidden items-center mx-auto justify-center backdrop-blur-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-5 h-5 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
+              />
+            </svg>
           </div>
-  
-          {/* Password Requirements */}
-          <div className="bg-blue-50 p-3 rounded-lg">
+          <Link href={'/login'}>
+            <FaArrowLeft className='text-[25px] font-bold sm:text-[30px] mb-4 ' />
+          </Link>
+          <Typography sx={(theme) => ({
+            fontSize: {
+              mobileS: '28px',
+              xs: '30px',
+              sm: '40px',
+            },
+            color: {
+              lg: 'white',
+              xs: 'primary'
+
+            }
+          })}
+            variant="h4"
+            fontWeight="bold"
+            color="primary"
+          >
+            Reset Password
+          </Typography>
+          <Typography sx={(theme) => ({
+            fontSize: {
+              mobileS: '16px',
+              xs: '17px',
+              sm: '20px',
+            },
+            display: {
+              lg: 'none', 
+              xs: 'block',
+            },
+          })} variant="body1" color="text.secondary" marginBottom={'15px'}>
+            Set the new password for your account so you can log and acces all the features.
+          </Typography>
+        </div>
+
+        {/* Form Content */}
+        <div className=" md:px-6 md:py-1  lg:px-6 lg:py-6">
+          <form onSubmit={handleSubmit(handleResetPassword)} className=" space-y-7 lg:space-y-5">
+            <ValidatedTextField
+              label="New Password"
+              placeholder="Enter your password"
+              type="password"
+              register={register}
+              name="resetpassword"
+              errors={errors}
+              isValid={isValid}
+              theme={theme}
+            />
+
+            <ValidatedTextField
+              label="Confirm Password"
+              placeholder="Enter your password"
+              type="password"
+              register={register}
+              name="confirmPassword"
+              errors={errors}
+              isValid={isValid}
+              theme={theme}
+            />
+
+            {/* Password Requirements */}
+            {/* <div className="bg-blue-50 p-3 rounded-lg">
             <p className="text-sm font-medium text-dark mb-2">Password must contain:</p>
             <ul className="text-xs text-gray-600 space-y-1">
               <li className="flex items-center">
@@ -126,31 +183,31 @@ function Forget_Account() {
               </li>
             </ul>
           </div>
-  
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-primary hover:bg-green-800 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
-          >
-            {loading ? (
-              <CSpinner color="text-white" size="sm" />
-            ) : (
-              'Update Password'
-            )}
-          </button>
-        </form>
-  
-        {/* Back to Login (Mobile) */}
-        <div className="mt-4 ">
-          <Link href={'/login'}
-            className="text-green-800 hover:text-primary text-sm font-medium flex items-center gap-1"
-          >
-            Back to Login
-          </Link >
+   */}
+            <Button
+              type="submit"
+              disabled={loading || isDisabled}
+              className="w-full bg-primary  text-white p-3  hover:shadow-md "
+            >
+              {loading ? (
+                <CSpinner color="text-white" size="sm" />
+              ) : (
+                'Reset Password'
+              )}
+            </Button>
+          </form>
+
+          {/* Back to Login (Mobile) */}
+          <div className="mt-4 lg:flex hidden ">
+            <Link href={'/login'}
+              className="text-primary hover:text-primary text-sm font-medium flex items-center gap-1"
+            >
+              Back to Login
+            </Link >
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 }
 

@@ -18,3 +18,106 @@
 }
 
 
+
+/* Custom icon area */
+/* .swal-icon {
+  margin-bottom: 16px;
+} */
+
+.swal2-icon.swal2-success [class^="swal2-success-line"] {
+  background-color: #0c9409 !important;
+  z-index: 999;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+  border: 4px solid #0c9409;
+  background-color: #ceeace;
+  color: darkgreen;
+
+}
+
+.swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
+  background-color: #ed1010 !important;
+  /* Dark red */
+  z-index: 999;
+}
+
+/* Error Circle Border */
+.swal2-icon.swal2-error {
+  border-color: #ed1010 !important;
+  background-color: #fbcfcf;
+}
+
+.swal2-icon.swal2-info {
+  border-color: #ed1010 !important;
+  background-color: #fbcfcf !important;
+}
+
+.swal2-icon.swal2-info .swal2-icon-content {
+  color: #ed1010 !important;
+  z-index: 999;
+}
+
+
+
+.no-default-padding {
+  padding: 0 !important;
+  border-radius: 16px;
+  width: 500px;
+}
+
+/* Main container */
+.swal-container {
+  padding: 18px;
+  text-align: center;
+}
+
+/* Custom icon area */
+.swal-icon {
+  margin-bottom: 10px;
+}
+
+/* Title */
+.swal-title {
+  font-size: 30px !important;
+  margin-bottom: 8px;
+  font-weight: bold;
+  margin-top: -12px;
+  color: black;
+}
+
+/* Subtitle text */
+.swal-text {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* Custom button */
+
+@media screen and (max-width: 480px) {
+
+  .swal-title {
+    font-size: 22px !important;
+  }
+
+  .swal-text {
+    font-size: 14px;
+  }
+
+  .swal-button {
+    font-size: 16px;
+    padding: 10px 0;
+  }
+
+  .swal-icon svg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .swal-container {
+    padding: 12px 0px;
+    text-align: center;
+  }
+}
+

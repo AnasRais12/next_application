@@ -14,9 +14,11 @@ import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { useRouter } from 'next/navigation';
 import CSpinner from '@/components/CSpinner';
 import { ForgetPassword } from './ForgetPassword';
-import { Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import ValidatedTextField from '../form/ValidatedTextField';
 import theme from '@/lib/theme';
+import Link from 'next/link';
+import AlertModal from '../common/AlertModal';
 
 //scheman//
 const LoginSchema = yup.object().shape({
@@ -49,19 +51,16 @@ function Login() {
   const router = useRouter();
   const [credentialLoading, setCredentialLoading] = useState(false);
   const [forgetPasswordModal, setForgetPasswordModal] = useState(false);
-   const [roleFromParams, setRoleFromParams] = useState('buyer');
+  const [roleFromParams, setRoleFromParams] = useState('buyer');
   const [googleLoading, setgoogleLoading] = useState(false);
 
 
   const moveToRegister = () => {
-    router.push('signup');
+    router.push('/signup');
   };
-  const moveToForgetAccount = () => {
-    setForgetPasswordModal(true);
-  };
+
   const handleLoginSumbit = async (data) => {
     const { email, password } = data;
-
     setCredentialLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -69,20 +68,21 @@ function Login() {
         password,
       });
       if (error) {
-        Swal.fire({
+        AlertModal({
           icon: 'error',
+          title: 'Authentication Error! ',
           text: `${error.message === 'Email not confirmed' ? 'Email not verified' : error.message}`,
-        });
+          buttonText: 'Ok'
+        })
       } else {
         const user = data.user;
-        console.log('Data is Here ', data);
-
         if (!user) {
-          console.error('Login failed: Email not verified.');
-          Swal.fire({
-            icon: 'info',
+          AlertModal({
+            icon: 'error',
+            title: 'Authentication Error! ',
             text: `Email not verified`,
-          });
+            buttonText: 'Ok'
+          })
         } else {
           // console.log('User logged in successfully:', user);
           if (data.session || data.user) {
@@ -104,45 +104,51 @@ function Login() {
             .eq('id', data?.user?.id)
             .maybeSingle()
             .select();
-            if (Profile) {
-                // Check if "seller" is already in roles
-                if (!Profile.role.includes("buyer")) {
-                  const updatedRoles = [...Profile.role, "buyer"];
-              
-                  // Update profile to include seller role
-                  await supabase
-                    .from('profiles')
-                    .update({ role: updatedRoles })
-                    .eq('id', data?.user?.id);
-                }
-              
-                // Set cookie
-                Cookies.set('sb-user-role', roleFromParams, {
-                  expires: 7,
-                  secure: true,
-                  path: '/',
-                });
-              
-                Swal.fire({
-                  icon: 'success',
-                  text: `User Login Sucessfully`,
-                });
-              
-                router.push('/');
-              }
-              else{
-                Swal.fire({
-                  icon: 'error',
-                  text: `Invalid role! Please contact support `,
-                });
-              }
+          if (Profile) {
+            // Check if "seller" is already in roles
+            if (!Profile.role.includes("buyer")) {
+              const updatedRoles = [...Profile.role, "buyer"];
+
+              // Update profile to include seller role
+              await supabase
+                .from('profiles')
+                .update({ role: updatedRoles })
+                .eq('id', data?.user?.id);
+            }
+
+            // Set cookie
+            Cookies.set('sb-user-role', roleFromParams, {
+              expires: 7,
+              secure: true,
+              path: '/',
+            });
+
+            AlertModal({
+              icon: 'success',
+              title: 'User Login Sucessfully ',
+              text: `Welcome ${Profile?.full_name || Profile?.username || Profile?.email}`,
+              buttonText: 'Ok'
+            })
+            router.push('/');
+          }
+          else {
+             AlertModal({
+              icon: 'error',
+              title: 'Profile Role Not Found! ',
+              text: `Invalid role! Please contact support`,
+              buttonText: 'Ok'
+            })
+         
+          }
         }
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: error?.message,
-      });
+        AlertModal({
+              icon: 'error',
+              title: 'Something went wrong! ',
+              text: `${error?.message}`,
+              buttonText: 'Ok'
+            })
     } finally {
       setCredentialLoading(false);
       reset();
@@ -223,6 +229,15 @@ function Login() {
                 isValid={isValid}
                 theme={theme}
               />
+              <Box>
+                <Typography fontSize={"16px"} variant="body2" color="textSecondary">
+                  Forgot your password?{' '}
+                  <a onClick={() => setForgetPasswordModal(true)} className='text-primary cursor-pointer border-b-2 border-primary'  >
+                    Reset your password
+                  </a>
+
+                </Typography>
+              </Box>
 
               <Button
                 type="submit"

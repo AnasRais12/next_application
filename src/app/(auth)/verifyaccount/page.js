@@ -17,11 +17,11 @@ function page() {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
-    <div className="w-full max-w-lg bg-white rounded-2xl overflow-hidden shadow-2xl mx-4">
+    <div className=" h-screen  inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="w-full max-w-lg  bg-white rounded-2xl overflow-hidden shadow-2xl mx-2 sm:mx-4">
       {/* Header with Gradient Background */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-500 p-6 text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
+      <div className="bg-primary p-6 text-center">
+        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -36,18 +36,18 @@ function page() {
               d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.981l7.5-4.039a2.25 2.25 0 012.134 0l7.5 4.039a2.25 2.25 0 011.183 1.98V19.5z"
             />
           </svg>
-        </div>
-        <h1 className="text-2xl font-bold text-white mt-4">Verify Your Email</h1>
+        </div> */}
+        <h1 className="text-2xl font-bold text-white ">Verify Your Email</h1>
       </div>
   
       {/* Content Area */}
-      <div className="p-8">
+      <div className="sm:p-8 p-4">
         <div className="text-center mb-6">
           <p className="text-lg text-gray-600 mb-4">
             Hello <span className="font-semibold text-gray-800">{userInfo?.username}</span>,
             we've sent a verification link to:
           </p>
-          <p className="text-lg font-medium text-purple-600 bg-purple-50 rounded-lg py-2 px-4 inline-block">
+          <p className="text-lg font-medium text-primary bg-purple-50 rounded-lg py-2 px-4 inline-block">
             {userInfo?.email}
           </p>
         </div>
@@ -64,7 +64,7 @@ function page() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-16 h-16 text-purple-600"
+              className="w-16 h-16 text-primary"
             >
               <path
                 strokeLinecap="round"
@@ -85,7 +85,7 @@ function page() {
           <div className="pt-4 space-y-3">
             <button
               onClick={() => router.push('/login')}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
+              className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
             >
               Back to Sign In
             </button>

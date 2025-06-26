@@ -9,8 +9,9 @@ const roboto = Roboto({
 const theme = createTheme({
   breakpoints:{
     values: {
+      
       mobileS: 0,
-      xs: 380, // 380px
+      xs: 360, // 380px
       sm: 600, // 600px
       md: 960, // 960px
       lg: 1280, // 1280px
@@ -59,10 +60,11 @@ const theme = createTheme({
     },
     MuiTextField: {
       styleOverrides: {
-        root: {
+        root: (props) => {
+          const { theme } = props; // ✅ yeh line zaroori hai
+          return {
           '& .MuiOutlinedInput-root': {
-            borderRadius: '10px', // Rounded border
-          
+            borderRadius: '10px',
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: '#E5E5E5', // Light gray border
               borderWidth: 1,
@@ -75,6 +77,19 @@ const theme = createTheme({
               borderWidth: 1,
 
             },
+     '& input': {
+      paddingTop: '14px',
+      paddingBottom: '14px',
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: '14px',     // ✅ Sm screen pe kam padding
+        paddingBottom: '14px',
+      },
+      [theme.breakpoints.down('xs')]: {
+        paddingTop: '11px',     
+        paddingBottom: '11px',
+      },
+      
+    },
           },
           '& input::placeholder': {
             color: '#999999',
@@ -86,7 +101,8 @@ const theme = createTheme({
             fontSize: '0.75rem',
             color: '#d32f2f',
           },
-        },
+        };
+      }
       },
     },
   },

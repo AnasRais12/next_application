@@ -1,121 +1,138 @@
 'use client';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
-import { FaArrowLeftLong } from 'react-icons/fa6';
-import { RxCross2 } from 'react-icons/rx';
+import theme from '@/lib/theme';
 import CSpinner from '@/components/CSpinner';
+import { Button } from '@mui/material';
+import ValidatedTextField from '../form/ValidatedTextField';
+const schema = yup.object().shape({
+  email: yup.string().email('Invalid email format').matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email format').required('Email is required'),
+});
 
-export const ForgetPassword = ({setForgetPasswordModal}) => {
-  
-  const router = useRouter();
-  const [email, setEmail] = useState('');
+export const ForgetPassword = ({ setForgetPasswordModal }) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({ resolver: yupResolver(schema) });
+  const email = watch('email');
   const [loading, setloading] = useState(false);
 
-  const handleForgotPassword = async () => {
+  const handleForgotPassword = async (data) => {
+    const { email } = data;
     try {
       setloading(true);
-      if (!email) {
-        Swal.fire({ icon: 'error', text: 'Please enter your email!' });
-        return;
-      }
-
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: 'https://next-application-pi.vercel.app/resetPassword', // Yahan reset page ka URL daalna hoga
       });
       if (error) {
-        Swal.fire({ icon: 'error', text: error.message });
+          AlertModal({
+              icon: 'error',
+              title: 'Authentication Error',
+              text: `${error.message}`,
+              buttonText: 'Ok'
+            })
       } else {
         setForgetPasswordModal(false)
-        Swal.fire({
-          icon: 'success',
-          text: 'We’ve sent a password reset link to your email in 1 mins. Please check your inbox and follow the link to set a new password!',
-        });
+          AlertModal({
+              icon: 'success',
+              title: 'Password Reset Link Sent',
+              text: `We’ve sent a password reset link to your email in 1 mins. Please check your inbox and follow the link to set a new password!`,
+              buttonText: 'Ok'
+            })
       }
     } catch (error) {
-      Swal.fire({ icon: 'error', text: error.message });
+       AlertModal({
+              icon: 'error',
+              title: 'Something went wrong',
+              text: `${error.message}`,
+              buttonText: 'Ok'
+            })
     } finally {
       setloading(false);
+      reset()
     }
   };
 
   return (
- <div className="fixed inset-0 flex items-center justify-center z-50 ">
-  <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden mx-4  ">
-    {/* Header with Gradient Background */}
-    <div className="bg-primary hover:bg-green-800 sm:p-6 p-3 text-center">
-      <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto backdrop-blur-sm">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6 text-white"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-          />
-        </svg>
-      </div>
-      <h1 className="text-xl font-bold text-white mt-3">Reset Your Password</h1>
-    </div>
-
-    {/* Form Content */}
-    <div className="sm:p-6 p-3">
-      <p className="text-dark mb-6 text-center">
-        Enter your email to receive a password reset link
-      </p>
-
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-dark mb-1">
-            Email Address
-          </label>
-          <input
-            type="email"
-            placeholder="your@email.com"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="fixed inset-0 flex items-center justify-center z-50 ">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden mx-4  ">
+        {/* Header with Gradient Background */}
+        <div className="bg-primary  sm:p-6 p-3 text-center">
+          <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto backdrop-blur-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-xl font-bold text-white mt-3">Reset Your Password</h1>
         </div>
 
-        <button
-          onClick={handleForgotPassword}
-          disabled={loading}
-          className="w-full bg-primary hover:bg-green-800 text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
-        >
-          {loading ? (
-            <CSpinner color="text-white" size="sm" />
-          ) : (
-            'Send Reset Link'
-          )}
-        </button>
-      </div>
+        {/* Form Content */}
+        <div className="sm:p-6 p-3">
+          <p className="text-dark mb-6 ">
+            Enter your email to receive a password reset link
+          </p>
 
-      {/* Back to Login Link */}
-      <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-        <button
-           onClick={() => setForgetPasswordModal(false)}
-          className="text-sm text-green-800 hover:text-primary font-medium flex items-center gap-1"
-        >
-          Back to Sign In
-        </button>
-        
-        {/* <button
+          <form onSubmit={handleSubmit(handleForgotPassword)} className="space-y-4">
+            <ValidatedTextField
+              label="Email"
+              placeholder="Enter Your Email"
+              register={register}
+              name="email"
+              errors={errors}
+              theme={theme}
+              isValid={isValid}
+            />
+
+            <Button
+              type="submit"
+              disabled={loading || !email?.trim()}
+              className="w-full bg-primary  text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
+            >
+              {loading ? (
+                <CSpinner color="text-white" size="sm" />
+              ) : (
+                'Send Reset Link'
+              )}
+            </Button>
+          </form>
+
+          {/* Back to Login Link */}
+          <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
+            <button
+              onClick={() => setForgetPasswordModal(false)}
+              className="text-sm text-primary hover:text-primary font-medium flex items-center gap-1"
+            >
+              Back to Sign In
+            </button>
+
+            {/* <button
           onClick={() => setForgetPasswordModal(false)}
           className="text-gray-400 hover:text-gray-600 transition-colors sm:hidden"
         >
           <RxCross2 className="w-5 h-5" />
         </button> */}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
   );
 };
 

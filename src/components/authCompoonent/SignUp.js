@@ -1,23 +1,21 @@
 'use client';
 import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
-import { supabaseRole } from '@/lib/supabase';
 import { signInWithGoogle } from '@/lib/Auth';
 import { supabase } from '@/lib/supabase';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Box, Divider, FormControl, FormHelperText, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
 import CSpinner from '@/components/CSpinner';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
-import { CheckCircle, Error } from '@mui/icons-material';
 import theme from '@/lib/theme';
 import ValidatedTextField from '../form/ValidatedTextField';
+import AlertModal from '../common/AlertModal';
 
 const schema = yup.object().shape({
   username: yup
@@ -71,7 +69,12 @@ function Register() {
         .limit(1);
 
       if (existingUserName?.length > 0) {
-        Swal.fire({ icon: 'error', text: `Username Already Exists` });
+        AlertModal({
+          icon: 'error',
+          title: 'Insert Profile Error! ',
+          text: `Username Already Exists`,
+          buttonText: 'Ok'
+        })
         return;
       }
 
@@ -83,7 +86,12 @@ function Register() {
         .limit(1);
 
       if (existingEmail?.length > 0) {
-        Swal.fire({ icon: 'error', text: `Email Already Exists` });
+        AlertModal({
+          icon: 'error',
+          title: 'Insert Profile Error! ',
+          text: `Email Already Exists`,
+          buttonText: 'Ok'
+        })
         return;
       }
 
@@ -99,7 +107,12 @@ function Register() {
       );
 
       if (authError) {
-        Swal.fire({ icon: 'error', text: authError.message });
+        AlertModal({
+          icon: 'error',
+          title: 'Authentication Error! ',
+          text: `${authError.message} `,
+          buttonText: 'Ok'
+        })
         return;
       }
 
@@ -127,18 +140,29 @@ function Register() {
       ]);
 
       if (insertError) {
-        Swal.fire({ icon: 'error', text: insertError.message });
+        AlertModal({
+          icon: 'error',
+          title: 'Insert Profile Error! ',
+          text: `${insertError.message} `,
+          buttonText: 'Ok'
+        })
         return;
       }
-
-      Swal.fire({
+      AlertModal({
         icon: 'success',
-        text: `User Registered Successfully!`,
-      }).then(() => {
+        title: 'User Registered Successfully!',
+        text: `Please check your email to verify your account.`,
+        buttonText: 'Ok'
+      })
         router.push('/verifyaccount');
-      });
+
     } catch (error) {
-      Swal.fire({ icon: 'error', text: error.message });
+      AlertModal({
+        icon: 'error',
+        title: 'Something went wrong! ',
+        text: `${error.message} `,
+        buttonText: 'Ok'
+      })
     } finally {
       setLoading(false);
       reset();
@@ -178,8 +202,8 @@ function Register() {
                 sx={(theme) => ({
                   fontSize: {
                     mobileS: '30px',
-                    xs: '40px',      
-                    sm: '40px',   
+                    xs: '40px',
+                    sm: '40px',
                   },
                 })}
 
@@ -191,11 +215,11 @@ function Register() {
 
 
               <Typography
-                 sx={(theme) => ({
+                sx={(theme) => ({
                   fontSize: {
                     mobileS: '18px',
-                    xs: '20px',      
-                    sm: '20px',   
+                    xs: '20px',
+                    sm: '20px',
                   },
                 })}
                 variant="body1" color="text.secondary">
