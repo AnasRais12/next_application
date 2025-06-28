@@ -19,10 +19,10 @@ const forgetAccountValidation = yup.object().shape({
     .string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is Required'),
-  confirmPassword: yup
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is Required')
+   confirmPassword: yup
+     .string()
+     .oneOf([yup.ref('resetpassword'), null], 'Passwords must match')
+     .required('Confirm password is required'),
 });
 
 function Forget_Account() {
@@ -99,7 +99,7 @@ function Forget_Account() {
             </svg>
           </div>
           <Link href={'/login'}>
-            <FaArrowLeft className='text-[25px] font-bold sm:text-[30px] mb-4 ' />
+            <FaArrowLeft className='text-[25px] lg:hidden flex font-bold sm:text-[30px] mb-4 ' />
           </Link>
           <Typography sx={(theme) => ({
             fontSize: {
@@ -136,7 +136,7 @@ function Forget_Account() {
 
         {/* Form Content */}
         <div className=" md:px-6 md:py-1  lg:px-6 lg:py-6">
-          <form onSubmit={handleSubmit(handleResetPassword)} className=" space-y-7 lg:space-y-5">
+          <form onSubmit={handleSubmit(handleResetPassword)} className=" sm:space-y-7 space-y-4 lg:space-y-5">
             <ValidatedTextField
               label="New Password"
               placeholder="Enter your password"

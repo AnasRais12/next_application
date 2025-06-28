@@ -132,28 +132,43 @@ function Login() {
             router.push('/');
           }
           else {
-             AlertModal({
+            AlertModal({
               icon: 'error',
               title: 'Profile Role Not Found! ',
               text: `Invalid role! Please contact support`,
               buttonText: 'Ok'
             })
-         
+
           }
         }
       }
     } catch (error) {
-        AlertModal({
-              icon: 'error',
-              title: 'Something went wrong! ',
-              text: `${error?.message}`,
-              buttonText: 'Ok'
-            })
+      AlertModal({
+        icon: 'error',
+        title: 'Something went wrong! ',
+        text: `${error?.message}`,
+        buttonText: 'Ok'
+      })
     } finally {
       setCredentialLoading(false);
       reset();
     }
   };
+  //  {forgetPasswordModal && (
+  //         <>
+  //           <div className="lg:fixed inset-0 bg-black backdrop-blur-sm z-40" />
+  //           <ForgetPassword setForgetPasswordModal={setForgetPasswordModal} />
+  //         </>
+  //       )}
+  if (forgetPasswordModal) {
+    return (
+      <>
+        <div className="lg:fixed inset-0 bg-black backdrop-blur-sm z-40" />
+        <ForgetPassword setForgetPasswordModal={setForgetPasswordModal} />
+      </>
+    )
+
+  }
 
   return (
     <>
@@ -247,7 +262,7 @@ function Login() {
                 {credentialLoading ? (
                   <CSpinner color="text-white" size="sm" />
                 ) : (
-                  'Login to your account'
+                  'Login'
                 )}
               </Button>
             </form>
@@ -295,13 +310,9 @@ function Login() {
             </div>
           </div>
         </div>
-        {forgetPasswordModal && (
-          <>
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40" />
-            <ForgetPassword setForgetPasswordModal={setForgetPasswordModal} />
-          </>
-        )}
       </div>
+
+
     </>
   );
 }

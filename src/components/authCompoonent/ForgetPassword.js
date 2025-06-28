@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/lib/supabase';
 import theme from '@/lib/theme';
 import CSpinner from '@/components/CSpinner';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import ValidatedTextField from '../form/ValidatedTextField';
+import Link from 'next/link';
+import { FaArrowLeft } from 'react-icons/fa6';
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email format').matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email format').required('Email is required'),
 });
@@ -32,28 +34,28 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
         redirectTo: 'https://next-application-pi.vercel.app/resetPassword', // Yahan reset page ka URL daalna hoga
       });
       if (error) {
-          AlertModal({
-              icon: 'error',
-              title: 'Authentication Error',
-              text: `${error.message}`,
-              buttonText: 'Ok'
-            })
+        AlertModal({
+          icon: 'error',
+          title: 'Authentication Error',
+          text: `${error.message}`,
+          buttonText: 'Ok'
+        })
       } else {
         setForgetPasswordModal(false)
-          AlertModal({
-              icon: 'success',
-              title: 'Password Reset Link Sent',
-              text: `We’ve sent a password reset link to your email in 1 mins. Please check your inbox and follow the link to set a new password!`,
-              buttonText: 'Ok'
-            })
+        AlertModal({
+          icon: 'success',
+          title: 'Password Reset Link Sent',
+          text: `We’ve sent a password reset link to your email in 1 mins. Please check your inbox and follow the link to set a new password!`,
+          buttonText: 'Ok'
+        })
       }
     } catch (error) {
-       AlertModal({
-              icon: 'error',
-              title: 'Something went wrong',
-              text: `${error.message}`,
-              buttonText: 'Ok'
-            })
+      AlertModal({
+        icon: 'error',
+        title: 'Something went wrong',
+        text: `${error.message}`,
+        buttonText: 'Ok'
+      })
     } finally {
       setloading(false);
       reset()
@@ -61,36 +63,71 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 ">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden mx-4  ">
+    <div className="lg:fixed inset-0 flex items-center lg:justify-center z-50 bg-white">
+      <div className="bg-white lg:rounded-2xl lg:shadow-xl w-full lg:max-w-md sm:mx-4 mx-4 overflow-hidden lg:border lg:border-gray-200">
         {/* Header with Gradient Background */}
-        <div className="bg-primary  sm:p-6 p-3 text-center">
-          <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto backdrop-blur-sm">
+        <div className="lg:bg-primary   sm:p-6 sm:pt-6 pt-3 lg:text-primary text-primary lg:text-center">
+
+          <div className="w-10 h-10 mb-4 bg-white/20 rounded-lg lg:flex hidden items-center mx-auto justify-center backdrop-blur-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-6 h-6 text-white"
+              className="w-5 h-5 text-white"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
               />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-white mt-3">Reset Your Password</h1>
+          <Link href={'/login'}>
+            <FaArrowLeft onClick={() => setForgetPasswordModal(false)} className='text-[25px] lg:hidden flex font-bold sm:text-[30px] mb-3 sm:mb-4 ' />
+          </Link>
+          <Typography sx={(theme) => ({
+            fontSize: {
+              mobileS: '28px',
+              xs: '30px',
+              sm: '40px',
+            },
+            color: {
+              lg: 'white',
+              xs: 'primary'
+
+            }
+          })}
+            variant="h4"
+            fontWeight="bold"
+            color="primary"
+          >
+            Forget Password
+          </Typography>
+          <Typography sx={(theme) => ({
+            fontSize: {
+              mobileS: '16px',
+              xs: '17px',
+              sm: '20px',
+            },
+            display: {
+              lg: 'none',
+              xs: 'block',
+            },
+
+          })} variant="body1" color="text.secondary"   >
+            Enter your email to receive a password reset link
+          </Typography>
         </div>
 
         {/* Form Content */}
-        <div className="sm:p-6 p-3">
-          <p className="text-dark mb-6 ">
+        <div className=" md:px-6 md:py-1  lg:px-6 lg:py-6">
+          <p className="lg:flex hidden text-dark mb-6 ">
             Enter your email to receive a password reset link
           </p>
 
-          <form onSubmit={handleSubmit(handleForgotPassword)} className="space-y-4">
+          <form onSubmit={handleSubmit(handleForgotPassword)} className="sm:space-y-7 sm:mt-0 mt-3 space-y-4 lg:space-y-5">
             <ValidatedTextField
               label="Email"
               placeholder="Enter Your Email"
@@ -104,7 +141,7 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
             <Button
               type="submit"
               disabled={loading || !email?.trim()}
-              className="w-full bg-primary  text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center h-12"
+              className="w-full bg-primary  text-white p-3 rounded-lg hover:shadow-md transition-all flex items-center justify-center "
             >
               {loading ? (
                 <CSpinner color="text-white" size="sm" />
@@ -115,7 +152,7 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
           </form>
 
           {/* Back to Login Link */}
-          <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
+          <div className="lg:flex hidden  justify-between items-center mt-6 pt-4 border-t border-gray-100">
             <button
               onClick={() => setForgetPasswordModal(false)}
               className="text-sm text-primary hover:text-primary font-medium flex items-center gap-1"

@@ -17,10 +17,10 @@ function page() {
   }, []);
 
   return (
-    <div className=" h-screen  inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="  h-screen inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
     <div className="w-full max-w-lg  bg-white rounded-2xl overflow-hidden shadow-2xl mx-2 sm:mx-4">
       {/* Header with Gradient Background */}
-      <div className="bg-primary p-6 text-center">
+      <div className="bg-primary p-4 sm:p-6 text-center">
         {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,25 +37,23 @@ function page() {
             />
           </svg>
         </div> */}
-        <h1 className="text-2xl font-bold text-white ">Verify Your Email</h1>
+        <h1 className="text-2xl font-bold text-white ">Check Your Email</h1>
       </div>
   
       {/* Content Area */}
       <div className="sm:p-8 p-4">
-        <div className="text-center mb-6">
-          <p className="text-lg text-gray-600 mb-4">
+        <div className="sm:text-center mb-6">
+          <p className="text-lg text-gray-600 mb-2 sm:mb-4">
             Hello <span className="font-semibold text-gray-800">{userInfo?.username}</span>,
-            we've sent a verification link to:
+            we've sent a verification link to: <span className="text-lg font-medium text-primary  rounded-lg inline-block">{userInfo?.email}</span>
           </p>
-          <p className="text-lg font-medium text-primary bg-purple-50 rounded-lg py-2 px-4 inline-block">
-            {userInfo?.email}
-          </p>
+         
         </div>
   
         {/* Visual Email Graphic */}
-        <div className="relative mb-8">
+        <div className="relative ">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-24 h-24 rounded-full bg-blue-100 opacity-30"></div>
+            <div className="sm:w-24 sm:h-24 w-10 h-10 rounded-full opacity-30"></div>
           </div>
           <div className="relative flex justify-center">
             <svg
@@ -76,11 +74,7 @@ function page() {
         </div>
   
         <div className="space-y-4 text-center">
-          <p className="text-gray-600">
-            Click the link in the email to verify your account.
-            <br />
-            Haven't received it? Check your spam folder.
-          </p>
+        
   
           <div className="pt-4 space-y-3">
             <button
@@ -89,6 +83,9 @@ function page() {
             >
               Back to Sign In
             </button>
+              <p className="text-gray-600">
+            Haven't received it? Check your spam folder.
+          </p>
   
             {/* <button
               // onClick={handleResendEmail}

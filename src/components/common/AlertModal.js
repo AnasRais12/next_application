@@ -14,7 +14,7 @@ export default function AlertModal({ icon = 'success', title, text, buttonText =
                 
                 <h2 class="swal-title">${title}</h2>
                 <p class="swal-text">${text}</p>
-                <button class="text-white py-2   sm:py-3  w-full rounded-md text-lg font-medium ${buttonColor}">${buttonText}</button>
+                <button id="main-btn" class="text-white py-2   sm:py-3  w-full rounded-md text-lg font-medium ${buttonColor}">${buttonText}</button>
                 <button class="${checkInfo} text-black flex justify-center items-center py-2   sm:py-3 mt-3 sm:mt-6 w-full rounded-lg text-lg font-medium ">${infoButtonText}</button>
 
               </div>
@@ -25,6 +25,17 @@ export default function AlertModal({ icon = 'success', title, text, buttonText =
             if (icon) {
                 icon.innerHTML = <div style="font-size:40px; font-weight:bold;color:#ed1010">!</div>;
             }
+               const mainBtn = document.getElementById('main-btn');
+      if (mainBtn) {
+        mainBtn.addEventListener('click', () => {
+          if (buttonText === 'Close' || buttonText === 'No Cancel' || buttonText === 'Ok') {
+            Swal.close();
+          }
+          if (buttonText === 'Login') {
+            window.location.href = '/login'; // ya Next.js router push bhi kar sakte ho
+          }
+        })
+    }
         },
         background: '#fff',
         showConfirmButton: false,
