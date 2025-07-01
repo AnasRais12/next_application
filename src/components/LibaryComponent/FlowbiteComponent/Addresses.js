@@ -45,7 +45,7 @@ const AddressForm = () => {
   const [isReloading, setIsReloading] = useState(false);
   const [selectedCityLat, setSelectedCityLat] = useState(null);
   const [selectedCityLng, setSelectedCityLng] = useState(null);
-    const [selectedCountryData, setSelectedCountryData] = useState(null);
+  const [selectedCountryData, setSelectedCountryData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [countryLoading, setCountryLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -115,7 +115,9 @@ const AddressForm = () => {
 
   useEffect(() => {
     if (selectedCountry && countries.length > 0) {
-      const countryData = countries.find(item => item?.countryCode === selectedCountry);
+      const countryData = countries.find(
+        (item) => item?.countryCode === selectedCountry
+      );
       if (countryData) {
         setSelectedCountryData(countryData); // State mein country data save kar diya
       } else {
@@ -141,7 +143,7 @@ const AddressForm = () => {
           area: data.area,
           state: state,
           phone_code: countryCode,
-          currency_code: selectedCountryData?.currencyCode
+          currency_code: selectedCountryData?.currencyCode,
         },
       ]);
       if (error) {
@@ -165,7 +167,7 @@ const AddressForm = () => {
       setLoading(false);
     }
   };
-console.log("selectedCountryData!!",selectedCountryData)
+  console.log('selectedCountryData!!', selectedCountryData);
   if (isReloading || countryLoading) {
     return <CustomSpinner />;
   }

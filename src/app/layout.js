@@ -24,8 +24,8 @@ const geistMono = localFont({
 });
 const roboto = Roboto({
   weight: ['400', '500'], // Regular aur medium weights
-  subsets: ['latin'],     // Latin characters
-  display: 'swap',        // Font load hone tak default font nahi dikhega
+  subsets: ['latin'], // Latin characters
+  display: 'swap', // Font load hone tak default font nahi dikhega
 });
 
 // export const metadata = {
@@ -41,18 +41,18 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-         <head>
-          <link rel="manifest" href="/manifest.json" />
-          <meta name="theme-color" content="#000000" />
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
 
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-      <Script
-  id="tawk-to"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: `
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Script
+            id="tawk-to"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
       var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
       (function(){
       var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -63,20 +63,19 @@ export default function RootLayout({ children }) {
       s0.parentNode.insertBefore(s1,s0);
       })();
     `,
-  }}
-/>
-        <Provider store={store}>
-          <GlobalProvider>
+            }}
+          />
+          <Provider store={store}>
+            <GlobalProvider>
               <ThemeRegistry>
-            {/* {isLoginPage ? <Navbar_ /> : null} */}
-            {children}
-            <ToastContainer autoClose={1000} />
-            {/* {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />} */}
-        </ThemeRegistry>
-
-          </GlobalProvider>
-        </Provider>
-      </body>
+                {/* {isLoginPage ? <Navbar_ /> : null} */}
+                {children}
+                <ToastContainer autoClose={1000} />
+                {/* {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />} */}
+              </ThemeRegistry>
+            </GlobalProvider>
+          </Provider>
+        </body>
       </head>
     </html>
   );

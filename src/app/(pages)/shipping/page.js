@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function ShippingInfoPage() {
   return (
@@ -11,21 +11,34 @@ export default function ShippingInfoPage() {
               Shipping Information
             </h1>
             <p className="text-emerald-100 text-lg">
-              Last updated: {new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+              Last updated:{' '}
+              {new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
               })}
             </p>
           </div>
-          
+
           <div className="p-6 md:p-8 xl:px-14">
             <div className="flex items-start bg-emerald-50 rounded-lg p-4 border-l-4 border-emerald-500">
-              <svg className="w-6 h-6 text-emerald-600 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-6 h-6 text-emerald-600 mt-1 mr-3 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <p className="text-lg text-gray-600">
-                At <span className="font-bold text-emerald-700">Shopease</span>, we want you to be completely satisfied with your purchase. If you're not happy with your order, we'll make it right.
+                At <span className="font-bold text-emerald-700">Shopease</span>,
+                we want you to be completely satisfied with your purchase. If
+                you're not happy with your order, we'll make it right.
               </p>
             </div>
           </div>
@@ -42,11 +55,10 @@ export default function ShippingInfoPage() {
                 1
               </div>
               <div>
-                <h3 className="font-medium text-gray-900">
-                  Check Your Email
-                </h3>
+                <h3 className="font-medium text-gray-900">Check Your Email</h3>
                 <p className="text-gray-600">
-                  You’ll receive a confirmation email with your order number and a tracking link.
+                  You’ll receive a confirmation email with your order number and
+                  a tracking link.
                 </p>
               </div>
             </div>
@@ -60,7 +72,8 @@ export default function ShippingInfoPage() {
                   Visit the Tracking Page
                 </h3>
                 <p className="text-gray-600">
-                  Click the tracking link in your email or enter your order number on our website.
+                  Click the tracking link in your email or enter your order
+                  number on our website.
                 </p>
               </div>
             </div>
@@ -74,7 +87,8 @@ export default function ShippingInfoPage() {
                   Track in Real-Time
                 </h3>
                 <p className="text-gray-600">
-                  View live updates on your shipment’s location and estimated delivery date.
+                  View live updates on your shipment’s location and estimated
+                  delivery date.
                 </p>
               </div>
             </div>
@@ -92,7 +106,8 @@ export default function ShippingInfoPage() {
                 How long does delivery take?
               </h3>
               <p className="text-gray-600 mt-1">
-                Standard delivery takes 3-5 business days. Express options are available at checkout.
+                Standard delivery takes 3-5 business days. Express options are
+                available at checkout.
               </p>
             </div>
 
@@ -101,7 +116,8 @@ export default function ShippingInfoPage() {
                 What if my package is delayed?
               </h3>
               <p className="text-gray-600 mt-1">
-                Check tracking for updates. If delayed beyond the estimated date, contact our support team.
+                Check tracking for updates. If delayed beyond the estimated
+                date, contact our support team.
               </p>
             </div>
 
@@ -110,7 +126,8 @@ export default function ShippingInfoPage() {
                 Can I change my shipping address?
               </h3>
               <p className="text-gray-600 mt-1">
-                Address changes are only possible before your order is shipped. Contact us immediately for assistance.
+                Address changes are only possible before your order is shipped.
+                Contact us immediately for assistance.
               </p>
             </div>
           </div>
@@ -121,7 +138,10 @@ export default function ShippingInfoPage() {
           <p className="text-gray-600 mb-4">
             Need help? Contact our support team.
           </p>
-          <Link href="/contact" className="bg-[#047857] hover:bg-[#03684d] text-white font-medium py-2 px-6 rounded-lg transition duration-200">
+          <Link
+            href="/contact"
+            className="bg-[#047857] hover:bg-[#03684d] text-white font-medium py-2 px-6 rounded-lg transition duration-200"
+          >
             Contact Support
           </Link>
         </div>

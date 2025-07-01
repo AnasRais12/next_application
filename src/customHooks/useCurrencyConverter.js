@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { fetchExchangeRates } from "@/helper/CurrenyConver";
-import UserQuery from "@/DbQuery/UserDetailQuery";
+import { useEffect, useState } from 'react';
+import { fetchExchangeRates } from '@/helper/CurrenyConver';
+import UserQuery from '@/DbQuery/UserDetailQuery';
 
 export default function useCurrencyConverter() {
   const [from, setFrom] = useState('PKR');
@@ -12,22 +12,22 @@ export default function useCurrencyConverter() {
       try {
         const data = await fetchExchangeRates(from);
         if (data) {
-          console.log(data, "Data is here");
+          console.log(data, 'Data is here');
           setRates(data);
         } else {
-          console.log("Data not found");
+          console.log('Data not found');
         }
       } catch (error) {
-        console.error("Error fetching exchange rates:", error);
+        console.error('Error fetching exchange rates:', error);
       }
     };
 
     getExchangeRates();
 
-    fetch("https://restcountries.com/v3.1/all")
+    fetch('https://restcountries.com/v3.1/all')
       .then((res) => res.json())
       .then((data) => setCountries(data))
-      .catch((error) => console.error("Error fetching countries:", error));
+      .catch((error) => console.error('Error fetching countries:', error));
   }, [from]);
 
   return { from, setFrom, rates, countries, setRates };

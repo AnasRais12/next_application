@@ -7,7 +7,12 @@ import {
   IconButton,
   FormHelperText,
 } from '@mui/material';
-import { CheckCircle, Error, Visibility, VisibilityOff } from '@mui/icons-material';
+import {
+  CheckCircle,
+  Error,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
 
 const ValidatedTextField = ({
   label,
@@ -25,8 +30,10 @@ const ValidatedTextField = ({
   const inputType = isPasswordField && !showPassword ? 'password' : 'text';
 
   return (
-    <FormControl fullWidth error={!!errors[name]} >
-      <label className="block text-lg lg:text-sm font-medium  mb-1 ">{label}</label>
+    <FormControl fullWidth error={!!errors[name]}>
+      <label className="block text-lg lg:text-sm font-medium  mb-1 ">
+        {label}
+      </label>
       <TextField
         placeholder={placeholder}
         type={inputType}
@@ -39,15 +46,15 @@ const ValidatedTextField = ({
               borderColor: errors[name]
                 ? theme.palette.error.main
                 : isValid
-                ? '#4caf50'
-                : theme.palette.borderColor
+                  ? '#4caf50'
+                  : theme.palette.borderColor,
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               borderColor: errors[name]
                 ? theme.palette.error.main
                 : isValid
-                ? '#4caf50'
-                : theme.palette.borderColor,
+                  ? '#4caf50'
+                  : theme.palette.borderColor,
             },
           },
         })}
@@ -61,7 +68,11 @@ const ValidatedTextField = ({
                   edge="end"
                   tabIndex={-1}
                 >
-                  {showPassword ? <VisibilityOff className='text-gray-500' /> : <Visibility className='text-primary' />}
+                  {showPassword ? (
+                    <VisibilityOff className="text-gray-500" />
+                  ) : (
+                    <Visibility className="text-primary" />
+                  )}
                 </IconButton>
               )}
 
@@ -96,9 +107,11 @@ const ValidatedTextField = ({
           ),
         }}
       />
-        {errors[name]?.message && (
-    <FormHelperText sx={{fontWeight: '700',marginLeft:"4px"}}>{errors[name]?.message?.toString()}</FormHelperText>
-  )}
+      {errors[name]?.message && (
+        <FormHelperText sx={{ fontWeight: '700', marginLeft: '4px' }}>
+          {errors[name]?.message?.toString()}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };

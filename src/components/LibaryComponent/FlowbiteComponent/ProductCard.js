@@ -7,7 +7,7 @@ import { getCart } from '@/utils/reduxGlobalStates/ReduxStates';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
-import { addToCart,} from '@/app/store/features/CartReducer/CartSlice';
+import { addToCart } from '@/app/store/features/CartReducer/CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 const ProductCard = (props) => {
   const { data } = props;
@@ -55,7 +55,7 @@ const ProductCard = (props) => {
           product_price: data?.product_price,
           product_image: data?.image,
           delivery: 20,
-          quantity: quantity
+          quantity: quantity,
         },
       ]);
 

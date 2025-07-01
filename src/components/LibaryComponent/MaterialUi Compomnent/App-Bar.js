@@ -1,6 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { FiShoppingCart, FiUser, FiSearch, FiHeart, FiChevronDown, FiCheck } from 'react-icons/fi';
+import {
+  FiShoppingCart,
+  FiUser,
+  FiSearch,
+  FiHeart,
+  FiChevronDown,
+  FiCheck,
+} from 'react-icons/fi';
 import Wishlist from '../FlowbiteComponent/WishList';
 import { useRouter } from 'next/navigation';
 import { getCart, getWishList } from '@/utils/reduxGlobalStates/ReduxStates';
@@ -29,20 +36,21 @@ export default function Navbar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("https://restcountries.com/v3.1/all");
+        const res = await fetch('https://restcountries.com/v3.1/all');
         const data = await res.json();
         setCountries(data);
 
         // Set user's currency if available
         if (userDetails?.currency_code) {
           const userCurrency = userDetails.currency_code;
-          const countryWithCurrency = data.find(country => 
-            country.currencies?.[userCurrency]
+          const countryWithCurrency = data.find(
+            (country) => country.currencies?.[userCurrency]
           );
-          
+
           if (countryWithCurrency) {
             setFrom(userCurrency);
-            const currencySymbol = countryWithCurrency.currencies[userCurrency]?.symbol || "$";
+            const currencySymbol =
+              countryWithCurrency.currencies[userCurrency]?.symbol || '$';
             setSymbol(currencySymbol);
           }
         }
@@ -60,8 +68,6 @@ export default function Navbar() {
 
   return (
     <nav className="bg-[red] border bg border-gray-100 w-full fixed top-0 left-0 z-[9999]">
-     
-      
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -71,7 +77,9 @@ export default function Navbar() {
               src="/images/logo.jpg"
               alt="Logo"
             />
-            <span className="ml-2 text-xl font-bold text-primary hidden sm:block">ShopEase</span>
+            <span className="ml-2 text-xl font-bold text-primary hidden sm:block">
+              ShopEase
+            </span>
           </Link>
 
           {/* Desktop Search Bar - Center Positioned */}
@@ -92,7 +100,7 @@ export default function Navbar() {
           {/* Right Navigation Icons */}
           <div className="flex items-center space-x-4 sm:space-x-6">
             {/* Mobile Search Button */}
-            <button 
+            <button
               className="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors"
               onClick={() => setSearchBar(true)}
             >
@@ -105,26 +113,40 @@ export default function Navbar() {
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                {countries.length > 0 && countries?.find(c => c.currencies && Object.keys(c.currencies)[0] === from)?.flags?.png ? (
+                {countries.length > 0 &&
+                countries?.find(
+                  (c) => c.currencies && Object.keys(c.currencies)[0] === from
+                )?.flags?.png ? (
                   <img
-                    src={countries.find(c => c.currencies && Object.keys(c.currencies)[0] === from).flags.png}
+                    src={
+                      countries.find(
+                        (c) =>
+                          c.currencies && Object.keys(c.currencies)[0] === from
+                      ).flags.png
+                    }
                     className="w-5 h-4 object-cover rounded-sm"
                     alt="Country flag"
                   />
                 ) : null}
                 <span className="text-sm font-medium">{from}</span>
-                <FiChevronDown className={`text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                <FiChevronDown
+                  className={`text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                />
               </button>
-              
+
               {isOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-80 overflow-y-auto">
                   <div className="py-1">
                     <div className="px-3 py-2 border-b border-gray-100">
-                      <p className="text-xs font-semibold text-gray-500">SELECT CURRENCY</p>
+                      <p className="text-xs font-semibold text-gray-500">
+                        SELECT CURRENCY
+                      </p>
                     </div>
                     {countries.map((country) => {
-                      const code = Object.keys(country.currencies || {})[0] || "USD";
-                      const currencySymbol = country.currencies?.[code]?.symbol || "$";
+                      const code =
+                        Object.keys(country.currencies || {})[0] || 'USD';
+                      const currencySymbol =
+                        country.currencies?.[code]?.symbol || '$';
                       return (
                         <button
                           key={country.cca3}
@@ -135,16 +157,22 @@ export default function Navbar() {
                             setIsOpen(false);
                           }}
                         >
-                          <img 
-                            src={country.flags.png} 
-                            className="w-5 h-4 mr-3 object-cover rounded-sm" 
+                          <img
+                            src={country.flags.png}
+                            className="w-5 h-4 mr-3 object-cover rounded-sm"
                             alt={country.name.common}
                           />
                           <div className="text-left">
-                            <p className="text-sm font-medium text-gray-800">{country.name.common}</p>
-                            <p className="text-xs text-gray-500">{code} • {currencySymbol}</p>
+                            <p className="text-sm font-medium text-gray-800">
+                              {country.name.common}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {code} • {currencySymbol}
+                            </p>
                           </div>
-                          {from === code && <FiCheck className="ml-auto text-primary" />}
+                          {from === code && (
+                            <FiCheck className="ml-auto text-primary" />
+                          )}
                         </button>
                       );
                     })}
@@ -158,18 +186,22 @@ export default function Navbar() {
               <button
                 onClick={() => setShowModal(!showModal)}
                 className={`p-2 rounded-full transition ${
-                  user ? 'bg-primary text-white hover:bg-blue-700' : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                  user
+                    ? 'bg-primary text-white hover:bg-blue-700'
+                    : 'text-gray-600 hover:text-primary hover:bg-gray-50'
                 }`}
               >
                 {user ? (
-                  <span className="text-sm font-semibold">{user.email[0].toUpperCase()}</span>
+                  <span className="text-sm font-semibold">
+                    {user.email[0].toUpperCase()}
+                  </span>
                 ) : (
                   <FiUser className="text-xl" />
                 )}
               </button>
 
               {showModal && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md border border-gray-100 z-50 overflow-hidden"
@@ -193,8 +225,8 @@ export default function Navbar() {
             </div>
 
             {/* Wishlist */}
-            <button 
-              onClick={() => setWishlistModal(true)} 
+            <button
+              onClick={() => setWishlistModal(true)}
               className="p-2 relative rounded-full hover:bg-gray-50 transition-colors"
             >
               <FiHeart className="text-xl text-gray-600 hover:text-primary" />
@@ -206,8 +238,8 @@ export default function Navbar() {
             </button>
 
             {/* Cart */}
-            <Link 
-              href="/shoppingcart" 
+            <Link
+              href="/shoppingcart"
               className="p-2 relative rounded-full hover:bg-gray-50 transition-colors"
             >
               <FiShoppingCart className="text-xl text-gray-600 hover:text-primary" />
@@ -228,7 +260,7 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black bg-opacity-50 z-[10000]"
           >
-            <motion.div 
+            <motion.div
               initial={{ y: -20 }}
               animate={{ y: 0 }}
               className="bg-white p-4 shadow-md"
@@ -243,7 +275,7 @@ export default function Navbar() {
                   />
                   <FiSearch className="absolute left-3 top-3.5 text-gray-400" />
                 </div>
-                <button 
+                <button
                   onClick={() => setSearchBar(false)}
                   className="ml-4 p-2 rounded-full hover:bg-gray-100"
                 >
@@ -251,10 +283,18 @@ export default function Navbar() {
                 </button>
               </div>
               <div className="flex space-x-2 overflow-x-auto pb-2">
-                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Electronics</button>
-                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Clothing</button>
-                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Home</button>
-                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">Books</button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">
+                  Electronics
+                </button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">
+                  Clothing
+                </button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">
+                  Home
+                </button>
+                <button className="px-3 py-1 bg-gray-100 text-sm rounded-full">
+                  Books
+                </button>
               </div>
             </motion.div>
           </motion.div>

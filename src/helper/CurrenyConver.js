@@ -1,26 +1,30 @@
-import axios from "axios";
+import axios from 'axios';
 
-const ExchangeFrom= "USD"
+const ExchangeFrom = 'USD';
 export const fetchExchangeRates = async (baseCurrency) => {
-  console.log("Fetching Exchange Rates for::::::::::::::", baseCurrency);
+  console.log('Fetching Exchange Rates for::::::::::::::', baseCurrency);
   try {
-    const res = await axios.get(`https://api.exchangerate-api.com/v4/latest/${baseCurrency}`);
+    const res = await axios.get(
+      `https://api.exchangerate-api.com/v4/latest/${baseCurrency}`
+    );
     return res.data.rates; // Exchange rates return karega
   } catch (error) {
-    console.error("Currency API Error:", error);
+    console.error('Currency API Error:', error);
     return null;
   }
 };
 
 // Price conversion function
-export const ConvertPrice = (price, rates,to,) => {
-  console.log("Hello World Togetther!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-  console.log("Exchange Rates Object:", rates);
-  console.log("Price in", ExchangeFrom, ":", price);
-  console.log("Target Currency:", to);
+export const ConvertPrice = (price, rates, to) => {
+  console.log(
+    'Hello World Togetther!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+  );
+  console.log('Exchange Rates Object:', rates);
+  console.log('Price in', ExchangeFrom, ':', price);
+  console.log('Target Currency:', to);
 
-  if (!rates || typeof rates !== "object") {
-    console.error("Invalid rates data received");
+  if (!rates || typeof rates !== 'object') {
+    console.error('Invalid rates data received');
     return price; // Default to original price if rates are invalid
   }
 
@@ -29,11 +33,9 @@ export const ConvertPrice = (price, rates,to,) => {
   //   return price;
   // }
 
- 
-
   // Conversion Formula: (price / fromRate) * toRate
   const convertedPrice = (price / rates[ExchangeFrom]) * rates[to];
   console.log(`Converted Price in ${to}:`, convertedPrice);
 
-  return Math.round(convertedPrice).toLocaleString(); 
+  return Math.round(convertedPrice).toLocaleString();
 };

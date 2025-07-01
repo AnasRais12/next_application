@@ -19,12 +19,14 @@ function page() {
   useFetchCartlist(session?.user?.id);
   const params = useParams();
   const router = useRouter();
-  const {userDetails} = UserQuery()
-  const [distance, setdistance] = useState(null)
-  const [delievery, setDeliveryCharges] = useState(null)
+  const { userDetails } = UserQuery();
+  const [distance, setdistance] = useState(null);
+  const [delievery, setDeliveryCharges] = useState(null);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
-  const productId = Object.values(CardsData).flat().find((item) => item?.product_id === parseInt(params?.id));
+  const productId = Object.values(CardsData)
+    .flat()
+    .find((item) => item?.product_id === parseInt(params?.id));
   const product = { ...productId, quantity: 1 };
 
   useEffect(() => {
@@ -37,23 +39,26 @@ function page() {
     }
   }, [productId]);
   useEffect(() => {
-    calculatedeliveryCharges(setDeliveryCharges,distance);
-  
-  }, [distance])
+    calculatedeliveryCharges(setDeliveryCharges, distance);
+  }, [distance]);
 
   console.log(userDetails, 'userDetails');
-  console.log(distance,"distancee!")
-  console.log(delievery, "delievery")
+  console.log(distance, 'distancee!');
+  console.log(delievery, 'delievery');
 
   if ((session?.user?.id && wishListLoading) || cartListLoading) {
     return <CustomSpinner />;
   }
-   
+
   return (
     <>
       <ProductCard data={product} />
-    <div className='hidden'>
-      <Map setDistance={setdistance} lang={Number(userDetails?.lat)} long={Number(userDetails?.long)}/>
+      <div className="hidden">
+        <Map
+          setDistance={setdistance}
+          lang={Number(userDetails?.lat)}
+          long={Number(userDetails?.long)}
+        />
       </div>
     </>
   );

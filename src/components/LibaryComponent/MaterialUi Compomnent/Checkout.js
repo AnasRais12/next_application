@@ -4,11 +4,9 @@ import Map from '@/components/Map';
 import useSession from '@/utils/UserExist/GetSession';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 
-
-const Checkout = ({ userAddresssExist,}) => {
+const Checkout = ({ userAddresssExist }) => {
   const session = useSession();
   useFetchCartlist(session?.user?.id);
-  
 
   return (
     <>
@@ -20,7 +18,6 @@ const Checkout = ({ userAddresssExist,}) => {
           heading={'Payment Detail'}
           userAddresssExist={userAddresssExist}
         />
-   
       </div>
     </>
   );

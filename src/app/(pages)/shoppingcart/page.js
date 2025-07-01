@@ -13,15 +13,15 @@ import Login from '@/components/authCompoonent/Login';
 
 function Page() {
   const { userDetails } = UserQuery();
-  const { deliveryCharges, setDeliveryCharges,setDistance,distance } = GlobalDetails();
+  const { deliveryCharges, setDeliveryCharges, setDistance, distance } =
+    GlobalDetails();
   const session = useSession();
   const [loadingSession, setLoadingSession] = useState(true);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
 
-
   useEffect(() => {
-    calculatedeliveryCharges(setDeliveryCharges,distance);
+    calculatedeliveryCharges(setDeliveryCharges, distance);
   }, [distance]);
   useEffect(() => {
     if (!session?.user?.id) {
@@ -45,7 +45,6 @@ function Page() {
   if (loadingSession) return <CustomSpinner />;
   // Agar wishlist ya cart loading hai toh spinner dikhao
   if (wishListLoading || cartListLoading) return <CustomSpinner />;
-
 
   return (
     <div>

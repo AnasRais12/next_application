@@ -33,7 +33,7 @@ const OrderSummary = () => {
   const [deliveryLoading, setdeliveryLoading] = useState(false);
   const [showingCardLoading, setShowingCardLoading] = useState(false); // ye isliyay banaya taakey jab mai payment karta hu to mujhe emply wali condition nazar aati hai ussey bachne ke liyay
   const [darkMode, setdark] = useState(false);
-  const { rates, from, symbol,deliveryCharges } = GlobalDetails()
+  const { rates, from, symbol, deliveryCharges } = GlobalDetails();
   // const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   // const tax = subTotal * 0.08;
   const Total = subTotal + deliveryCharges;
@@ -53,11 +53,10 @@ const OrderSummary = () => {
                 <h1 className="text-2xl font-bold mb-6 text-left">
                   Order Summary
                 </h1>
-                 <Link
-                href="/shoppingcart"
-                   className="text-[25px] hover:text-[red] hidden sm:block"
-              >
-              
+                <Link
+                  href="/shoppingcart"
+                  className="text-[25px] hover:text-[red] hidden sm:block"
+                >
                   <RxCross2 />
                 </Link>
                 {/* ⬅️ Arrow icon (sm screens par dikhega) */}
@@ -85,8 +84,11 @@ const OrderSummary = () => {
                     </div>
                     <p className="font-semibold">
                       {/* ${item?.product_price.toFixed(2)} */}
-                      <p> {symbol}: {ConvertPrice(item?.product_price
-                    , rates, from)}    </p>
+                      <p>
+                        {' '}
+                        {symbol}:{' '}
+                        {ConvertPrice(item?.product_price, rates, from)}{' '}
+                      </p>
                     </p>
                   </div>
                 ))}
@@ -98,14 +100,18 @@ const OrderSummary = () => {
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   {/* <span>${subTotal.toFixed(2)}</span> */}
-                  <p> {symbol}: {ConvertPrice(subTotal
-                    , rates, from)}    </p>
+                  <p>
+                    {' '}
+                    {symbol}: {ConvertPrice(subTotal, rates, from)}{' '}
+                  </p>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   {/* <span>${deliveryCharges}</span> */}
-                  <p> {symbol}: {ConvertPrice(deliveryCharges
-                    , rates, from)}    </p>
+                  <p>
+                    {' '}
+                    {symbol}: {ConvertPrice(deliveryCharges, rates, from)}{' '}
+                  </p>
                 </div>
                 {/* <div className="flex justify-between">
        <span>Tax</span>
@@ -114,7 +120,10 @@ const OrderSummary = () => {
                 <div className="flex justify-between font-bold pt-2 border-t">
                   <span>Total</span>
                   {/* <span>${Total.toFixed(2)}</span> */}
-                  <p> {symbol}: {ConvertPrice(Total, rates, from)}    </p>
+                  <p>
+                    {' '}
+                    {symbol}: {ConvertPrice(Total, rates, from)}{' '}
+                  </p>
                 </div>
               </div>
 
@@ -137,10 +146,11 @@ const OrderSummary = () => {
                   ].map((method) => (
                     <div
                       key={method.id}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all duration-300 ${paymentMethod === method.id
+                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-all duration-300 ${
+                        paymentMethod === method.id
                           ? `${darkMode ? 'bg-orange-600' : 'bg-blue-50'} border-orange-500`
                           : `${darkMode ? 'bg-gray-700' : 'bg-gray-50'} border-transparent`
-                        } border-2 hover:border-orange-500`}
+                      } border-2 hover:border-orange-500`}
                       onClick={() => setPaymentMethod(method.id)}
                     >
                       <method.icon className="text-2xl mr-3" />

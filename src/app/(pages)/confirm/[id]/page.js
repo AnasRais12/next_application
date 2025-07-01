@@ -59,14 +59,14 @@ export default function ConfirmOrder() {
           <span className="font-semibold text-gray-600">
             {userDetails?.full_name}
           </span>
-          
         </p>
         <p className="text-gray-600">
           Your order <span className="font-bold">{params?.id}</span> has been
           successfully confirmed.
         </p>
         <div className="flex flex-col gap-3">
-          <Link href="/home"
+          <Link
+            href="/home"
             className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
           >
             Back to Home

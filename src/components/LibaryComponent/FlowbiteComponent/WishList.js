@@ -18,13 +18,11 @@ import { useEffect, useState } from 'react';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { ConvertPrice } from '@/helper/CurrenyConver';
 export default function Wishlist({ setWishlistModal }) {
-
-  
   const wishlistItems = getWishList();
   const session = useSession();
   const [loadingItems, setLoadingItems] = useState({});
   const [crossButtonLoading, setCrossButtonLoading] = useState({});
-  const {rates,from,symbol} = GlobalDetails()
+  const { rates, from, symbol } = GlobalDetails();
 
   const dispatch = useDispatch();
 
@@ -123,104 +121,105 @@ export default function Wishlist({ setWishlistModal }) {
       >
         {/* Header & Close Button */}
         <div className="flex justify-between items-center border-b pb-3 border-gray-200">
-  <h2 className="text-xl font-semibold text-[#047857]">My Wishlist</h2>
-  <button 
-    onClick={() => setWishlistModal(false)}
-    className="p-1 rounded-full hover:bg-gray-100 transition"
-  >
-    <RxCross2 size={22} className="text-gray-500 hover:text-red-500" />
-  </button>
-</div>
+          <h2 className="text-xl font-semibold text-[#047857]">My Wishlist</h2>
+          <button
+            onClick={() => setWishlistModal(false)}
+            className="p-1 rounded-full hover:bg-gray-100 transition"
+          >
+            <RxCross2 size={22} className="text-gray-500 hover:text-red-500" />
+          </button>
+        </div>
 
-{/* Wishlist Items */}
-<ul className="mt-4 divide-y divide-gray-200 max-h-[400px] overflow-y-auto">
-  {wishlistItems.length > 0 ? (
-    wishlistItems.map((item) => (
-      <li
-        key={item.id}
-        className="py-4 hover:bg-gray-50 transition duration-150"
-      >
-        <div className="flex items-start">
-          {/* Product Image */}
-          <div className="flex-shrink-0">
-            <img
-              src={`/${item.product_image}`}
-              alt={item.product_name}
-              className="w-20 h-20 object-cover rounded-lg border border-gray-200"
-            />
-          </div>
+        {/* Wishlist Items */}
+        <ul className="mt-4 divide-y divide-gray-200 max-h-[400px] overflow-y-auto">
+          {wishlistItems.length > 0 ? (
+            wishlistItems.map((item) => (
+              <li
+                key={item.id}
+                className="py-4 hover:bg-gray-50 transition duration-150"
+              >
+                <div className="flex items-start">
+                  {/* Product Image */}
+                  <div className="flex-shrink-0">
+                    <img
+                      src={`/${item.product_image}`}
+                      alt={item.product_name}
+                      className="w-20 h-20 object-cover rounded-lg border border-gray-200"
+                    />
+                  </div>
 
-          {/* Product Info */}
-          <div className="ml-4 flex-1">
-            <h3 className="text-md font-medium text-gray-800 line-clamp-2">
-              {item.product_name}
-            </h3>
-            <p className="text-[#047857] font-medium mt-1">
-              {symbol}: {ConvertPrice(item.product_price, rates, from)}
-            </p>
-            
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-3 mt-3">
+                  {/* Product Info */}
+                  <div className="ml-4 flex-1">
+                    <h3 className="text-md font-medium text-gray-800 line-clamp-2">
+                      {item.product_name}
+                    </h3>
+                    <p className="text-[#047857] font-medium mt-1">
+                      {symbol}: {ConvertPrice(item.product_price, rates, from)}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className="flex justify-end space-x-3 mt-3">
+                      <button
+                        onClick={() => deleteWishListItem(item?.product_id)}
+                        className="p-2 text-gray-400 hover:text-red-500 transition"
+                        title="Remove"
+                      >
+                        {crossButtonLoading[item?.product_id] ? (
+                          <CSpinner size="sm" />
+                        ) : (
+                          <RxCross2 size={18} />
+                        )}
+                      </button>
+
+                      <button
+                        onClick={() => wishListToCart(item)}
+                        className="flex items-center bg-[#047857] hover:bg-[#03684d] text-white text-sm font-medium px-3 py-2 rounded-md transition"
+                      >
+                        {loadingItems[item?.product_id] ? (
+                          <CSpinner size="sm" color="white" />
+                        ) : (
+                          <>
+                            <FiShoppingCart className="mr-2" size={16} />
+                            Add to Cart
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))
+          ) : (
+            <div className="text-center py-8">
+              <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                <FiHeart className="text-gray-400" size={24} />
+              </div>
+              <p className="text-gray-500">Your wishlist is empty</p>
               <button
-                onClick={() => deleteWishListItem(item?.product_id)}
-                className="p-2 text-gray-400 hover:text-red-500 transition"
-                title="Remove"
+                className="mt-3 text-[#047857] hover:underline text-sm font-medium"
+                onClick={() => setWishlistModal(false)}
               >
-                {crossButtonLoading[item?.product_id] ? (
-                  <CSpinner size="sm" />
-                ) : (
-                  <RxCross2 size={18} />
-                )}
-              </button>
-              
-              <button
-                onClick={() => wishListToCart(item)}
-                className="flex items-center bg-[#047857] hover:bg-[#03684d] text-white text-sm font-medium px-3 py-2 rounded-md transition"
-              >
-                {loadingItems[item?.product_id] ? (
-                  <CSpinner size="sm" color="white" />
-                ) : (
-                  <>
-                    <FiShoppingCart className="mr-2" size={16} />
-                    Add to Cart
-                  </>
-                )}
+                Continue Shopping
               </button>
             </div>
-          </div>
-        </div>
-      </li>
-    ))
-  ) : (
-    <div className="text-center py-8">
-      <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-        <FiHeart className="text-gray-400" size={24} />
-      </div>
-      <p className="text-gray-500">Your wishlist is empty</p>
-      <button 
-        className="mt-3 text-[#047857] hover:underline text-sm font-medium"
-        onClick={() => setWishlistModal(false)}
-      >
-        Continue Shopping
-      </button>
-    </div>
-  )}
-</ul>
+          )}
+        </ul>
 
-{/* Footer Actions */}
-{wishlistItems.length > 0 && (
-  <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
-    <span className="text-sm text-gray-500">
-      {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}
-    </span>
-    <button
-      onClick={clearWishlist}
-      className="text-sm text-red-500 hover:text-red-600 font-medium"
-    >
-      Clear All
-    </button>
-  </div>
-)}
+        {/* Footer Actions */}
+        {wishlistItems.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
+            <span className="text-sm text-gray-500">
+              {wishlistItems.length}{' '}
+              {wishlistItems.length === 1 ? 'item' : 'items'}
+            </span>
+            <button
+              onClick={clearWishlist}
+              className="text-sm text-red-500 hover:text-red-600 font-medium"
+            >
+              Clear All
+            </button>
+          </div>
+        )}
       </motion.div>
     </div>
   );

@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function page() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: '',
   });
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,24 +17,27 @@ export default function page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("Sending...");
+    setStatus('Sending...');
 
-    const res = await fetch("/api/save_email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await fetch('/api/save_email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
-      console.log("Responseeeeeeeeeeeeeeeeeee!!!!!!!!",res)
+    console.log('Responseeeeeeeeeeeeeeeeeee!!!!!!!!', res);
     if (res) {
-      setStatus("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
+      setStatus('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
     } else {
-      setStatus("Failed to send message.");
+      setStatus('Failed to send message.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 mt-20 max-w-md mx-auto p-4 border rounded-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 mt-20 max-w-md mx-auto p-4 border rounded-lg"
+    >
       <input
         type="text"
         name="name"

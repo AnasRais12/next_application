@@ -7,9 +7,8 @@ const roboto = Roboto({
   display: 'swap',
 });
 const theme = createTheme({
-  breakpoints:{
+  breakpoints: {
     values: {
-      
       mobileS: 0,
       xs: 360, // 380px
       sm: 600, // 600px
@@ -18,7 +17,7 @@ const theme = createTheme({
       xl: 1920, // 1920px
     },
   },
-  typography:{
+  typography: {
     fontFamily: roboto.style.fontFamily,
   },
   palette: {
@@ -28,7 +27,7 @@ const theme = createTheme({
     error: {
       main: '#d32f2f',
     },
-    success:{
+    success: {
       main: '#0c9409',
     },
     borderColor: '#E5E5E5', // Light gray border color
@@ -51,7 +50,7 @@ const theme = createTheme({
               padding: '10px 20px', // ✅ small screen par padding
             },
           };
-        }
+        },
       },
       defaultProps: {
         variant: 'contained',
@@ -63,46 +62,44 @@ const theme = createTheme({
         root: (props) => {
           const { theme } = props; // ✅ yeh line zaroori hai
           return {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: '10px',
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#E5E5E5', // Light gray border
-              borderWidth: 1,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '10px',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#E5E5E5', // Light gray border
+                borderWidth: 1,
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#E5E5E5',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#E5E5E5', // Primary color on focus
+                borderWidth: 1,
+              },
+              '& input': {
+                paddingTop: '14px',
+                paddingBottom: '14px',
+                [theme.breakpoints.down('sm')]: {
+                  paddingTop: '14px', // ✅ Sm screen pe kam padding
+                  paddingBottom: '14px',
+                },
+                [theme.breakpoints.down('xs')]: {
+                  paddingTop: '11px',
+                  paddingBottom: '11px',
+                },
+              },
             },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#E5E5E5',
+            '& input::placeholder': {
+              color: '#999999',
+              opacity: 1,
+              fontWeight: 400,
             },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#E5E5E5', // Primary color on focus
-              borderWidth: 1,
-
+            '& .MuiFormHelperText-root.Mui-error': {
+              marginLeft: 0,
+              fontSize: '0.75rem',
+              color: '#d32f2f',
             },
-     '& input': {
-      paddingTop: '14px',
-      paddingBottom: '14px',
-      [theme.breakpoints.down('sm')]: {
-        paddingTop: '14px',     // ✅ Sm screen pe kam padding
-        paddingBottom: '14px',
-      },
-      [theme.breakpoints.down('xs')]: {
-        paddingTop: '11px',     
-        paddingBottom: '11px',
-      },
-      
-    },
-          },
-          '& input::placeholder': {
-            color: '#999999',
-            opacity: 1,
-            fontWeight: 400,
-          },
-          '& .MuiFormHelperText-root.Mui-error': {
-            marginLeft: 0,
-            fontSize: '0.75rem',
-            color: '#d32f2f',
-          },
-        };
-      }
+          };
+        },
       },
     },
   },

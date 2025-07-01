@@ -18,8 +18,8 @@ import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 function E_commerceCard() {
   const session = useSession();
   const dispatch = useDispatch();
-  
-  const { rates,from,symbol,setSymbol} = GlobalDetails();
+
+  const { rates, from, symbol, setSymbol } = GlobalDetails();
   const [productLoading, setProductLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState({}); // Individual loading state
   const wishlistItems = getWishList();
@@ -88,78 +88,78 @@ function E_commerceCard() {
 
   return (
     <div className="w-full py-8 ">
-    <div className=" px-4 sm:px-10">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {allProducts.map((items) => {
-          const isInWishlist = wishlistItems.some(
-            (wishlist) => wishlist?.product_id === items?.product_id
-          );
-          
-          return (
-            <div
-              key={items.id}
-              className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-200 hover:border-[#047857]/30"
-            >
-              {/* Product Image */}
-              <div className="relative h-60 w-full bg-white flex items-center justify-center p-4">
-                <img
-                  className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  src={items?.product_image}
-                  alt={items.product_name}
-                />
-                
-                {/* Wishlist Button */}
-                <button
-                  onClick={() => handleAddToWishlist(items)}
-                  disabled={isInWishlist}
-                  className={`absolute top-3  right-3 p-2 rounded-full ${
-                    isInWishlist
-                      ? 'text-primary bg-gray-50 shadow-sm'
-                      : 'text-gray-300 bg-white hover:text-primary'
-                  }`}
-                >
-                  {loadingItems[items.product_id] ? (
-                    <CSpinner size="sm" />
-                  ) : (
-                    <FaHeart className="text-[25px]" />
-                  )}
-                </button>
-              </div>
-  
-              {/* Product Info */}
-              <div className="p-4">
-                <h3
-                  onClick={() => handleShopNow(items.product_id)}
-                  className="text-lg font-medium border-b-2 pb-2  text-[#1f2937] mb-2 cursor-pointer hover:text-[#047857] transition-colors line-clamp-2"
-                  title={items.product_name}
-                >
-                  {items.product_name.length > 20
-                    ? items.product_name.slice(0, 20) + '...'
-                    : items.product_name}
-                </h3>
-  
-                <div className="flex items-center justify-between mt-3">
-                  <span className="text-xl font-bold text-[#047857]">
-                    {symbol}: {ConvertPrice(items.product_price, rates, from)}
-                  </span>
-                  
+      <div className=" px-4 sm:px-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {allProducts.map((items) => {
+            const isInWishlist = wishlistItems.some(
+              (wishlist) => wishlist?.product_id === items?.product_id
+            );
+
+            return (
+              <div
+                key={items.id}
+                className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-200 hover:border-[#047857]/30"
+              >
+                {/* Product Image */}
+                <div className="relative h-60 w-full bg-white flex items-center justify-center p-4">
+                  <img
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    src={items?.product_image}
+                    alt={items.product_name}
+                  />
+
+                  {/* Wishlist Button */}
                   <button
-                    onClick={() => handleShopNow(items.product_id)}
-                    className="px-4 py-2 bg-[#047857] text-white rounded-lg font-medium hover:bg-[#03684a] transition-colors text-sm"
+                    onClick={() => handleAddToWishlist(items)}
+                    disabled={isInWishlist}
+                    className={`absolute top-3  right-3 p-2 rounded-full ${
+                      isInWishlist
+                        ? 'text-primary bg-gray-50 shadow-sm'
+                        : 'text-gray-300 bg-white hover:text-primary'
+                    }`}
                   >
-                    {productLoading ? <CSpinner size="sm" /> : 'Shop Now'}
+                    {loadingItems[items.product_id] ? (
+                      <CSpinner size="sm" />
+                    ) : (
+                      <FaHeart className="text-[25px]" />
+                    )}
                   </button>
                 </div>
+
+                {/* Product Info */}
+                <div className="p-4">
+                  <h3
+                    onClick={() => handleShopNow(items.product_id)}
+                    className="text-lg font-medium border-b-2 pb-2  text-[#1f2937] mb-2 cursor-pointer hover:text-[#047857] transition-colors line-clamp-2"
+                    title={items.product_name}
+                  >
+                    {items.product_name.length > 20
+                      ? items.product_name.slice(0, 20) + '...'
+                      : items.product_name}
+                  </h3>
+
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="text-xl font-bold text-[#047857]">
+                      {symbol}: {ConvertPrice(items.product_price, rates, from)}
+                    </span>
+
+                    <button
+                      onClick={() => handleShopNow(items.product_id)}
+                      className="px-4 py-2 bg-[#047857] text-white rounded-lg font-medium hover:bg-[#03684a] transition-colors text-sm"
+                    >
+                      {productLoading ? <CSpinner size="sm" /> : 'Shop Now'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Accent Border Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary"></div>
               </div>
-  
-              {/* Accent Border Bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary"></div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
-  </div>
   );
 }
 

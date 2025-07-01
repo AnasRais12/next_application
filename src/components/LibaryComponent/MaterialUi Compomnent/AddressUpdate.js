@@ -54,13 +54,10 @@ const AddressUpdate = ({ setIsEditing, userDetails }) => {
     setCountryLoading(true);
     axios
       .get(`/api/fetchCountry?type=country`)
-      .then(
-        (res) => {
-          setCountries(res.data.geonames)
-          setCountryLoading(false)
-        }
-       
-      )
+      .then((res) => {
+        setCountries(res.data.geonames);
+        setCountryLoading(false);
+      })
       .catch(() => setError('Failed to load countries'))
       .finally(() => setCountryLoading(false));
   }, []);
@@ -71,7 +68,7 @@ const AddressUpdate = ({ setIsEditing, userDetails }) => {
     axios
       .get(`/api/fetchCountry?type=city&country=${selectedCountry}`)
       .then((res) => {
-        setCities(res.data.geonames) 
+        setCities(res.data.geonames);
       })
       .catch(() => setError('Failed to load cities'));
   }, [selectedCountry]);
@@ -101,17 +98,18 @@ const AddressUpdate = ({ setIsEditing, userDetails }) => {
       .catch(() => setError('Failed to load areas'));
   }, [selectedCity, cities]);
 
-
-useEffect(() => {
-  if (selectedCountry && countries.length > 0) {
-    const countryData = countries.find(item => item?.countryCode === selectedCountry);
-    if (countryData) {
-      setSelectedCountryData(countryData); // State mein country data save kar diya
-    } else {
-      setSelectedCountryData(null);
+  useEffect(() => {
+    if (selectedCountry && countries.length > 0) {
+      const countryData = countries.find(
+        (item) => item?.countryCode === selectedCountry
+      );
+      if (countryData) {
+        setSelectedCountryData(countryData); // State mein country data save kar diya
+      } else {
+        setSelectedCountryData(null);
+      }
     }
-  }
-}, [selectedCountry, countries]);
+  }, [selectedCountry, countries]);
 
   const handleSave = async (data) => {
     let updateDetails = {
@@ -126,7 +124,7 @@ useEffect(() => {
       phone_number: data?.phone_number,
       zip_code: data?.zip_code,
       phone_code: selectedCountryData?.countryCode,
-      currency_code: selectedCountryData?.currencyCode
+      currency_code: selectedCountryData?.currencyCode,
     };
 
     try {
@@ -144,8 +142,7 @@ useEffect(() => {
       setLoading(false);
     }
   };
-  console.log(selectedCountryData?.currencyCode,"countryData")
-  
+  console.log(selectedCountryData?.currencyCode, 'countryData');
 
   return (
     <>
@@ -188,7 +185,7 @@ useEffect(() => {
                 {...register('country')}
                 className="w-full border-2 p-2 rounded"
               >
-                     <option value="">{userDetails?.country}</option>
+                <option value="">{userDetails?.country}</option>
                 {countries.map((country) => (
                   <option key={country.geonameId} value={country.countryCode}>
                     {country.countryName}
@@ -207,7 +204,7 @@ useEffect(() => {
                 {...register('city')}
                 className="w-full border-2 p-2 rounded"
               >
-                     <option value="">{userDetails?.city}</option>
+                <option value="">{userDetails?.city}</option>
                 {cities?.map((city) => (
                   <option key={city?.geonameId} value={city?.geonameId}>
                     {' '}
@@ -228,7 +225,7 @@ useEffect(() => {
                 {...register('area')}
                 className="w-full border-2 p-2 rounded"
               >
-               <option value="">{userDetails?.area}</option>
+                <option value="">{userDetails?.area}</option>
                 {areas?.map((area) => (
                   <option key={area?.geonameId} value={area?.name}>
                     {' '}

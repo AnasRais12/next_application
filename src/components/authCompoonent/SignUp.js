@@ -36,8 +36,6 @@ const schema = yup.object().shape({
     .required('Password is Required'),
 });
 
-
-
 function Register() {
   const {
     register,
@@ -73,8 +71,8 @@ function Register() {
           icon: 'error',
           title: 'Insert Profile Error! ',
           text: `Username Already Exists`,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
         return;
       }
 
@@ -90,8 +88,8 @@ function Register() {
           icon: 'error',
           title: 'Insert Profile Error! ',
           text: `Email Already Exists`,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
         return;
       }
 
@@ -111,8 +109,8 @@ function Register() {
           icon: 'error',
           title: 'Authentication Error! ',
           text: `${authError.message} `,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
         return;
       }
 
@@ -144,31 +142,29 @@ function Register() {
           icon: 'error',
           title: 'Insert Profile Error! ',
           text: `${insertError.message} `,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
         return;
       }
       AlertModal({
         icon: 'success',
         title: 'User Registered Successfully!',
         text: `Please check your email to verify your account.`,
-        buttonText: 'Ok'
-      })
-        router.push('/verifyaccount');
-
+        buttonText: 'Ok',
+      });
+      router.push('/verifyaccount');
     } catch (error) {
       AlertModal({
         icon: 'error',
         title: 'Something went wrong! ',
         text: `${error.message} `,
-        buttonText: 'Ok'
-      })
+        buttonText: 'Ok',
+      });
     } finally {
       setLoading(false);
       reset();
     }
   };
-
 
   return (
     <Suspense>
@@ -193,8 +189,19 @@ function Register() {
             {/* Logo/Header - Matching Login Page */}
             <div className="lg:text-center mb-6 md:mb-8 lg:pt-8 pt-3 md:pt-8">
               <div className="w-16 h-16 bg-primary lg:flex hidden  rounded-xl items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
                 </svg>
               </div>
               <Typography
@@ -206,13 +213,11 @@ function Register() {
                     sm: '40px',
                   },
                 })}
-
                 fontWeight="bold"
                 color="primary"
               >
                 Create an account
               </Typography>
-
 
               <Typography
                 sx={(theme) => ({
@@ -222,13 +227,18 @@ function Register() {
                     sm: '20px',
                   },
                 })}
-                variant="body1" color="text.secondary">
+                variant="body1"
+                color="text.secondary"
+              >
                 Let's create your account.
               </Typography>
             </div>
 
             {/* Register Form */}
-            <form onSubmit={handleSubmit(OnSubmitHandler)} className="lg:space-y-5 md:space-y-7 space-y-4  w-full">
+            <form
+              onSubmit={handleSubmit(OnSubmitHandler)}
+              className="lg:space-y-5 md:space-y-7 space-y-4  w-full"
+            >
               <ValidatedTextField
                 label="Full Name"
                 placeholder="Enter Your Full Name"
@@ -237,7 +247,6 @@ function Register() {
                 errors={errors}
                 isValid={isValid}
               />
-
 
               <ValidatedTextField
                 label="Email"
@@ -259,19 +268,35 @@ function Register() {
                 theme={theme}
               />
               <Box>
-                <Typography fontSize={"16px"} variant="body2" color="textSecondary">
+                <Typography
+                  fontSize={'16px'}
+                  variant="body2"
+                  color="textSecondary"
+                >
                   By signing up you agree to our{' '}
-                  <Link className='text-primary border-b-2 border-primary' href="/terms" >
+                  <Link
+                    className="text-primary border-b-2 border-primary"
+                    href="/terms"
+                  >
                     Terms
                   </Link>
                   ,{' '}
-                  <Link className='text-primary border-b-2 border-primary' href="/privacy" color="primary">
+                  <Link
+                    className="text-primary border-b-2 border-primary"
+                    href="/privacy"
+                    color="primary"
+                  >
                     Privacy Policy
                   </Link>
                   , and{' '}
-                  <Link className='text-primary border-b-2 border-primary' href="/cookies" color="primary">
+                  <Link
+                    className="text-primary border-b-2 border-primary"
+                    href="/cookies"
+                    color="primary"
+                  >
                     Cookie Use
-                  </Link>.
+                  </Link>
+                  .
                 </Typography>
               </Box>
 
@@ -280,14 +305,20 @@ function Register() {
                 disabled={loading || isDisabled}
                 className="w-full bg-primary"
               >
-                {loading ? <CSpinner color="text-white" size="sm" /> : 'Create Account'}
+                {loading ? (
+                  <CSpinner color="text-white" size="sm" />
+                ) : (
+                  'Create Account'
+                )}
               </Button>
             </form>
 
             {/* Divider - Matching Login Page */}
             <Divider
               sx={({ theme }) => ({
-                my: 3, color: 'gray', fontSize: '1.3rem',
+                my: 3,
+                color: 'gray',
+                fontSize: '1.3rem',
                 '&::before, &::after': {
                   borderColor: theme?.palette?.borderColor, // equivalent to Tailwind border-gray-200
                 },
@@ -317,7 +348,8 @@ function Register() {
             <div className="text-center mt-6">
               <p className="text-[#808080]  text-[20px]">
                 Already have an account?{' '}
-                <Link href={'/login'}
+                <Link
+                  href={'/login'}
                   className="text-primary text-[20px] font-medium"
                 >
                   Login

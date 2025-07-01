@@ -31,10 +31,10 @@ export const handleDeleteOrder = async (orderId, Swal, setorderLoading) => {
 };
 
 // Langtitute and longtitue in km mai nikalne ka function
-  const basedeliveryCharges = 50; // Pehle 10 km ka deliveryCharges
-  const additionaldeliveryCharges = 40; // Har extra 10 km ka deliveryCharges
-  export const  calculatedeliveryCharges = (setDeliveryCharges,distance) => {
-    const roundedDistance = Math.ceil(distance); // Distance ko upar round karega
-    const deliveryChargesSlabs = Math.ceil(roundedDistance / 10); // Har 10 km pe naye paise add honge
-    setDeliveryCharges(deliveryChargesSlabs * additionaldeliveryCharges);
-  };
+const basedeliveryCharges = 50; // Pehle 10 km ka deliveryCharges
+const additionaldeliveryCharges = 40; // Har extra 10 km ka deliveryCharges
+export const calculatedeliveryCharges = (setDeliveryCharges, distance) => {
+  const roundedDistance = Math.ceil(distance); // Distance ko upar round karega
+  const deliveryChargesSlabs = Math.ceil(roundedDistance / 10); // Har 10 km pe naye paise add honge
+  setDeliveryCharges(deliveryChargesSlabs * additionaldeliveryCharges);
+};

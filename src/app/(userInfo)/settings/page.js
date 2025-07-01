@@ -16,10 +16,16 @@ const page = () => {
   useFetchCartlist(session?.user?.id);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
-  const { userAddressLoading,userAddressInfo} = useFetchAddress(session?.user?.id);
+  const { userAddressLoading, userAddressInfo } = useFetchAddress(
+    session?.user?.id
+  );
   const { userDetails } = UserQuery();
- 
-  if ((session?.user?.id && wishListLoading) || cartListLoading || userAddressLoading) {
+
+  if (
+    (session?.user?.id && wishListLoading) ||
+    cartListLoading ||
+    userAddressLoading
+  ) {
     return <CustomSpinner />;
   }
 

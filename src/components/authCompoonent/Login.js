@@ -41,19 +41,18 @@ function Login() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    watch
+    watch,
   } = useForm({ resolver: yupResolver(LoginSchema) });
   const email = watch('email');
   const password = watch('password');
 
-  const isDisabled = !email?.trim() || !password?.trim()
+  const isDisabled = !email?.trim() || !password?.trim();
   const { setUser } = GlobalDetails();
   const router = useRouter();
   const [credentialLoading, setCredentialLoading] = useState(false);
   const [forgetPasswordModal, setForgetPasswordModal] = useState(false);
   const [roleFromParams, setRoleFromParams] = useState('buyer');
   const [googleLoading, setgoogleLoading] = useState(false);
-
 
   const moveToRegister = () => {
     router.push('/signup');
@@ -72,8 +71,8 @@ function Login() {
           icon: 'error',
           title: 'Authentication Error! ',
           text: `${error.message === 'Email not confirmed' ? 'Email not verified' : error.message}`,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
       } else {
         const user = data.user;
         if (!user) {
@@ -81,8 +80,8 @@ function Login() {
             icon: 'error',
             title: 'Authentication Error! ',
             text: `Email not verified`,
-            buttonText: 'Ok'
-          })
+            buttonText: 'Ok',
+          });
         } else {
           // console.log('User logged in successfully:', user);
           if (data.session || data.user) {
@@ -106,8 +105,8 @@ function Login() {
             .select();
           if (Profile) {
             // Check if "seller" is already in roles
-            if (!Profile.role.includes("buyer")) {
-              const updatedRoles = [...Profile.role, "buyer"];
+            if (!Profile.role.includes('buyer')) {
+              const updatedRoles = [...Profile.role, 'buyer'];
 
               // Update profile to include seller role
               await supabase
@@ -127,18 +126,16 @@ function Login() {
               icon: 'success',
               title: 'User Login Sucessfully ',
               text: `Welcome ${Profile?.full_name || Profile?.username || Profile?.email}`,
-              buttonText: 'Ok'
-            })
+              buttonText: 'Ok',
+            });
             router.push('/');
-          }
-          else {
+          } else {
             AlertModal({
               icon: 'error',
               title: 'Profile Role Not Found! ',
               text: `Invalid role! Please contact support`,
-              buttonText: 'Ok'
-            })
-
+              buttonText: 'Ok',
+            });
           }
         }
       }
@@ -147,8 +144,8 @@ function Login() {
         icon: 'error',
         title: 'Something went wrong! ',
         text: `${error?.message}`,
-        buttonText: 'Ok'
-      })
+        buttonText: 'Ok',
+      });
     } finally {
       setCredentialLoading(false);
       reset();
@@ -166,8 +163,7 @@ function Login() {
         <div className="lg:fixed inset-0 bg-black backdrop-blur-sm z-40" />
         <ForgetPassword setForgetPasswordModal={setForgetPasswordModal} />
       </>
-    )
-
+    );
   }
 
   return (
@@ -177,7 +173,9 @@ function Login() {
         <div className="hidden lg:flex w-1/2 h-screen  relative overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center p-12">
             <div className="text-white text-center">
-              <h2 className="text-4xl text-[#1f2937] font-bold mb-4">Welcome Back!</h2>
+              <h2 className="text-4xl text-[#1f2937] font-bold mb-4">
+                Welcome Back!
+              </h2>
               <p className="text-xl opacity-90">Your journey begins here</p>
             </div>
             <div className="absolute bottom-8 left-8 right-8 text-white opacity-80 text-sm">
@@ -193,17 +191,29 @@ function Login() {
             {/* Logo/Header */}
             <div className="lg:text-center mb-6 md:mb-8 lg:pt-8 pt-3 md:pt-8">
               <div className="w-16 h-16 bg-primary lg:flex hidden  rounded-xl items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
                 </svg>
               </div>
-              <Typography sx={(theme) => ({
-                fontSize: {
-                  mobileS: '30px',
-                  xs: '40px',
-                  sm: '40px',
-                },
-              })}
+              <Typography
+                sx={(theme) => ({
+                  fontSize: {
+                    mobileS: '30px',
+                    xs: '40px',
+                    sm: '40px',
+                  },
+                })}
                 variant="h4"
                 fontWeight="bold"
                 color="primary"
@@ -211,19 +221,26 @@ function Login() {
                 Welcome Back!
               </Typography>
 
-              <Typography sx={(theme) => ({
-                fontSize: {
-                  mobileS: '18px',
-                  xs: '20px',
-                  sm: '20px',
-                },
-              })} variant="body1" color="text.secondary">
+              <Typography
+                sx={(theme) => ({
+                  fontSize: {
+                    mobileS: '18px',
+                    xs: '20px',
+                    sm: '20px',
+                  },
+                })}
+                variant="body1"
+                color="text.secondary"
+              >
                 it's great to see you again.
               </Typography>
             </div>
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit(handleLoginSumbit)} className="lg:space-y-5 md:space-y-7 space-y-4  w-full">
+            <form
+              onSubmit={handleSubmit(handleLoginSumbit)}
+              className="lg:space-y-5 md:space-y-7 space-y-4  w-full"
+            >
               <ValidatedTextField
                 label="Email"
                 placeholder="Enter Your Email"
@@ -245,12 +262,18 @@ function Login() {
                 theme={theme}
               />
               <Box>
-                <Typography fontSize={"16px"} variant="body2" color="textSecondary">
+                <Typography
+                  fontSize={'16px'}
+                  variant="body2"
+                  color="textSecondary"
+                >
                   Forgot your password?{' '}
-                  <a onClick={() => setForgetPasswordModal(true)} className='text-primary cursor-pointer border-b-2 border-primary'  >
+                  <a
+                    onClick={() => setForgetPasswordModal(true)}
+                    className="text-primary cursor-pointer border-b-2 border-primary"
+                  >
                     Reset your password
                   </a>
-
                 </Typography>
               </Box>
 
@@ -270,7 +293,9 @@ function Login() {
             {/* Divider */}
             <Divider
               sx={({ theme }) => ({
-                my: 3, color: 'gray', fontSize: '0.875rem',
+                my: 3,
+                color: 'gray',
+                fontSize: '0.875rem',
                 '&::before, &::after': {
                   borderColor: theme?.palette?.borderColor, // equivalent to Tailwind border-gray-200
                 },
@@ -311,8 +336,6 @@ function Login() {
           </div>
         </div>
       </div>
-
-
     </>
   );
 }

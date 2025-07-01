@@ -16,16 +16,19 @@ function page() {
   const { userDetails } = UserQuery();
   const [userAddresssExist, setUserAddresssExist] = useState(false);
   const [addressForm, setAddressForm] = useState(false);
-  const { userAddressLoading, userAddressInfo } = useFetchAddress(session?.user?.id );
-     const { deliveryCharges, setDeliveryCharges,setDistance,distance } = GlobalDetails();
-  
-     useEffect(() => {
-        calculatedeliveryCharges(setDeliveryCharges,distance,);
-      }, [distance]);
-  
-      console.log(deliveryCharges,"_____>> Delivery Charges")
-      console.log(distance,"_____>> Distance")
-      console.log(Number(userDetails?.long),"_____>> Detatance")
+  const { userAddressLoading, userAddressInfo } = useFetchAddress(
+    session?.user?.id
+  );
+  const { deliveryCharges, setDeliveryCharges, setDistance, distance } =
+    GlobalDetails();
+
+  useEffect(() => {
+    calculatedeliveryCharges(setDeliveryCharges, distance);
+  }, [distance]);
+
+  console.log(deliveryCharges, '_____>> Delivery Charges');
+  console.log(distance, '_____>> Distance');
+  console.log(Number(userDetails?.long), '_____>> Detatance');
 
   useEffect(() => {
     if (!userDetails) {
@@ -43,18 +46,15 @@ function page() {
     <>
       {userAddresssExist ? (
         <>
-             <div className='hidden'>
-        <Map 
-   setDistance={setDistance}
-   lang={userDetails?.lat}
-   long={userDetails?.long}
-   heights={'0px'}
-/>
-        </div>
-          <Checkout userAddresssExist={userAddresssExist}  />
-          
-        
- 
+          <div className="hidden">
+            <Map
+              setDistance={setDistance}
+              lang={userDetails?.lat}
+              long={userDetails?.long}
+              heights={'0px'}
+            />
+          </div>
+          <Checkout userAddresssExist={userAddresssExist} />
         </>
       ) : (
         <>

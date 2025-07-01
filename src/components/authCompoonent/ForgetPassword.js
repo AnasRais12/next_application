@@ -12,7 +12,14 @@ import ValidatedTextField from '../form/ValidatedTextField';
 import Link from 'next/link';
 import { FaArrowLeft } from 'react-icons/fa6';
 const schema = yup.object().shape({
-  email: yup.string().email('Invalid email format').matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email format').required('Email is required'),
+  email: yup
+    .string()
+    .email('Invalid email format')
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      'Invalid email format'
+    )
+    .required('Email is required'),
 });
 
 export const ForgetPassword = ({ setForgetPasswordModal }) => {
@@ -38,27 +45,27 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
           icon: 'error',
           title: 'Authentication Error',
           text: `${error.message}`,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
       } else {
-        setForgetPasswordModal(false)
+        setForgetPasswordModal(false);
         AlertModal({
           icon: 'success',
           title: 'Password Reset Link Sent',
           text: `We’ve sent a password reset link to your email in 1 mins. Please check your inbox and follow the link to set a new password!`,
-          buttonText: 'Ok'
-        })
+          buttonText: 'Ok',
+        });
       }
     } catch (error) {
       AlertModal({
         icon: 'error',
         title: 'Something went wrong',
         text: `${error.message}`,
-        buttonText: 'Ok'
-      })
+        buttonText: 'Ok',
+      });
     } finally {
       setloading(false);
-      reset()
+      reset();
     }
   };
 
@@ -67,7 +74,6 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
       <div className="bg-white lg:rounded-2xl lg:shadow-xl w-full lg:max-w-md sm:mx-4 mx-4 overflow-hidden lg:border lg:border-gray-200">
         {/* Header with Gradient Background */}
         <div className="lg:bg-primary   sm:p-6 sm:pt-6 pt-3 lg:text-primary text-primary lg:text-center">
-
           <div className="w-10 h-10 mb-4 bg-white/20 rounded-lg lg:flex hidden items-center mx-auto justify-center backdrop-blur-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -85,38 +91,44 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
             </svg>
           </div>
           <Link href={'/login'}>
-            <FaArrowLeft onClick={() => setForgetPasswordModal(false)} className='text-[25px] lg:hidden flex font-bold sm:text-[30px] mb-3 sm:mb-4 ' />
+            <FaArrowLeft
+              onClick={() => setForgetPasswordModal(false)}
+              className="text-[25px] lg:hidden flex font-bold sm:text-[30px] mb-3 sm:mb-4 "
+            />
           </Link>
-          <Typography sx={(theme) => ({
-            fontSize: {
-              mobileS: '28px',
-              xs: '30px',
-              sm: '40px',
-            },
-            color: {
-              lg: 'white',
-              xs: 'primary'
-
-            }
-          })}
+          <Typography
+            sx={(theme) => ({
+              fontSize: {
+                mobileS: '28px',
+                xs: '30px',
+                sm: '40px',
+              },
+              color: {
+                lg: 'white',
+                xs: 'primary',
+              },
+            })}
             variant="h4"
             fontWeight="bold"
             color="primary"
           >
             Forget Password
           </Typography>
-          <Typography sx={(theme) => ({
-            fontSize: {
-              mobileS: '16px',
-              xs: '17px',
-              sm: '20px',
-            },
-            display: {
-              lg: 'none',
-              xs: 'block',
-            },
-
-          })} variant="body1" color="text.secondary"   >
+          <Typography
+            sx={(theme) => ({
+              fontSize: {
+                mobileS: '16px',
+                xs: '17px',
+                sm: '20px',
+              },
+              display: {
+                lg: 'none',
+                xs: 'block',
+              },
+            })}
+            variant="body1"
+            color="text.secondary"
+          >
             Enter your email to receive a password reset link
           </Typography>
         </div>
@@ -127,7 +139,10 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
             Enter your email to receive a password reset link
           </p>
 
-          <form onSubmit={handleSubmit(handleForgotPassword)} className="sm:space-y-7 sm:mt-0 mt-3 space-y-4 lg:space-y-5">
+          <form
+            onSubmit={handleSubmit(handleForgotPassword)}
+            className="sm:space-y-7 sm:mt-0 mt-3 space-y-4 lg:space-y-5"
+          >
             <ValidatedTextField
               label="Email"
               placeholder="Enter Your Email"
@@ -173,32 +188,3 @@ export const ForgetPassword = ({ setForgetPasswordModal }) => {
   );
 };
 
-//    <div className="mt-4">
-//             <form onSubmit={handleSubmit(handleLoginSumbit)}>
-//               <input
-//                 {...register('email')}
-//                 type="email"
-//                 placeholder="Enter Email "
-//                 className="w-full p-3 border-2 border-[#ccc] rounded-[10px]   bg-white b focus:outline-none focus:ring-2 focus:ring-orange-400"
-//               />
-//               <input
-//                 {...register('password')}
-//                 type="password"
-//                 placeholder="Password"
-//                 className="w-full p-3 border-2 border-[#ccc] rounded-lg bg-white mt-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
-//               />
-//               <div className="text-right text-sm text-unique mt-3 cursor-pointer">
-//                 <p onClick={moveToForgetAccount}>Forgot password?</p>
-//               </div>
-
-//               <button type="submit"
-//                 disabled={credentialLoading}
-//                 className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-unique">
-//                 {credentialLoading ? (
-//                   <CSpinner />
-//                 ) : (
-//                   "Login In")}
-//               </button>
-//             </form>
-
-//           </div>

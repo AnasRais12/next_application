@@ -18,10 +18,10 @@ function page() {
 
   return (
     <div className="  h-screen inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-blue-50 to-purple-50">
-    <div className="w-full max-w-lg  bg-white rounded-2xl overflow-hidden shadow-2xl mx-2 sm:mx-4">
-      {/* Header with Gradient Background */}
-      <div className="bg-primary p-4 sm:p-6 text-center">
-        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
+      <div className="w-full max-w-lg  bg-white rounded-2xl overflow-hidden shadow-2xl mx-2 sm:mx-4">
+        {/* Header with Gradient Background */}
+        <div className="bg-primary p-4 sm:p-6 text-center">
+          {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -37,69 +37,70 @@ function page() {
             />
           </svg>
         </div> */}
-        <h1 className="text-2xl font-bold text-white ">Check Your Email</h1>
-      </div>
-  
-      {/* Content Area */}
-      <div className="sm:p-8 p-4">
-        <div className="sm:text-center mb-6">
-          <p className="text-lg text-gray-600 mb-2 sm:mb-4">
-            Hello <span className="font-semibold text-gray-800">{userInfo?.username}</span>,
-            we've sent a verification link to: <span className="text-lg font-medium text-primary  rounded-lg inline-block">{userInfo?.email}</span>
-          </p>
-         
+          <h1 className="text-2xl font-bold text-white ">Check Your Email</h1>
         </div>
-  
-        {/* Visual Email Graphic */}
-        <div className="relative ">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="sm:w-24 sm:h-24 w-10 h-10 rounded-full opacity-30"></div>
+
+        {/* Content Area */}
+        <div className="sm:p-8 p-4">
+          <div className="sm:text-center mb-6">
+            <p className="text-lg text-gray-600 mb-2 sm:mb-4">
+              Hello{' '}
+              <span className="font-semibold text-gray-800">
+                {userInfo?.username}
+              </span>
+              , we've sent a verification link to:{' '}
+              <span className="text-lg font-medium text-primary  rounded-lg inline-block">
+                {userInfo?.email}
+              </span>
+            </p>
           </div>
-          <div className="relative flex justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-16 h-16 text-primary"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-              />
-            </svg>
+
+          {/* Visual Email Graphic */}
+          <div className="relative ">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="sm:w-24 sm:h-24 w-10 h-10 rounded-full opacity-30"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-16 h-16 text-primary"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-  
-        <div className="space-y-4 text-center">
-        
-  
-          <div className="pt-4 space-y-3">
-            <button
-              onClick={() => router.push('/login')}
-              className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
-            >
-              Back to Sign In
-            </button>
+
+          <div className="space-y-4 text-center">
+            <div className="pt-4 space-y-3">
+              <button
+                onClick={() => router.push('/login')}
+                className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:shadow-md transition-all"
+              >
+                Back to Sign In
+              </button>
               <p className="text-gray-600">
-            Haven't received it? Check your spam folder.
-          </p>
-  
-            {/* <button
+                Haven't received it? Check your spam folder.
+              </p>
+
+              {/* <button
               // onClick={handleResendEmail}
               className="text-sm text-purple-600 hover:text-purple-800 font-medium underline underline-offset-2 transition-colors"
             >
               Resend Verification Email
             </button> */}
+            </div>
           </div>
         </div>
       </div>
-  
-    
     </div>
-  </div>
   );
 }
 

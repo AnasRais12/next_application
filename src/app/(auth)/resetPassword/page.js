@@ -19,10 +19,10 @@ const forgetAccountValidation = yup.object().shape({
     .string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is Required'),
-   confirmPassword: yup
-     .string()
-     .oneOf([yup.ref('resetpassword'), null], 'Passwords must match')
-     .required('Confirm password is required'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('resetpassword'), null], 'Passwords must match')
+    .required('Confirm password is required'),
 });
 
 function Forget_Account() {
@@ -33,11 +33,11 @@ function Forget_Account() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    watch
+    watch,
   } = useForm({ resolver: yupResolver(forgetAccountValidation) });
   const confirmPassword = watch('confirmPassword');
   const resetpassword = watch('resetpassword');
-  const isDisabled = !resetpassword?.trim() || !confirmPassword?.trim()
+  const isDisabled = !resetpassword?.trim() || !confirmPassword?.trim();
   const [loading, setLoading] = useState(false);
   const handleResetPassword = async (data) => {
     try {
@@ -46,30 +46,31 @@ function Forget_Account() {
       const { error } = await supabase.auth.updateUser({
         password: resetpassword,
       });
-      if (error) { AlertModal({
-              icon: 'error',
-              title: 'Update User Error',
-              text: `${error.message}`,
-              buttonText: 'Ok'
-            })
+      if (error) {
+        AlertModal({
+          icon: 'error',
+          title: 'Update User Error',
+          text: `${error.message}`,
+          buttonText: 'Ok',
+        });
       } else {
         const updatedFields = { password: resetpassword };
         await updateUserDetails(updatedFields);
-          AlertModal({
-              icon: 'success',
-              title: 'Password reset successfully!',
-              text: `Your password has been reset successfully. You can now log in with your new password.`,
-              buttonText: 'Ok'
-            })
+        AlertModal({
+          icon: 'success',
+          title: 'Password reset successfully!',
+          text: `Your password has been reset successfully. You can now log in with your new password.`,
+          buttonText: 'Ok',
+        });
         router.push('/login');
       }
     } catch (error) {
       AlertModal({
-              icon: 'error',
-              title: 'Something went wrong',
-              text: `${error.message}`,
-              buttonText: 'Ok'
-            })
+        icon: 'error',
+        title: 'Something went wrong',
+        text: `${error.message}`,
+        buttonText: 'Ok',
+      });
     } finally {
       setLoading(false);
     }
@@ -81,7 +82,6 @@ function Forget_Account() {
         {/* Header with Gradient Background */}
 
         <div className="lg:bg-primary  sm:p-6 sm:pt-6 pt-3 lg:text-primary text-primary lg:text-center">
-
           <div className="w-10 h-10 mb-4 bg-white/20 rounded-lg lg:flex hidden items-center mx-auto justify-center backdrop-blur-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -99,44 +99,53 @@ function Forget_Account() {
             </svg>
           </div>
           <Link href={'/login'}>
-            <FaArrowLeft className='text-[25px] lg:hidden flex font-bold sm:text-[30px] mb-4 ' />
+            <FaArrowLeft className="text-[25px] lg:hidden flex font-bold sm:text-[30px] mb-4 " />
           </Link>
-          <Typography sx={(theme) => ({
-            fontSize: {
-              mobileS: '28px',
-              xs: '30px',
-              sm: '40px',
-            },
-            color: {
-              lg: 'white',
-              xs: 'primary'
-
-            }
-          })}
+          <Typography
+            sx={(theme) => ({
+              fontSize: {
+                mobileS: '28px',
+                xs: '30px',
+                sm: '40px',
+              },
+              color: {
+                lg: 'white',
+                xs: 'primary',
+              },
+            })}
             variant="h4"
             fontWeight="bold"
             color="primary"
           >
             Reset Password
           </Typography>
-          <Typography sx={(theme) => ({
-            fontSize: {
-              mobileS: '16px',
-              xs: '17px',
-              sm: '20px',
-            },
-            display: {
-              lg: 'none', 
-              xs: 'block',
-            },
-          })} variant="body1" color="text.secondary" marginBottom={'15px'}>
-            Set the new password for your account so you can log and acces all the features.
+          <Typography
+            sx={(theme) => ({
+              fontSize: {
+                mobileS: '16px',
+                xs: '17px',
+                sm: '20px',
+              },
+              display: {
+                lg: 'none',
+                xs: 'block',
+              },
+            })}
+            variant="body1"
+            color="text.secondary"
+            marginBottom={'15px'}
+          >
+            Set the new password for your account so you can log and acces all
+            the features.
           </Typography>
         </div>
 
         {/* Form Content */}
         <div className=" md:px-6 md:py-1  lg:px-6 lg:py-6">
-          <form onSubmit={handleSubmit(handleResetPassword)} className=" sm:space-y-7 space-y-4 lg:space-y-5">
+          <form
+            onSubmit={handleSubmit(handleResetPassword)}
+            className=" sm:space-y-7 space-y-4 lg:space-y-5"
+          >
             <ValidatedTextField
               label="New Password"
               placeholder="Enter your password"
@@ -199,11 +208,12 @@ function Forget_Account() {
 
           {/* Back to Login (Mobile) */}
           <div className="mt-4 lg:flex hidden ">
-            <Link href={'/login'}
+            <Link
+              href={'/login'}
               className="text-primary hover:text-primary text-sm font-medium flex items-center gap-1"
             >
               Back to Login
-            </Link >
+            </Link>
           </div>
         </div>
       </div>

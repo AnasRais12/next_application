@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        xs: { min: '0px',max: '380px' },
+        xs: { min: '0px', max: '380px' },
         custom: { min: '301px', max: '639px' }, // 301px - 639px
       },
       fontFamily: {
@@ -18,14 +18,13 @@ module.exports = {
         'custom-gradient':
           'linear-gradient(to bottom, #ff416c, #7a1ea1, #1b2845)',
       }, // Replace with your image path
-        colors: {
-
-          primary: "#1a1a1a",
-          disabledColor: "E5E5E5",     // Rich Emerald Green
-          secondary: "#facc15",   // Warm Yellow
-          accent: "#3b82f6",      // Soft Blue
-          dark: "#1f2937",        // Neutral Text
-          light: "#fefce8",       // Creamy Background
+      colors: {
+        primary: '#1a1a1a',
+        disabledColor: 'E5E5E5', // Rich Emerald Green
+        secondary: '#facc15', // Warm Yellow
+        accent: '#3b82f6', // Soft Blue
+        dark: '#1f2937', // Neutral Text
+        light: '#fefce8', // Creamy Background
       },
     },
   },
