@@ -5,73 +5,51 @@ function AboutPage() {
     <div className=" min-h-screen">
       {/* Hero Header */}
 
-      <div className="bg-white rounded-xl shadow-lg  pt-10 overflow-hidden  border border-gray-100">
-        <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 p-6 md:p-8 xl:px-14 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold pt-6 text-white mb-2">
+      <div className="bg-white  pt-10 overflow-hidden   ">
+        <div className="bg-primary p-6 md:p-8 xl:px-14 text-center">
+       <h1 className=" text-3xl custom:text-4xl sm:text-4xl md:text-4xl font-bold pt-6 text-white mb-2">
             About <span className="">ShopEase</span>
           </h1>
-          <p className="text-emerald-100 text-lg">
+          <p className="text-emerald-100 xs:text-md custom:text-md sm:text-lg">
             Your trusted shopping destination since 2015
           </p>
         </div>
       </div>
 
-      {/* Our Story Section */}
-      <section className="py-16  bg-gray-50 mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-dark mb-6">
-            Our <span className="text-primary">Story</span>
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto mb-8"></div>
-          <p className="text-lg text-gray-600 mb-8">
-            Founded in 2015, ShopEase began with a simple vision: to create an
-            online shopping experience that combines convenience, quality, and
-            affordability. What started as a small team of passionate
-            individuals has grown into a platform serving millions of customers
-            worldwide.
-          </p>
-          <p className="text-lg text-gray-600">
-            We pride ourselves on connecting customers with the best products
-            from trusted brands, all while maintaining the personal touch that
-            sets us apart from larger retailers.
-          </p>
-        </div>
-      </section>
 
       {/* Mission and Values */}
       <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
+        <div className="sm:container mx-auto px-4 lg:px-8 md:px-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-dark mb-6">
-                Our <span className="text-primary">Mission</span>
+            <div className=''>
+              <h2 className="text-3xl sm:text-left text-center font-bold text-dark mb-6">
+                Our <span className="text-primary">Story</span>
               </h2>
-              <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mb-8"></div>
               <p className="text-lg text-gray-600 mb-6">
                 To revolutionize online shopping by providing an unparalleled
                 customer experience through:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-primary mr-2 mt-1">✓</span>
                   <span className="text-gray-600">
                     Curated selection of quality products
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-primary mr-2 mt-1">✓</span>
                   <span className="text-gray-600">
                     Competitive pricing and regular deals
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-primary mr-2 mt-1">✓</span>
                   <span className="text-gray-600">
                     Fast and reliable shipping
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-secondary mr-2 mt-1">✓</span>
+                  <span className="text-primary mr-2 mt-1">✓</span>
                   <span className="text-gray-600">
                     Exceptional customer service
                   </span>
@@ -90,13 +68,12 @@ function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <div className="bg-gray-50">
-        <section className="py-16  container   mx-auto px-4">
+      <div className="bg-white ">
+        <section className="py-16 sm:container   mx-auto px-4">
           <div className="text-center  mb-12">
             <h2 className="text-3xl font-bold text-dark mb-4">
               Why Choose <span className="text-primary">ShopEase?</span>
             </h2>
-            <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto"></div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -151,7 +128,7 @@ function AboutPage() {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-secondary">
-              <div className="text-secondary mb-4">
+              <div className="text-primary mb-4">
                 <svg
                   className="w-10 h-10 mx-auto"
                   fill="none"
@@ -205,12 +182,11 @@ function AboutPage() {
 
       {/* Testimonials */}
       <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
+        <div className="sm:containermx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-dark mb-4">
               What Our <span className="text-primary">Customers Say</span>
             </h2>
-            <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary-dark mx-auto"></div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -235,7 +211,7 @@ function AboutPage() {
               },
             ].map((testimonial, index) => (
               <div key={index} className="bg-white p-8 rounded-lg shadow-md">
-                <div className="text-yellow-400 mb-4 flex">
+                <div className="text-primary mb-4 flex">
                   {[...Array(5)].map((_, i) => (
                     <svg
                       key={i}
@@ -263,8 +239,8 @@ function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gray-50  text-dark text-center">
-        <div className="container mx-auto px-4">
+      <section className="py-16 bg-white  text-dark text-center">
+        <div className="sm:container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-6">
             Ready to Experience <span className="text-primary">ShopEase?</span>
           </h2>

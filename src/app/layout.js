@@ -36,8 +36,10 @@ const roboto = Roboto({
 export default function RootLayout({ children }) {
   const pathName = usePathname();
   const isLoginPage = pathName === '/login';
-  const isRegisterPage = pathName === '/register';
+  const isRegisterPage = pathName === '/signup';
   const isForgetPage = pathName === '/verifyaccount';
+  const isResetPasswordPage = pathName === '/resetPassword';
+
 
   return (
     <html lang="en">
@@ -68,10 +70,10 @@ export default function RootLayout({ children }) {
           <Provider store={store}>
             <GlobalProvider>
               <ThemeRegistry>
-                {/* {isLoginPage ? <Navbar_ /> : null} */}
+                {!isLoginPage && !isRegisterPage && !isForgetPage && !isResetPasswordPage ? <Navbar_ /> : null}
                 {children}
                 <ToastContainer autoClose={1000} />
-                {/* {!isLoginPage && !isRegisterPage && !isForgetPage && <Footer />} */}
+                {!isLoginPage && !isRegisterPage && !isForgetPage &&  !isResetPasswordPage ? <Footer /> : null}
               </ThemeRegistry>
             </GlobalProvider>
           </Provider>

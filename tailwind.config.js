@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       screens: {
         xs: { min: '0px', max: '380px' },
-        custom: { min: '301px', max: '639px' }, // 301px - 639px
+        custom: { min: '381px', max: '639px' }, // 301px - 639px
       },
       fontFamily: {
         poppins: ['Poppins-Bold', 'sans-serif'],

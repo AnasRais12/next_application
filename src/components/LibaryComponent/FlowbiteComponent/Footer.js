@@ -40,40 +40,40 @@ function Footer() {
   };
 
   return (
-    <footer className="bg-white border-t-2 border-[#facc15] pt-16 pb-8 px-6 sm:px-12 font-sans">
-      <div className="">
+    <footer className="bg-black  pt-16 pb-8 px-6 sm:px-12 font-sans">
+      <div className="text-white">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8">
           {/* Brand Column */}
           <div className="md:col-span-2 lg:col-span-1">
-            <div className="text-3xl font-bold text-[#047857] mb-4">
+            <div className="text-3xl font-bold  mb-4">
               ShopEase
             </div>
-            <p className="text-[#1f2937] text-sm mb-6">
+            <p className="text-white  text-sm mb-6">
               Your premier destination for quality products and exceptional
               shopping experiences.
             </p>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-[#1f2937] hover:text-[#047857] transition-colors"
+                className="text-white  hover:text-[#047857] transition-colors"
               >
                 <FaFacebook className="text-xl" />
               </a>
               <a
                 href="#"
-                className="text-[#1f2937] hover:text-[#047857] transition-colors"
+                className="text-white  hover:text-[#047857] transition-colors"
               >
                 <FaInstagram className="text-xl" />
               </a>
               <a
                 href="#"
-                className="text-[#1f2937] hover:text-[#047857] transition-colors"
+                className="text-white  hover:text-[#047857] transition-colors"
               >
                 <FaTwitter className="text-xl" />
               </a>
               <a
                 href="#"
-                className="text-[#1f2937] hover:text-[#047857] transition-colors"
+                className="text-white  hover:text-[#047857] transition-colors"
               >
                 <FaLinkedin className="text-xl" />
               </a>
@@ -82,14 +82,14 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-[#1f2937] mb-4 uppercase tracking-wider">
+            <h3 className="text-lg font-semibold text-white  mb-4 uppercase tracking-wider">
               Quick Links
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/about"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   About Us
                 </Link>
@@ -97,7 +97,7 @@ function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   Contact
                 </Link>
@@ -105,7 +105,7 @@ function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   FAQs
                 </Link>
@@ -115,14 +115,14 @@ function Footer() {
 
           {/* Customer Service */}
           <div>
-            <h3 className="text-lg font-semibold text-[#1f2937] mb-4 uppercase tracking-wider">
+            <h3 className="text-lg font-semibold text-white  mb-4 uppercase tracking-wider">
               Customer Service
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/returnPolicy"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   Returns Policy
                 </Link>
@@ -130,7 +130,7 @@ function Footer() {
               <li>
                 <Link
                   href="/support"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   Account Support
                 </Link>
@@ -138,7 +138,7 @@ function Footer() {
               <li>
                 <Link
                   href="/shipping"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   Shipping Information
                 </Link>
@@ -148,14 +148,14 @@ function Footer() {
 
           {/* Policies */}
           <div>
-            <h3 className="text-lg font-semibold text-[#1f2937] mb-4 uppercase tracking-wider">
+            <h3 className="text-lg font-semibold text-white  mb-4 uppercase tracking-wider">
               Policies
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/privacy"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   Privacy Policy
                 </Link>
@@ -163,7 +163,7 @@ function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-[#6b7280] hover:text-[#047857] transition-colors text-sm"
+                  className="text-white  hover:text-[#047857] transition-colors text-sm"
                 >
                   Terms of Service
                 </Link>
@@ -173,10 +173,10 @@ function Footer() {
 
           {/* Newsletter */}
           <div className="md:col-span-2 xl:col-span-1">
-            <h3 className="text-lg font-semibold text-[#1f2937] mb-4 uppercase tracking-wider">
+            <h3 className="text-lg font-semibold text-white  mb-4 uppercase tracking-wider">
               Newsletter
             </h3>
-            <p className="text-[#6b7280] text-sm mb-4">
+            <p className="text-white  text-sm mb-4">
               Subscribe to get updates on new arrivals and special offers
             </p>
             <div className="flex">
@@ -189,7 +189,7 @@ function Footer() {
               />
               <button
                 onClick={handleSubscribe}
-                className="bg-[#047857] text-white px-4 py-2 text-sm rounded-r hover:bg-[#03684a] transition-colors"
+                className="bg-primary text-white px-4 py-2 text-sm rounded-r hover:bg-[#03684a] transition-colors"
               >
                 Subscribe
               </button>
@@ -198,16 +198,16 @@ function Footer() {
         </div>
 
         {/* Payment Methods */}
-        <div className="mt-12 flex flex-col sm:flex-row justify-between items-center border-t border-[#e5e7eb] pt-8">
+        {/* <div className="mt-12 flex flex-col sm:flex-row justify-between items-center border-t border-[#e5e7eb] pt-8">
           <div className="flex space-x-6 mb-4 sm:mb-0">
             <FaCcVisa className="text-2xl text-[#1f2937]" />
             <FaCcMastercard className="text-2xl text-[#1f2937]" />
             <FaPaypal className="text-2xl text-[#1f2937]" />
           </div>
-          <p className="text-sm text-[#6b7280]">
+          <p className="text-sm text-white ">
             © {new Date().getFullYear()} ShopEase. All rights reserved.
           </p>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
