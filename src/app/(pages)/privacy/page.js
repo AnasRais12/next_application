@@ -37,7 +37,7 @@ const PrivacyPolicy = () => {
       </div>
 
           {/* Content */}
-          <Box sx={{ p: { mobileS:2, xs: 3, md: 5, xl: 7 } }}>
+          <Box sx={{ p: { mobileS:2, xs: 3, md: 5, } }}>
             <Typography paragraph color="text.secondary">
               At <Box component="span" fontWeight={600} color="primary.main">Shopease</Box>, we are committed to protecting your
               privacy. This Privacy Policy outlines how we collect, use, and protect your

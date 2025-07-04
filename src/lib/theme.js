@@ -82,10 +82,11 @@ const theme = createTheme({
                   paddingTop: '14px', // ✅ Sm screen pe kam padding
                   paddingBottom: '14px',
                 },
-                [theme.breakpoints.down('xs')]: {
+                [theme.breakpoints.down('mobileS')]: {
                   paddingTop: '11px',
                   paddingBottom: '11px',
                 },
+               
               },
             },
             '& input::placeholder': {

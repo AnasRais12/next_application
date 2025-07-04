@@ -25,13 +25,12 @@ const ReturnPolicy = () => {
         {/* Header Card */}
         <Paper elevation={3} sx={{ borderRadius: 2, }}>
                  <div className="  overflow-hidden   ">
-        <div className="bg-primary p-6 md:p-8 xl:px-14 text-center">
+        <div className="bg-primary px-3 sm:px-6 p-6 md:p-8 xl:px-14 text-center">
        <h1 className=" text-3xl custom:text-4xl sm:text-4xl md:text-4xl font-bold pt-6 text-white mb-2">
              Return & Refund Policy
           </h1>
           <p className="text-white xs:text-md custom:text-md sm:text-lg">
-          At <strong>Shopease</strong>, we want you to be completely satisfied with your purchase. If you're not happy with your order, we'll make it right.<br/>
-          Last updated: {formattedDate}
+          At Shopease we want you to be completely satisfied with your purchase. If you're not happy with your order, we'll make it right.<br/>
           </p>
         </div>
       </div>
@@ -39,7 +38,7 @@ const ReturnPolicy = () => {
        
 
         {/* Policy Content */}
-        <Grid elevation={1} sx={{  px: { xs: 3, sm: 6, md: 4,mobileS:2 }, pt: 6, border:'none'  }}>
+        <Grid elevation={1} sx={{  px: { xs: 3, sm: 6, md: 5,mobileS:2 }, pt: 6, border:'none'  }}>
           <PolicySection
             title="1. Our Return Policy"
             content={

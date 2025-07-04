@@ -39,7 +39,7 @@ const ContactForm = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: '#f9fafb', minHeight: '100vh', pt: 5, }}>
+    <Box sx={{ backgroundColor: '#f9fafb',  pt: 5, }}>
       <Box  >
           <div className="  pb-10 overflow-hidden   ">
         <div className="bg-primary p-6 md:p-8 xl:px-14 text-center">
@@ -52,7 +52,7 @@ const ContactForm = () => {
         </div>
       </div>
 
-        <Grid elevation={1} sx={{ pb: 4, borderRadius: 2, mx: { xs: "10px", mobileS: "5px" },my:'10px',px:"6px", }}>
+        <Grid elevation={1} sx={{ pb: 4, borderRadius: 2, mx: { xs: "10px", mobileS: "5px" },px:{mobileS:"6px", xs:"8px",  xl:"12px"} }}>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item mobileS={12}>
@@ -82,6 +82,9 @@ const ContactForm = () => {
                 <FormControl fullWidth required>
                   <InputLabel>Subject</InputLabel>
                   <Select
+                   sx={{ 
+        borderRadius: '10px' 
+      }}
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
@@ -119,7 +122,6 @@ const ContactForm = () => {
             </Grid>
           </form>
         </Grid>
-
         
       </Box>
     </Box>

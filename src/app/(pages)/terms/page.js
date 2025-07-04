@@ -10,17 +10,17 @@ import {
 
 const TermsAndConditions = () => {
   return (
-    <Box minHeight="100vh" bgcolor="#f9fafb" pt={6}>
+    <Box minHeight="100vh" bgcolor="white" pt={6}>
       <Grid >
         {/* Header */}
-        <Paper elevation={3} sx={{  overflow: 'hidden' }}>
+        <Paper elevation={3} sx={{  overflow: 'hidden', mb:3 }}>
     <div className="  overflow-hidden   ">
-                <div className="bg-primary p-6 md:p-8 xl:px-14 text-center">
+                <div className="bg-primary p-6 sm:px-6 px-3 md:p-8 xl:px-14 text-center">
                      <h1 className=" text-3xl custom:text-4xl sm:text-4xl md:text-4xl font-bold pt-6 text-white mb-2">
                         Terms and Conditions
                   </h1>
               <p className="text-white xs:text-md custom:text-md sm:text-lg">
-               Welcome to <strong>Shopease</strong>. Please read these Terms and
+               Welcome to Shopease Please read these Terms and
               Conditions carefully before using our e-commerce platform.
               </p>
             </div>
@@ -28,9 +28,9 @@ const TermsAndConditions = () => {
         </Paper>
 
         {/* Terms Sections */}
-        <Paper elevation={3} sx={{ overflow: 'hidden', p: { mobileS:2, xs: 3, md: 4 } }}>
+        <Paper elevation={3} sx={{ overflow: 'hidden', p: { mobileS:2, xs: 3, md: 5 } }}>
           {termsData.map(({ title, content }, idx) => (
-            <TermSection key={title} number={idx + 1} title={title} content={content} />
+            <TermSection key={title} number={idx + 1} title={title} content={content}  isLast={idx === termsData.length - 1} />
           ))}
 
           {/* Contact */}
@@ -63,8 +63,8 @@ const TermsAndConditions = () => {
   );
 };
 
-const TermSection = ({ number, title, content }) => (
-  <Box pb={4}>
+const TermSection = ({ number, title, content, isLast }) => (
+  <Box pb={isLast ? 0 : 3}>
     <Typography
       variant="h6"
       fontWeight={600}

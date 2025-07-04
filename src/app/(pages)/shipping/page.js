@@ -10,21 +10,20 @@ import {
   Button,
   Avatar,
 } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export default function ShippingInfoPage() {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'white', pt: 8 }}>
+    <Box sx={{  bgcolor: 'white', pt: 8 }}>
       <Grid mobileS={12} >
         {/* Header */}
         <Paper elevation={3} sx={{  overflow: 'hidden',  }}>
          <div className="  overflow-hidden   ">
-                <div className="bg-primary p-6 px-4 md:px-8 md:p-8 xl:px-14 text-center">
+                <div className="bg-primary p-6 px-4 sm:px-8 md:px-8 md:p-8 xl:px-14 text-center">
                      <h1 className=" text-3xl custom:text-4xl sm:text-4xl md:text-4xl font-bold  text-white mb-2">
            Shipping Information
                   </h1>
               <p className="text-white xs:text-md custom:text-md sm:text-lg">
-                 At <strong fontWeight="bold" color="#047857">Shopease</strong>, we want you to be completely satisfied with your
+                 At Shopease we want you to be completely satisfied with your
                 purchase. If you're not happy with your order, we'll make it right.
               </p>
             </div>

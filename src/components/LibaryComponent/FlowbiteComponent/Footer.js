@@ -45,6 +45,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8">
           {/* Brand Column */}
           <div className="md:col-span-2 lg:col-span-1">
+            {/* <img  src='images/2.png' alt='ShopEase Logo' className="mb-4 " /> */}
             <div className="text-3xl font-bold  mb-4">
               ShopEase
             </div>

@@ -52,7 +52,7 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <Box sx={{ minHeight: '100vh', pt: 6,  }}>
+    <Box sx={{  pt: 6,  }}>
         {/* Header Section */}
         {/* Header Section */}
         <div className="bg-primary p-6 px-0 md:p-8 xl:px-14 text-center">
@@ -65,7 +65,7 @@ export default function FAQ() {
         </div>
 
         {/* FAQ Accordion */}
-        <Box sx={{ my: 4,px:'12px'  }}>
+        <Box sx={{ my: 4, px: { mobileS: 2, xs: 3, md: 5 },  }}>
           {faqs.map((item, index) => (
             <Paper elevation={1} sx={{ mb: 3 }} key={index}>
               <Accordion sx={{ py:'3px'}} disableGutters>

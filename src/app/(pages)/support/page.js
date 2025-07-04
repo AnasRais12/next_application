@@ -1,140 +1,156 @@
-export default function AccountSupportPage() {
+import React from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Avatar,
+  Grid,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+const AccountSupportPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-10">
-      <div className="  bg-white rounded-xl shadow-sm">
+    <Box  bgcolor="#f9fafb" pt={5}>
+      <Grid mobileS={12} >
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-gray-100">
-          <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 p-6 md:p-8 xl:px-14 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl pt-6  font-bold text-white mb-2">
+        {/* <Card sx={{ borderRadius: 3, mb: 4, boxShadow: 4, border: '1px solid #e5e7eb' }}>
+          <Box
+            sx={{
+              background: 'linear-gradient(to right, #047857, #065f46)',
+              color: 'white',
+              textAlign: 'center',
+              py: 5,
+              px: { xs: 3, md: 6 },
+            }}
+          >
+            <Typography variant="h3" fontWeight="bold" gutterBottom>
               Account Support
-            </h1>
-            <p className="text-emerald-100 text-lg">
+            </Typography>
+            <Typography variant="body1">
               Last updated:{' '}
               {new Date().toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-            </p>
-          </div>
+            </Typography>
+          </Box>
+          <CardContent>
+            <Box display="flex" alignItems="start" bgcolor="#ecfdf5" p={2} borderLeft={4} borderColor="#10b981" borderRadius={2}>
+              <CheckCircleIcon sx={{ color: '#047857', mr: 2, mt: '4px' }} />
+              <Typography variant="body1">
+                At <b style={{ color: '#047857' }}>Shopease</b>, manage your account and get help.
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card> */}
+           <div className="  pb-10 overflow-hidden   ">
+        <div className="bg-primary p-6 md:p-8 xl:px-14 text-center">
+       <h1 className=" text-3xl custom:text-4xl sm:text-4xl md:text-4xl font-bold pt-6 text-white mb-2">
+           Account Support
+          </h1>
+          <p className="text-white xs:text-md custom:text-md sm:text-lg">
+           At Shopease manage your account and get help.
+          </p>
+        </div>
+      </div>
 
-          <div className="p-6 md:p-8 xl:px-14">
-            <div className="flex items-start bg-emerald-50 rounded-lg p-4 border-l-4 border-emerald-500">
-              <svg
-                className="w-6 h-6 text-emerald-600 mt-1 mr-3 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        {/* Quick Solutions */}
+        <Box mb={6}  px={{ mobileS: 2, xs: 3, md: 5 }} >
+          <Typography variant="h6" fontWeight="600" color="primary.main" mb={2}>
+            Quick Solutions
+          </Typography>
+          <List sx={{ bgcolor: '#f9fafb', borderRadius: 2,listStyleType: 'disc', pl: 3.5  }}>
+            {[
+              { title: 'Forgot Password', desc: 'Reset your password using your email' },
+              { title: 'Update Account Details', desc: 'Change your personal information' },
+              { title: 'Close Account', desc: 'Permanently delete your account' },
+            ].map((item, i) => (
+              <ListItem key={i} sx={{ bgcolor: '#f9fafb', mb: 1, borderRadius: 2,display: 'list-item', py: 0.5  }}>
+                <ListItemText
+                  primary={<Typography fontWeight="medium">{item.title}</Typography>}
+                  secondary={<Typography color="text.secondary">{item.desc}</Typography>}
                 />
-              </svg>
-              <p className="text-lg text-gray-600">
-                At <span className="font-bold text-emerald-700">Shopease</span>,
-                Manage your account and get help.
-              </p>
-            </div>
-          </div>
-        </div>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
 
-        {/* Common Issues */}
-        <div className="mb-8 p-6 md:p-8 xl:px-14">
-          <h2 className="font-semibold text-[#047857] mb-4">Quick Solutions</h2>
-          <div className="space-y-3">
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <h3 className="font-medium">Forgot Password</h3>
-              <p className="text-gray-600 text-sm">
-                Reset your password using your email
-              </p>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <h3 className="font-medium">Update Account Details</h3>
-              <p className="text-gray-600 text-sm">
-                Change your personal information
-              </p>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <h3 className="font-medium">Close Account</h3>
-              <p className="text-gray-600 text-sm">
-                Permanently delete your account
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Options */}
-        <div className="mb-8 p-6 md:p-8 xl:px-14">
-          <h2 className="font-semibold text-[#047857] mb-4">Contact Support</h2>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-[#047857] text-white p-2 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-medium">Call Us</h3>
-                <p className="text-gray-600 text-sm">+1 (555) 123-4567</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="bg-[#047857] text-white p-2 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-medium">Email Us</h3>
-                <p className="text-gray-600 text-sm">support@example.com</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Contact Support */}
+        <Box mb={6} px={{ mobileS: 2, xs: 3, md: 5 }}>
+          <Typography variant="h6" fontWeight="600" color="primary.main" mb={2}>
+            Contact Support
+          </Typography>
+          <Grid container spacing={2} px={1}>
+            <Grid item xs={12} md={6} >
+              <Box display="flex" alignItems="center" gap={2}>
+                <Avatar sx={{ bgcolor: 'primary.main' }}>
+                  <PhoneIcon />
+                </Avatar>
+                <Box>
+                  <Typography fontWeight="medium">Call Us</Typography>
+                  <Typography color="text.secondary" variant="body2">
+                    +1 (555) 123-4567
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box display="flex" alignItems="center" gap={2}>
+                <Avatar sx={{ bgcolor: 'primary.main' }}>
+                  <EmailIcon />
+                </Avatar>
+                <Box>
+                  <Typography fontWeight="medium">Email Us</Typography>
+                  <Typography color="text.secondary" variant="body2">
+                    support@example.com
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* FAQ */}
-        <div className="mb-6 p-6 md:p-8 xl:px-14">
-          <h2 className="font-semibold text-[#047857] mb-4">
+        <Box mb={6} px={{ mobileS: 2, xs: 3, md: 5 }}>
+          <Typography variant="h6" fontWeight="600" color="primary.main" mb={2}>
             Frequently Asked Questions
-          </h2>
-          <div className="space-y-3">
-            <details className="border-b pb-3">
-              <summary className="font-medium cursor-pointer">
-                How do I update my email address?
-              </summary>
-              <p className="text-gray-600 text-sm mt-2 pl-5">
-                Go to Account Settings → Personal Information → Edit Email
-              </p>
-            </details>
-            <details className="border-b pb-3">
-              <summary className="font-medium cursor-pointer">
-                Why can't I log in?
-              </summary>
-              <p className="text-gray-600 text-sm mt-2 pl-5">
-                Try resetting your password or contact support if the issue
-                persists
-              </p>
-            </details>
-          </div>
-        </div>
-
-        {/* Live Chat Button */}
-      </div>
-    </div>
+          </Typography>
+          {[{
+            question: 'How do I update my email address?',
+            answer: 'Go to Account Settings → Personal Information → Edit Email',
+          }, {
+            question: "Why can't I log in?",
+            answer: 'Try resetting your password or contact support if the issue persists',
+          }].map((faq, i) => (
+            <Accordion key={i} sx={{ mb: 1 }}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography fontWeight="medium">{faq.question}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography color="text.secondary" variant="body2">
+                  {faq.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
+      </Grid>
+    </Box>
   );
-}
+};
+
+export default AccountSupportPage;
