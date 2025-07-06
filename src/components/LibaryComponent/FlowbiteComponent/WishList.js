@@ -121,12 +121,12 @@ export default function Wishlist({ setWishlistModal }) {
       >
         {/* Header & Close Button */}
         <div className="flex justify-between items-center border-b pb-3 border-gray-200">
-          <h2 className="text-xl font-semibold text-[#047857]">My Wishlist</h2>
+          <h2 className="text-xl font-semibold text-primary">My Wishlist</h2>
           <button
             onClick={() => setWishlistModal(false)}
             className="p-1 rounded-full hover:bg-gray-100 transition"
           >
-            <RxCross2 size={22} className="text-gray-500 hover:text-red-500" />
+            <RxCross2 size={22} className="text-gray-500 hover:text-primary" />
           </button>
         </div>
 
@@ -191,12 +191,12 @@ export default function Wishlist({ setWishlistModal }) {
             ))
           ) : (
             <div className="text-center py-8">
-              <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                <FiHeart className="text-gray-400" size={24} />
+              <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-3">
+                <FiHeart className="text-white" size={24} />
               </div>
               <p className="text-gray-500">Your wishlist is empty</p>
               <button
-                className="mt-3 text-[#047857] hover:underline text-sm font-medium"
+                className="mt-3 text-primary hover:underline text-sm font-medium"
                 onClick={() => setWishlistModal(false)}
               >
                 Continue Shopping
