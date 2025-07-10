@@ -8,29 +8,36 @@ import {
   IconButton,
   Badge,
   Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
+import { SearchBar } from "./Searchbar";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
-const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, countries }) => {
+const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, countries,setWishlistModal,isOpen,DropdownMenu ,handleClose}) => {
+ 
+  const open = Boolean(isOpen);
   return (
     <AppBar
       position="fixed"
       sx={{
         backgroundColor: "white",
+        width: "100%",
         zIndex: 1300,
         borderBottom: "1px solid #e0e0e0",
-        display: { mobileS: "none", lg: "block" },
+        display: { mobileS: "none", md: "block" },
       }}
     >
-      <Toolbar sx={{ justifyContent: "space-between", maxWidth: 1280, mx: "auto", px: 3 }}>
+      <Toolbar sx={{ justifyContent: "space-between",width:{lg:'95%', md:'100%'}, mx: "auto", }}>
         <Link href="/" passHref legacyBehavior>
           <Box component="a" sx={{ display: "flex", alignItems: "center" }}>
-            <div className="text-3xl text-black font-bold">ShopEase</div>
+            <div className="lg:text-3xl text-2xl text-black font-bold">ShopEase</div>
           </Box>
         </Link>
 
-        <Box
+        {/* <Box
           component="form"
           sx={{
             display: "flex",
@@ -49,10 +56,11 @@ const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, coun
           <Button variant="contained" sx={{ borderRadius: "50px", backgroundColor: "black" }}>
             Search
           </Button>
-        </Box>
+        </Box> */}
+        <SearchBar/>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <IconButton>
+          <IconButton onClick={() => setWishlistModal(true)}>
             <Badge badgeContent={wishListState?.length || 0} color="secondary">
               <FiHeart />
             </Badge>
@@ -66,13 +74,47 @@ const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, coun
             </IconButton>
           </Link>
 
-          <IconButton onClick={handleProfileClick}>
+          <IconButton onClick={() => handleProfileClick(event)}>
             {user ? (
               <Avatar sx={{ bgcolor: "primary.main" }}>{user.email[0].toUpperCase()}</Avatar>
             ) : (
               <FiUser />
             )}
+           
+      
           </IconButton>
+       <Menu
+        anchorEl={isOpen} // ✅ correct variable used
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          elevation: 2,
+          sx: {
+              mt: -3,
+            width: 120,
+            borderRadius: 2,
+          },
+        }}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+          
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        {DropdownMenu.map((item, index) => (
+          <MenuItem sx={{textTransform:'capitalize'}} key={index} onClick={handleClose}>
+            {item}
+          </MenuItem>
+        ))}
+        {/* <MenuItem onClick={handleClose}>My Account</MenuItem>
+        <MenuItem onClick={handleClose}>Settings</MenuItem> */}
+       
+      </Menu>
+          
 
           <Box>
             <img

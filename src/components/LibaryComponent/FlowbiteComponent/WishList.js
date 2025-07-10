@@ -111,7 +111,7 @@ export default function Wishlist({ setWishlistModal }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50">
+    <div className="fixed inset-0 mt-16 bg-black bg-opacity-50 flex justify-end z-50">
       <motion.div
         initial={{ x: '100%' }}
         animate={{ x: 0 }}

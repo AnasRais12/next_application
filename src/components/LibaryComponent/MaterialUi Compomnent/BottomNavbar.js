@@ -16,7 +16,7 @@ const BottomNavBar = ({ setSearchBar, setWishlistModal, handleProfileClick }) =>
         width: "100%",
         backgroundColor: "white",
         borderTop: "1px solid #ddd",
-        display: { mobileS: "flex", md: "flex", lg: "none" },
+        display: { mobileS: "flex",  md: "none" },
         justifyContent: "space-around",
         py: 1,
         zIndex: 1400,

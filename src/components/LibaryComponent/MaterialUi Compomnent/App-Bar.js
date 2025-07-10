@@ -48,7 +48,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [wishlistModal, setWishlistModal] = useState(false);
   const [countries, setCountries] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(false);
   const DropdownMenu = user ? ['home', 'settings'] : ['login'];
 
   useEffect(() => {
@@ -91,18 +91,24 @@ export default function Navbar() {
   }, [userDetails, setFrom, setRates, setSymbol]);
 
   const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(true);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(false);
   };
 
   return (
      <>
         <DesktopNavbar
         user={user}
-        cartItem={cartItem}
+        cartItem={cartItem
+
+        }
+        DropdownMenu={DropdownMenu}
+        isOpen={anchorEl}
+        setWishlistModal={setWishlistModal}
         wishListState={wishListState}
+        handleClose={handleClose}
         handleProfileClick={handleProfileClick}
         countries={countries}
       />
@@ -110,8 +116,12 @@ export default function Navbar() {
       <BottomNavBar
         setSearchBar={setSearchBar}
         setWishlistModal={setWishlistModal}
+        isOpen={isOpen}
+
         handleProfileClick={handleProfileClick}
       />
+       {wishlistModal && <Wishlist setWishlistModal={setWishlistModal} />}
+      
      </>
   );
 }
