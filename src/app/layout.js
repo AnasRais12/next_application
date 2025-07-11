@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import ThemeRegistry from '@/components/ThemyRegistry';
 import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 import Script from 'next/script';
-import Navbar_ from '@/components/LibaryComponent/MaterialUi Compomnent/App-Bar';
+import Navbar_ from '@/components/navbar/App-Bar';
 import './globals.css';
 import { GlobalProvider } from '@/context/globalprovider/globalProvider';
 import { usePathname } from 'next/navigation';
@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Script
+          {/* <Script
             id="tawk-to"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
@@ -66,7 +66,7 @@ export default function RootLayout({ children }) {
       })();
     `,
             }}
-          />
+          /> */}
           <Provider store={store}>
             <GlobalProvider>
               <ThemeRegistry>

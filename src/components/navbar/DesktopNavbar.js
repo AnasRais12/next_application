@@ -90,20 +90,31 @@ const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, coun
         PaperProps={{
           elevation: 2,
           sx: {
-              mt: -3,
-            width: 120,
+              mt: 4,
+            width: 150,
             borderRadius: 2,
           },
         }}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
+
           
         }}
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
         }}
+         PopperProps={{
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [ -400, 0 ], // [X, Y] => 100px left
+        },
+      },
+    ],
+  }}
       >
         {DropdownMenu.map((item, index) => (
           <MenuItem sx={{textTransform:'capitalize'}} key={index} onClick={handleClose}>

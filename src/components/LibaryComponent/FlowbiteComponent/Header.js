@@ -103,7 +103,7 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Content */}
-      <div className="container mx-auto h-full flex items-center relative z-10 px-6 md:px-12 lg:px-24">
+      <div className="sm:container  sm:mx-auto h-full flex items-center relative z-10 px-4 sm:px-6 md:px-12 lg:px-24">
         <motion.div
           key={`text-${index}`}
           initial={{ opacity: 0, x: direction * 100 }}

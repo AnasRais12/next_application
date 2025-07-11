@@ -6,7 +6,6 @@ import SearchIcon from '@mui/icons-material/Search';
 const SearchContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    width: '60%',
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: "10px",
     padding:'0px',
@@ -24,6 +23,18 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
 
 
 
+    },
+     '& .MuiOutlinedInput-root': {
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent', // or your desired color
+            borderWidth: 0,
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent', // or your desired color
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent',
+        },
     },
 }));
 
@@ -62,7 +73,7 @@ export const SearchBar = () => {
     };
 
     return (
-        <SearchContainer>
+        <SearchContainer sx={{width: {  md: '60%', lg: '65%' }}}>
             <StyledFormControl variant="outlined">
                 <InputLabel id="category-select-label" sx={{ display: 'none' }}>
                     Category

@@ -111,13 +111,13 @@ export default function Wishlist({ setWishlistModal }) {
   };
 
   return (
-    <div className="fixed inset-0 mt-16 bg-black bg-opacity-50 flex justify-end z-50">
+    <div className="fixed inset-0 mt-0 lg:mt-16 bg-black bg-opacity-50 flex justify-end z-[999999999]">
       <motion.div
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', stiffness: 100 }}
-        className="bg-white w-80 h-fit  shadow-lg p-3 overflow-y-auto"
+        className="bg-white w-80 mr-1 h-fit  shadow-lg p-3 overflow-y-auto"
       >
         {/* Header & Close Button */}
         <div className="flex justify-between items-center border-b pb-3 border-gray-200">

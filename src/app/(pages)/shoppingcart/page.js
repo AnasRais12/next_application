@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import Shopping_Cart from '@/components/LibaryComponent/FlowbiteComponent/Shopping_Cart';
+import Shopping_Cart from '@/components/navbar/navbarActions/Shopping_Cart';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
