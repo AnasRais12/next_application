@@ -11,13 +11,13 @@ import { RxCross2 } from 'react-icons/rx';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Wishlist from './navbarActions/WishList';
-import { useRouter } from 'next/navigation';
 import { getCart, getWishList } from '@/utils/reduxGlobalStates/ReduxStates';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import DesktopNavbar from './DesktopNavbar';
 import BottomNavBar from './BottomNavbar';
 import { fetchExchangeRates } from '@/helper/CurrenyConver';
+import { useRouter } from 'next/navigation';
 import AccountSettings from './navbarActions/ProfileBottomNavbar';
 
 export default function Navbar() {
@@ -26,6 +26,7 @@ export default function Navbar() {
   const { userDetails } = UserQuery();
   const cartItem = getCart();
   const wishListState = getWishList();
+
   const [searchBar, setSearchBar] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [wishlistModal, setWishlistModal] = useState(false);
@@ -100,8 +101,6 @@ export default function Navbar() {
         setSearchBar={setSearchBar}
         setWishlistModal={setWishlistModal}
         isOpen={isOpen}
-
-        handleProfileClick={handleProfileClick}
       />
         {searchBar && (
           <motion.div
@@ -155,7 +154,6 @@ export default function Navbar() {
           </motion.div>
         )}
        {wishlistModal && <Wishlist  open={wishlistModal} setWishlistModal={setWishlistModal} />}
-          {/* <AccountSettings />       */}
      </>
   );
 }

@@ -43,7 +43,7 @@ const UserSetting = ({ userAddressLoading, userAddressInfo }) => {
 
   return (
     <>
-      <div className="lg:flex-row flex-col h-fit  py-10  flex lg:gap-0 lg:px-0 md:px-5 px-3 lg:mt-0 mt-12 bg-gray-50">
+      <div className="lg:flex-row lg:flex flex-col h-fit  py-10  hidden lg:gap-0 lg:px-0 md:px-5 px-3 lg:mt-0 mt-12 bg-gray-50">
         {isEditing ? (
           <AddressUpdate
             setIsEditing={setIsEditing}

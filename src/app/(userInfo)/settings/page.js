@@ -5,8 +5,7 @@ import UserSetting from '@/components/LibaryComponent/FlowbiteComponent/UserSett
 import { useFetchAddress } from '@/customHooks/useFetchAddress';
 import { useFetchCartlist } from '@/customHooks/useFetchCartList';
 import { useFetchWishlist } from '@/customHooks/useFetchWishList';
-import { createAddress, purchaseLabel } from '@/helper/ShippingHelper';
-import { supabase } from '@/lib/supabase';
+import AccountSettings from '@/components/navbar/navbarActions/ProfileBottomNavbar';
 import UserQuery from '@/DbQuery/UserDetailQuery';
 import useSession from '@/utils/UserExist/GetSession';
 
@@ -35,6 +34,7 @@ const page = () => {
         userAddressLoading={userAddressLoading}
         userAddressInfo={userAddressInfo}
       />
+      <AccountSettings />
     </>
   );
 };

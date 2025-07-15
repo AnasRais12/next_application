@@ -9,8 +9,11 @@ import { useFetchWishlist } from '@/customHooks/useFetchWishList';
 import CustomSpinner from '@/components/Spinner';
 import { GlobalDetails } from '@/context/globalprovider/globalProvider';
 import { calculatedeliveryCharges } from '@/helper/ShippingHelper';
+import AccountSettings from '@/components/navbar/navbarActions/ProfileBottomNavbar';
+import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
 
 function page() {
+  
   const session = useSession();
   useFetchWishlist(session?.user?.id);
   useFetchCartlist(session?.user?.id);
@@ -20,6 +23,7 @@ function page() {
   if ((session?.user?.id && wishListLoading) || cartListLoading) {
     return <CustomSpinner />;
   }
+
   return (
     <>
       {/* <div className='px-3 py-3 mt-16 w-full bg-red-500 text-white'>{count}</div> */}
@@ -31,6 +35,7 @@ function page() {
         {/* Categoreis */}
         <Categories />
         <E_commerceCard />
+        <Footer /> 
         {/* Deals waley sectin */}
         {/* Ayaingeeee */}
         {/* New arival*/}

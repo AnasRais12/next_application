@@ -4,6 +4,9 @@ const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [settingModal, setSettingModal] = useState(false);
+    const [openModal, setOpenModal] = useState({
+         accountSetting:false
+      });
   const [deliveryCharges, setDeliveryCharges] = useState(0);
   const [rates, setRates] = useState({}); // Exchange rates store karne ke liye
   const [from, setFrom] = useState('USD'); // Default currency USD
@@ -38,6 +41,8 @@ export const GlobalProvider = ({ children }) => {
           setSymbol,
           symbol,
           setRates,
+          openModal,
+          setOpenModal
         }}
       >
         {children},

@@ -1,16 +1,14 @@
-'use client';
+"use client"
 import localFont from 'next/font/local';
 import { Provider } from 'react-redux';
 import { Roboto } from 'next/font/google';
 import { store } from './store/store';
-import { ToastContainer } from 'react-toastify';
+// import { ToastContainer } from 'react-toastify';
+import LayoutFooter from '@/components/LayoutFileComp/LayoutFooter';
 import ThemeRegistry from '@/components/ThemyRegistry';
-import Footer from '@/components/LibaryComponent/FlowbiteComponent/Footer';
-import Script from 'next/script';
-import Navbar_ from '@/components/navbar/App-Bar';
+import LayoutNavbar from '@/components/LayoutFileComp/LayoutNavbar';
 import './globals.css';
 import { GlobalProvider } from '@/context/globalprovider/globalProvider';
-import { usePathname } from 'next/navigation';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -34,12 +32,6 @@ const roboto = Roboto({
 // };
 
 export default function RootLayout({ children }) {
-  const pathName = usePathname();
-  const isLoginPage = pathName === '/login';
-  const isRegisterPage = pathName === '/signup';
-  const isForgetPage = pathName === '/verifyaccount';
-  const isResetPasswordPage = pathName === '/resetPassword';
-
 
   return (
     <html lang="en">
@@ -70,10 +62,10 @@ export default function RootLayout({ children }) {
           <Provider store={store}>
             <GlobalProvider>
               <ThemeRegistry>
-                {!isLoginPage && !isRegisterPage && !isForgetPage && !isResetPasswordPage ? <Navbar_ /> : null}
+                <LayoutNavbar />
                 {children}
-                <ToastContainer autoClose={1000} />
-                {!isLoginPage && !isRegisterPage && !isForgetPage &&  !isResetPasswordPage ? <Footer /> : null}
+                {/* <ToastContainer autoClose={1000} /> */}
+              <LayoutFooter />
               </ThemeRegistry>
             </GlobalProvider>
           </Provider>

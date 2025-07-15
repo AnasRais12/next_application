@@ -3,10 +3,19 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { FiHome, FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { GlobalDetails } from "@/context/globalprovider/globalProvider";
 
-const BottomNavBar = ({ setSearchBar, setWishlistModal, handleProfileClick }) => {
+const BottomNavBar = ({ setSearchBar, setWishlistModal,  }) => {
   const router = useRouter();
-
+  const { user } = GlobalDetails();
+const handleProfileClick = () => {
+    if (user) {
+      router.push('/settings');
+    } else {
+      router.push('/login');
+    }
+  };
+  
   return (
     <Box
       sx={{
