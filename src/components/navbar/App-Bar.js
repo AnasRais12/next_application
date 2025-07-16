@@ -100,6 +100,8 @@ export default function Navbar() {
       <BottomNavBar
         setSearchBar={setSearchBar}
         setWishlistModal={setWishlistModal}
+        user={user}
+        cartItem={cartItem}
         isOpen={isOpen}
       />
         {searchBar && (

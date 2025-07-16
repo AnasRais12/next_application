@@ -35,7 +35,6 @@ function page() {
         {/* Categoreis */}
         <Categories />
         <E_commerceCard />
-        <Footer /> 
         {/* Deals waley sectin */}
         {/* Ayaingeeee */}
         {/* New arival*/}
