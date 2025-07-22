@@ -57,8 +57,7 @@ const AccountSettings = () => {
    const menuItems = [
     { icon: <ShoppingCartCheckoutOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "My Orders" },
     { icon: <ContactMailOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "My Details" },
-    { icon: <HomeOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "Address Book" },
-    { icon: <PaymentOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "Payment Methods" },
+    // { icon: <HomeOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "Address Book" },
     { icon: <NotificationsOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "Notifications" },
     { icon: <LogoutOutlinedIcon sx={{ fontSize: { xs: "24px", sm: "30px" } }} />, label: "Logout" },
 ];

@@ -11,13 +11,13 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
+import { FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import { SearchBar } from "./Searchbar";
-import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, countries,setWishlistModal,isOpen,DropdownMenu ,handleClose}) => {
- 
+  const router = useRouter();
   const open = Boolean(isOpen);
   return (
     <AppBar
@@ -117,7 +117,7 @@ const DesktopNavbar = ({ user, wishListState, cartItem, handleProfileClick, coun
   }}
       >
         {DropdownMenu.map((item, index) => (
-          <MenuItem sx={{textTransform:'capitalize'}} key={index} onClick={handleClose}>
+          <MenuItem   sx={{textTransform:'capitalize'}} key={index} onClick={()=> router.push(`/${item}`)}>
             {item}
           </MenuItem>
         ))}

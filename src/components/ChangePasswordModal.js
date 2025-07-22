@@ -58,8 +58,10 @@ function ChangePassword({ setchangepasswordModal }) {
             icon: 'success',
             text: 'Password changed successfully!',
           });
-          setchangepasswordModal(false);
-          console.log('asasasas', data);
+          setchangepasswordModal((prev) => ({
+            ...prev,
+            changepasswordModal: false,
+          }));
         }
       }
     } catch (error) {

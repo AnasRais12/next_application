@@ -11,22 +11,15 @@ import useSession from '@/utils/UserExist/GetSession';
 
 const page = () => {
   const session = useSession();
-  useFetchWishlist(session?.user?.id);
-  useFetchCartlist(session?.user?.id);
   const { cartListLoading } = useFetchCartlist(session?.user?.id);
   const { wishListLoading } = useFetchWishlist(session?.user?.id);
   const { userAddressLoading, userAddressInfo } = useFetchAddress(
     session?.user?.id
   );
-  const { userDetails } = UserQuery();
-
-  if (
-    (session?.user?.id && wishListLoading) ||
-    cartListLoading ||
-    userAddressLoading
-  ) {
-    return <CustomSpinner />;
-  }
+ 
+ if (!session?.user?.id || wishListLoading || cartListLoading || userAddressLoading) {
+  return <CustomSpinner />;
+}
 
   return (
     <>
